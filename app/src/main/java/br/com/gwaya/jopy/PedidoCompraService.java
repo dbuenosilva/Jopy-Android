@@ -1,0 +1,222 @@
+package br.com.gwaya.jopy;
+
+import android.app.IntentService;
+import android.content.Intent;
+import android.os.Binder;
+import android.os.IBinder;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpResponseException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PedidoCompraService extends IntentService {
+	private final IBinder mBinder = new MyBinder();
+	private List<PedidoCompra> list = new ArrayList<PedidoCompra>();
+	private AcessoDataSource acessoDatasource;
+	private PedidoCompraDataSource pedidoCompraDatasource;
+	public static final String NOTIFICATION = "br.com.gwaya.android.service.receiver";
+	public static final String PEDIDOS_EMITIDOS = "PEDIDOS_EMITIDOS";
+	public static final String PEDIDOS_REJEITADOS = "PEDIDOS_REJEITADOS";
+	public static final String PEDIDOS_APROVADOS = "PEDIDOS_APROVADOS";
+	
+	public PedidoCompraService() {
+		super("PedidoCompraService");
+	}
+	
+	@Override
+	protected void onHandleIntent(Intent intent) {
+		if (acessoDatasource == null) {
+			acessoDatasource = new AcessoDataSource(this.getApplicationContext());
+		}
+		try {
+			acessoDatasource.open();
+			List<Acesso> lstAcesso = acessoDatasource.getAllAcesso();
+			acessoDatasource.close();
+
+            pedidoCompraDatasource = new PedidoCompraDataSource(this.getApplicationContext());
+            pedidoCompraDatasource.open();
+			
+			if (lstAcesso.size() > 0) {
+				
+				Acesso acesso = lstAcesso.get(0);
+				
+				String url = getResources().getString(R.string.protocolo) 
+						+ getResources().getString(R.string.rest_api_url)
+						+ getResources().getString(R.string.pedidocompra_path),
+                        dtMod = pedidoCompraDatasource.ultimoSync();
+
+                if (dtMod != null) {
+                    url += "?gte=" + dtMod;
+                }
+				
+				descarregaFila(url, acesso);
+				
+				String responseData = "";
+				
+	            responseData = loadFromNetwork(url, acesso);
+	            
+	            GsonBuilder gsonb = new GsonBuilder();
+		        Gson gson = gsonb.create();
+		        PedidoCompra[] pedidos = null;
+
+	            pedidos = gson.fromJson(responseData, PedidoCompra[].class);
+	            
+	            if (pedidos != null && pedidos.length > 0) {
+
+		            pedidoCompraDatasource.createUpdatePedidoCompra(pedidos, false);
+
+		            List<PedidoCompra> emitidos = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null);
+		            List<PedidoCompra> aprovados = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
+		            List<PedidoCompra> rejeitados = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
+	            	
+		            if (emitidos.size() > 0) {
+		            	//publishResults(emitidos.toArray(new PedidoCompra[emitidos.size()]), PEDIDOS_EMITIDOS);
+                        publishResults(emitidos, PEDIDOS_EMITIDOS);
+		            }
+		            if (aprovados.size() > 0) {
+		            	//publishResults(aprovados.toArray(new PedidoCompra[aprovados.size()]), PEDIDOS_APROVADOS);
+		            }
+		            if (rejeitados.size() > 0) {
+		            	//publishResults(rejeitados.toArray(new PedidoCompra[rejeitados.size()]), PEDIDOS_REJEITADOS);
+		            }
+	            }
+			}
+		} catch(Exception e) {
+			String msg = e.getMessage();
+		} finally {
+			if (pedidoCompraDatasource != null) {
+				pedidoCompraDatasource.close();
+			}
+		}
+	}
+	
+	private void descarregaFila(String urlString, Acesso acesso){
+		FilaPedidoCompraDataSource filaDataSource = null;
+        try {
+
+            String url = getResources().getString(R.string.protocolo)
+                    + getResources().getString(R.string.rest_api_url)
+                    + getResources().getString(R.string.pedidocompra_path);
+
+            filaDataSource = new FilaPedidoCompraDataSource(this.getApplicationContext());
+            filaDataSource.open();
+
+            List<PedidoCompra> pedidos = filaDataSource.getAllPedidoCompra();
+
+            if (pedidos != null && pedidos.size() > 0) {
+
+                List<PedidoCompra> tmpPedidos = new ArrayList<PedidoCompra>();
+
+                for (PedidoCompra pedidoCompra : pedidos) {
+                    PedidoCompra tmp = new PedidoCompra();
+                    tmp._id = pedidoCompra._id;
+                    tmp.statusPedido = pedidoCompra.statusPedido;
+                    tmp.motivoRejeicao = pedidoCompra.motivoRejeicao;
+                    tmpPedidos.add(tmp);
+                }
+
+                for (PedidoCompra pedidoCompra : tmpPedidos) {
+
+                    HttpClient httpclient = new DefaultHttpClient();
+                    HttpPut httpPut = new HttpPut(url + "/" + pedidoCompra._id);
+                    httpPut.setHeader("Authorization", acesso.Token_Type + " " + acesso.Access_Token);
+
+                    filaDataSource.beginTransaction();
+
+                    StringEntity entity = new StringEntity(new Gson().toJson(pedidoCompra), HTTP.UTF_8);
+
+                    entity.setContentType("application/json");
+
+                    httpPut.setEntity(entity);
+
+                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                    String str = httpclient.execute(httpPut, responseHandler);
+
+                    filaDataSource.deleteFilaPedidoCompra(pedidoCompra);
+                    filaDataSource.commit();
+
+                    if (pedidoCompraDatasource == null) {
+                        pedidoCompraDatasource = new PedidoCompraDataSource(this);
+                    }
+                    pedidoCompra.enviado = 1;
+                    pedidoCompraDatasource.updatePedidoCompra(pedidoCompra);
+                }
+                filaDataSource.close();
+            } else {
+                //todo
+            }
+        } catch(HttpResponseException e) {
+            switch (e.getStatusCode()) {
+                case 404:
+                    break;
+                case 403:
+                case 401:
+                    break;
+            }
+            e.printStackTrace();
+        } catch(Exception e) {
+        	Log.e("", "");
+        }
+        finally {
+        	if (filaDataSource != null) {
+        		filaDataSource.close();
+        	}
+        }
+	}
+	
+	private void publishResults(List<PedidoCompra> pedidos, String tipo) {
+	    Intent intent = new Intent(NOTIFICATION);
+        String strJson = new Gson().toJson(pedidos);
+	    intent.putExtra(tipo, strJson);
+	    sendBroadcast(intent);
+	}
+	
+	public static String loadFromNetwork(String urlString, Acesso acesso) throws IOException {
+        String str ="";
+        try {
+	        HttpClient httpclient = new DefaultHttpClient();
+	        HttpGet httpGet = new HttpGet(urlString);
+	        
+	        httpGet.setHeader("Authorization", acesso.Token_Type + " " + acesso.Access_Token);
+	        
+	        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+	        str = httpclient.execute(httpGet, responseHandler);
+        } catch(Exception e)
+        {
+        	Log.e("", "");
+        }
+        finally {
+            
+        }
+        return str;
+    }
+
+	@Override
+	public IBinder onBind(Intent arg0) {
+		return mBinder;
+	}
+
+	public class MyBinder extends Binder {
+		PedidoCompraService getService() {
+			return PedidoCompraService.this;
+		}
+  }
+
+	public List<PedidoCompra> getAll() {
+		return list;
+	}
+}

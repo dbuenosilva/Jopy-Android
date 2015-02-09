@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:id="@+id/layoutStatus1"
+        android:background="@color/rejeitado">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Motivo da Rejeição"
+            android:id="@+id/txtStatus1"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Motivo asdad iahsd iauh sdiuhasdiauhsda a dsahudasiuhda"
+            android:id="@+id/txtStatus2"
+            android:layout_below="@+id/txtStatus1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textColor="#FFFFFF"
+            android:layout_marginLeft="15dp" />
+
+    </RelativeLayout>
+
+    <include
+        layout="@layout/detalhe"
+        android:id="@+id/id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@color/rejeitado"
+        android:alpha="0.8"
+        android:id="@+id/relStatusRdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pedido rejeitado em 21/01/2015"
+            android:id="@+id/txtStatusRdp"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:textStyle="normal"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgUpload"
+            android:src="@drawable/upload"
+            android:layout_alignBottom="@+id/txtStatusRdp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="15dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

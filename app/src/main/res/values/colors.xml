@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+	
+	
+	<color name="tabMedium">#2B2B2B</color>
+	<color name="tabDark">#000000</color>
+	<color name="tabTransparent">#10ffffff</color>
+	<color name="seccao">#99C6C6</color>
+	<color name="actionbar">#FFFFFF</color>
+
+    <color name="actionbar_text">#FFFFFF</color>
+    <color name="header">#EEEEF3</color>
+    <color name="header_text">#6F7C7D</color>
+    <color name="fonte">#EEEEF3</color>
+    <color name="emitido">#5FB4E5</color>
+    <color name="emitido2">#265FB4E5</color>
+    <color name="aprovado">#45A142</color>
+    <color name="aprovado2">#2645A142</color>
+    <color name="rejeitado">#FF4539</color>
+    <color name="rejeitado2">#1AFF4539</color>
+    <color name="actionbar_background">#253746</color>
+    <color name="actionbar_colortext">#FFFFFF</color>
+    <color name="icon_foreground">#A3AAAE</color>
+    <color name="line_background">#B2292E</color>
+	
+	
+</resources>

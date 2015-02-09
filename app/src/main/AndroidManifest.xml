@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.com.gwaya.jopy" >
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <permission
+        android:name="br.com.gwaya.jopy.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission
+        android:name="br.com.gwaya.jopy.permission.C2D_MESSAGE" />
+
+    <uses-permission
+        android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/MyAppTheme"
+        android:name=".MyApplication">
+        <activity
+            android:name=".LoginActivity"
+            android:alwaysRetainTaskState="false"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_login"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:noHistory="true" >
+
+        </activity>
+        <activity
+            android:name=".OpcoesActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
+            android:label="@string/title_activity_opcoes"
+            >
+        </activity>
+        <activity
+            android:name=".MainSplashScreen"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EmitidosActivity"
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_main_tab"
+            >
+        </activity>
+        <activity
+            android:name=".AprovadosActivity"
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_main_tab" >
+        </activity>
+        <activity
+            android:name=".AprovRejeicaoActivity"
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_main_tab"
+            android:parentActivityName=".DetalheActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DetalheActivity" />
+            >
+        </activity>
+        <activity
+            android:name=".RejeitadosActivity"
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_main_tab" >
+        </activity>
+        <activity
+            android:name=".DetalheActivity"
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_main_tab"
+            android:parentActivityName=".MainActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+            >
+        </activity>
+        <activity
+            android:name=".HistoricoActivity"
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_main_tab"
+            android:parentActivityName=".DetalheActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DetalheActivity" />
+            >
+        </activity>
+        <activity
+            android:name=".DetalheHistoricoActivity"
+            android:launchMode="singleTask"
+            android:label="@string/title_activity_main_tab"
+            android:parentActivityName=".HistoricoActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HistoricoActivity" />
+            >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
+        <receiver android:name=".PedidoCompraReceiver" >
+        </receiver>
+
+        <service android:name=".PedidoCompraService" >
+        </service>
+        <receiver android:name=".BootReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".GCMIntentService" ></service>
+
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <!-- Receives the registration id. -->
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="br.com.gwaya.jopy" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="br.com.gwaya.jopy.GCMIntentService" />
+    </application>
+
+</manifest>

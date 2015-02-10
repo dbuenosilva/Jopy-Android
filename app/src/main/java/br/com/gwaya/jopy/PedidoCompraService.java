@@ -77,22 +77,34 @@ public class PedidoCompraService extends IntentService {
 	            
 	            if (pedidos != null && pedidos.length > 0) {
 
-		            pedidoCompraDatasource.createUpdatePedidoCompra(pedidos, false);
+                    // Diego Bueno - 10/02/2015 - verifica se pedido já existe, caso sim, deleta e inclui com nova alteração
+                    for (int i = 0 ; i < pedidos.length; i++) {
 
-		            List<PedidoCompra> emitidos = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null);
-		            List<PedidoCompra> aprovados = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
-		            List<PedidoCompra> rejeitados = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
-	            	
-		            if (emitidos.size() > 0) {
-		            	//publishResults(emitidos.toArray(new PedidoCompra[emitidos.size()]), PEDIDOS_EMITIDOS);
-                        publishResults(emitidos, PEDIDOS_EMITIDOS);
-		            }
-		            if (aprovados.size() > 0) {
-		            	//publishResults(aprovados.toArray(new PedidoCompra[aprovados.size()]), PEDIDOS_APROVADOS);
-		            }
-		            if (rejeitados.size() > 0) {
-		            	//publishResults(rejeitados.toArray(new PedidoCompra[rejeitados.size()]), PEDIDOS_REJEITADOS);
-		            }
+                        if (pedidoCompraDatasource.ExistePedidoCompra(pedidos[i]._id)) {
+                            pedidoCompraDatasource.deletePedidoCompra(pedidos[i]);
+                            pedidoCompraDatasource.createUpdatePedidoCompra(pedidos[i], false);
+                        }
+                        else{
+                            pedidoCompraDatasource.createUpdatePedidoCompra(pedidos, false);
+                        }
+
+                    }
+
+                    List<PedidoCompra> emitidos = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null);
+                    List<PedidoCompra> aprovados = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
+                    List<PedidoCompra> rejeitados = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
+
+                    if (emitidos.size() > 0) {
+                       //publishResults(emitidos.toArray(new PedidoCompra[emitidos.size()]), PEDIDOS_EMITIDOS);
+                       publishResults(emitidos, PEDIDOS_EMITIDOS);
+                    }
+                    if (aprovados.size() > 0) {
+                        //publishResults(aprovados.toArray(new PedidoCompra[aprovados.size()]), PEDIDOS_APROVADOS);
+                    }
+                    if (rejeitados.size() > 0) {
+                        //publishResults(rejeitados.toArray(new PedidoCompra[rejeitados.size()]), PEDIDOS_REJEITADOS);
+                    }
+
 	            }
 			}
 		} catch(Exception e) {

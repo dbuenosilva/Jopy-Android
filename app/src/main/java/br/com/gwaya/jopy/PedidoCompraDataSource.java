@@ -299,4 +299,23 @@ public class PedidoCompraDataSource {
 		  
 		  return pedido;
 	  }
+
+
+    public boolean ExistePedidoCompra(String _idApi) {
+        final String idApi = _idApi;
+        final boolean[] isPedido = new boolean[1];
+        isPedido[0] = false;
+
+        DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
+            @Override
+            public void run(SQLiteDatabase database) {
+
+                if (database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA_ITEM,
+                        allColumnsItems, MySQLiteHelper.ID_PAI + " = '" + idApi + "'", null, null, null, null).getCount() > 0 ) {
+                    isPedido[0] = true;
+                }
+            }
+        });
+        return(isPedido[0]);
+    }
 }

@@ -12,7 +12,7 @@
     <string name="title_activity_opcoes">Opções</string>
     <string name="menu_settings">Configuracoes</string>
     <!--<string name="rest_api_url">api.jopy.gwaya.com.br</string>-->
-    <string name="rest_api_url">54.94.180.176</string>
+    <string name="rest_api_url">homologacao.api.jopy.gwaya.com.br</string>
     <string name="device_path">/api/v1/device</string>
     <string name="esqueceu_path">/api/v1/oauth/esqueceu</string>
     <string name="oauth_path">/oauth/token</string>

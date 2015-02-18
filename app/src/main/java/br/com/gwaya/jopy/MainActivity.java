@@ -130,7 +130,12 @@ public class MainActivity extends TabActivity {
             dataSource.close();
         }
         setTabs();
+
+        //Add por Thiago A.Sousa
+        new DownloadTask().execute();
     }
+
+
 
     private void setTabs()
     {

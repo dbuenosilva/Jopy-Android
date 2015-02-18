@@ -32,7 +32,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gcm.GCMRegistrar;
+import com.google.android.gcm.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -107,11 +107,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         GCMRegistrar.checkDevice(this);
         GCMRegistrar.checkManifest(this);
 
+        /*
         if (mHandleMessageReceiver != null) {
-            registerReceiver(mHandleMessageReceiver,
-                    new IntentFilter(DISPLAY_MESSAGE_ACTION));
+            registerReceiver(mHandleMessageReceiver,new IntentFilter(DISPLAY_MESSAGE_ACTION));
         }
-
+        */
         GCMRegistrar.register(this, SENDER_ID);
 
         GCMRegistrar.setRegisteredOnServer(this, true);

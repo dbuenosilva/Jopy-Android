@@ -70,80 +70,19 @@ public class GCMIntentService extends GCMBaseIntentService {
         // notifies user
         generateNotification(context, message);
 
-        //Add por Thiago A.Sousa
+        //ADD POR THIAGO A.SOUSA
+        //CHAMA O METODO RESPONSAVEL POR ATUALIZAR O CONTEUDO DO BANCO DE DADOS
 
-        //Intent intencao = new Intent(GCMIntentService.this, RecebeNotificacaoActivity.class);
-        //startActivity(intencao);
-        //new DownloadTask().execute();
-
-
-        login = true;
-
+        //RECEBE O USUARIO QUE ESTA LOGADO
         AcessoDataSource acessoDatasource = new AcessoDataSource(this.getApplicationContext());
         List<Acesso> lstAcesso = acessoDatasource.getAllAcesso();
 
-        dataSource = new PedidoCompraDataSource(this.getApplicationContext());
-        String jsonMyObject = "";
-
-        //Bundle extras = getIntent().getExtras();
-
-
-
-        if (!jsonMyObject.equals("")) {
-            acesso = new Gson().fromJson(jsonMyObject, Acesso.class);
+        //VERIFICA SE EXISTE USARIO LOGADO
+        if (lstAcesso.size() > 0){
+            refreshDb(lstAcesso);
+        }else{
+            Log.i(TAG, "Não existe usuario Autenticado no momento... Impossivel Atualizar o banco de dados!");
         }
-        if (login) {
-            dataSource.open();
-            dataSource.deleteAll();
-            dataSource.close();
-        }
-
-        //setTabs();
-        List<PedidoCompra> lst = null;
-        try {
-            dataSource.open();
-            String url = getResources().getString(R.string.protocolo)
-                    + getResources().getString(R.string.rest_api_url)
-                    + getResources().getString(R.string.pedidocompra_path);
-
-            String responseData = "";
-
-            responseData = PedidoCompraService.loadFromNetwork(url, lstAcesso.get(0));
-
-            GsonBuilder gsonb = new GsonBuilder();
-            Gson gson = gsonb.create();
-            JSONArray j;
-            PedidoCompra[] pedidos = null;
-
-            //j = new JSONArray(responseData);
-            pedidos = gson.fromJson(responseData, PedidoCompra[].class);
-
-            dataSource.deleteAll();
-            dataSource.createUpdatePedidoCompra(pedidos, false);
-
-            List<PedidoCompra> emitidos = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null);
-            List<PedidoCompra> aprovados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
-            List<PedidoCompra> rejeitados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
-
-            /*
-            if (emitidos.size() > 0) {
-                publishResults(emitidos.toArray(new PedidoCompra[emitidos.size()]), PedidoCompraService.PEDIDOS_EMITIDOS);
-            }
-            if (aprovados.size() > 0) {
-                publishResults(aprovados.toArray(new PedidoCompra[aprovados.size()]), PedidoCompraService.PEDIDOS_APROVADOS);
-            }
-            if (rejeitados.size() > 0) {
-                publishResults(rejeitados.toArray(new PedidoCompra[rejeitados.size()]), PedidoCompraService.PEDIDOS_REJEITADOS);
-            }
-            */
-            lst = Arrays.asList(pedidos);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            dataSource.close();
-        }
-
     }
 
     @Override
@@ -223,6 +162,76 @@ public class GCMIntentService extends GCMBaseIntentService {
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify(0, notification);*/
     }
+    private void publishResults(PedidoCompra[] pedidos, String tipo) {
+        Intent intent = new Intent(PedidoCompraService.NOTIFICATION);
+        intent.putExtra(tipo, new Gson().toJson(pedidos));
+        GCMIntentService.this.sendBroadcast(intent);
+    }
+
+    //CRIADO POR THIAGO A. SOUSA
+    //METODO RESPONSAVEL POR ATUALIZAR O BANCO DE DADOS APOS RECEBER UM PUSH
+    public void refreshDb(List<Acesso> lstAcesso){
+        login = true; //FORÇA O LOGIN SER SEMPRE TRUE   --ISTO SERA MODIFICADO EM BREVE
+
+        //AcessoDataSource acessoDatasource = new AcessoDataSource(this.getApplicationContext());
+        //List<Acesso> lstAcesso = acessoDatasource.getAllAcesso();
+
+        dataSource = new PedidoCompraDataSource(this.getApplicationContext());
+        String jsonMyObject = "";
+
+        if (!jsonMyObject.equals("")) {
+            acesso = new Gson().fromJson(jsonMyObject, Acesso.class);
+        }
+        if (login) {
+            dataSource.open();
+            dataSource.deleteAll();
+            dataSource.close();
+        }
+
+        //setTabs();
+        List<PedidoCompra> lst = null;
+        try {
+            dataSource.open();
+            String url = getResources().getString(R.string.protocolo)
+                    + getResources().getString(R.string.rest_api_url)
+                    + getResources().getString(R.string.pedidocompra_path);
+
+            String responseData = "";
+
+            responseData = PedidoCompraService.loadFromNetwork(url, lstAcesso.get(0));
+
+            GsonBuilder gsonb = new GsonBuilder();
+            Gson gson = gsonb.create();
+            JSONArray j;
+            PedidoCompra[] pedidos = null;
+
+            pedidos = gson.fromJson(responseData, PedidoCompra[].class);
+
+            dataSource.deleteAll();
+            dataSource.createUpdatePedidoCompra(pedidos, false);
 
 
+            List<PedidoCompra> emitidos = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null);
+            List<PedidoCompra> aprovados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
+            List<PedidoCompra> rejeitados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
+
+
+            if (emitidos.size() > 0) {
+                publishResults(emitidos.toArray(new PedidoCompra[emitidos.size()]), PedidoCompraService.PEDIDOS_EMITIDOS);
+            }
+            if (aprovados.size() > 0) {
+                publishResults(aprovados.toArray(new PedidoCompra[aprovados.size()]), PedidoCompraService.PEDIDOS_APROVADOS);
+            }
+            if (rejeitados.size() > 0) {
+                publishResults(rejeitados.toArray(new PedidoCompra[rejeitados.size()]), PedidoCompraService.PEDIDOS_REJEITADOS);
+            }
+
+            lst = Arrays.asList(pedidos);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            dataSource.close();
+        }
+    }
 }

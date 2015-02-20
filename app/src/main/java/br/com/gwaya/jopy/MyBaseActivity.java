@@ -200,10 +200,12 @@ public class MyBaseActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 101 || requestCode == 101) {
             try {
+
                 PedidoCompraAdapterItem adapter = (PedidoCompraAdapterItem) listView.getAdapter();
                 adapter.remove(_pedidos.get(currentPosition));
                 adapter.notifyDataSetChanged();
                 currentPosition = -1;
+
             }catch (Exception e){
                 e.printStackTrace();
             }

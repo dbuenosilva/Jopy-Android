@@ -2,9 +2,11 @@ package br.com.gwaya.jopy;
 
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -107,6 +109,8 @@ public class MainActivity extends TabActivity {
     private Boolean login;
 
     public void onCreate(Bundle savedInstanceState) {
+        int orientation = super.getRequestedOrientation();
+        Log.i("Tela Principal", "Tela rotacionada");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -132,7 +136,8 @@ public class MainActivity extends TabActivity {
         setTabs();
 
         //Add por Thiago A.Sousa
-        new DownloadTask().execute();
+
+         new DownloadTask().execute();
     }
 
 

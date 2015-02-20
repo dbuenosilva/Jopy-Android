@@ -6,9 +6,16 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TabHost;
+import android.widget.TextView;
+//import android.app.TabActivity.*;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
@@ -171,7 +178,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     //CRIADO POR THIAGO A. SOUSA
     //METODO RESPONSAVEL POR ATUALIZAR O BANCO DE DADOS APOS RECEBER UM PUSH
     public void refreshDb(List<Acesso> lstAcesso){
-        login = true; //FORÇA O LOGIN SER SEMPRE TRUE   --ISTO SERA MODIFICADO EM BREVE
+        login = true;
 
         //AcessoDataSource acessoDatasource = new AcessoDataSource(this.getApplicationContext());
         //List<Acesso> lstAcesso = acessoDatasource.getAllAcesso();
@@ -189,6 +196,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         }
 
         //setTabs();
+
         List<PedidoCompra> lst = null;
         try {
             dataSource.open();
@@ -234,4 +242,8 @@ public class GCMIntentService extends GCMBaseIntentService {
             dataSource.close();
         }
     }
+
+
+
+
 }

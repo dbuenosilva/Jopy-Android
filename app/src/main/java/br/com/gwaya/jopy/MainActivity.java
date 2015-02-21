@@ -136,8 +136,7 @@ public class MainActivity extends TabActivity {
         setTabs();
 
         //Add por Thiago A.Sousa
-
-         new DownloadTask().execute();
+        new DownloadTask().execute();
     }
 
 

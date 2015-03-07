@@ -123,10 +123,11 @@ public class DetalheActivity extends ActionBarActivity {
                         // Get the layout inflater
                         final LayoutInflater inflater = DetalheActivity.this.getLayoutInflater();
 
-                        // Inflate and set the layout for the dialog
+                        // Inflate and set the layout for the dialogdxc
                         // Pass null as the parent view because its going in the dialog layout
                         final View view = (View) inflater.inflate(R.layout.dialog_rejeicao, null);
-                        final EditText text = (EditText) view.findViewById(R.id.txtPutRej);
+                        final EditText textRej = (EditText) view.findViewById(R.id.txtPutRej);
+
                         builder.setView(view)
                                 // Add action buttons
                                 .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
@@ -141,7 +142,7 @@ public class DetalheActivity extends ActionBarActivity {
 
                                         pedido.statusPedido = "rejeitado";
                                         pedido.enviado = 0;
-                                        pedido.motivoRejeicao = text.getText().toString().replace("\n", "").replace("\r", "");
+                                        pedido.motivoRejeicao = textRej.getText().toString().replace("\n", "").replace("\r", "");
 
                                         filaDataSource.open();
                                         filaDataSource.createFilaPedidoCompra(pedido);
@@ -168,8 +169,8 @@ public class DetalheActivity extends ActionBarActivity {
                         dialog.show();
                         final Button button = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
                         button.setEnabled(true);
-                        text.setImeOptions(EditorInfo.IME_ACTION_DONE);
-                        text.addTextChangedListener(new TextWatcher() {
+                        textRej.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                        textRej.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -182,7 +183,7 @@ public class DetalheActivity extends ActionBarActivity {
 
                             @Override
                             public void afterTextChanged(Editable s) {
-                                button.setEnabled(text.getText().length() > 0);
+                                button.setEnabled(textRej.getText().length() > 0);
                             }
                         });
                         dialog.getWindow().setSoftInputMode (WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);

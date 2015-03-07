@@ -36,6 +36,7 @@ import com.google.android.gcm.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -64,7 +65,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "marcelorosadev@gmail.com:gwaya123456", "bar@example.com:world"
+            "contato@gwaya.com", "contato@gwaya.com:jopy"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -411,28 +412,45 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
                     try
                     {
-                        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                        String responseData = httpclient.execute(httpPost, responseHandler);
+                        //ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                        //String responseData = httpclient.execute(httpPost, responseHandler);
 
-                        GsonBuilder gsonb = new GsonBuilder();
-                        Gson gson = gsonb.create();
-                        JSONObject j;
-                        RespostaLogin resp = null;
+                        HttpResponse response = httpclient.execute(httpPost);
 
-                        j = new JSONObject(responseData);
-                        resp = gson.fromJson(j.toString(), RespostaLogin.class);
+                        // Obtem codigo de retorno HTTP
+                        int statusCode = response.getStatusLine().getStatusCode();
 
-                        acessoDatasource.open();
 
-                        acesso = acessoDatasource.createAcesso(resp, usuario, senha);
+                        if (statusCode >= 200 && statusCode <= 202) {
+                            // Obtem string do Body retorno HTTP
+                            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                            String responseBody = responseHandler.handleResponse(response);
 
-                        acessoDatasource.close();
 
-                        retorno = true;
+                            GsonBuilder gsonb = new GsonBuilder();
+                            Gson gson = gsonb.create();
+                            JSONObject j;
+                            RespostaLogin resp = null;
+
+                            j = new JSONObject(responseBody);
+                            resp = gson.fromJson(j.toString(), RespostaLogin.class);
+
+                            acessoDatasource.open();
+
+                            acesso = acessoDatasource.createAcesso(resp, usuario, senha);
+
+                            acessoDatasource.close();
+
+                            retorno = true;
+                        }
+                        else {
+                            retorno = false;
+                            // mensagem
+                        }
                     }
                     catch(Exception e)
                     {
-                        Toast toast = Toast.makeText(LoginActivity.this, "Voce esta sem conexao com a internet, por favor tente novamente.", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(LoginActivity.this, "Você esta sem conexão com a internet, por favor tente mais tarde.", Toast.LENGTH_SHORT);
                         toast.show();
 
                         retorno = false;
@@ -520,18 +538,31 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
                     httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
+//                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
+//                    String responseData = httpclient.execute(httpPost, responseHandler);
+                    HttpResponse response = httpclient.execute(httpPost);
 
-                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                    String responseData = httpclient.execute(httpPost, responseHandler);
+                    // Obtem codigo de retorno HTTP
+                    int statusCode = response.getStatusLine().getStatusCode();
 
-                    GsonBuilder gsonb = new GsonBuilder();
-                    Gson gson = gsonb.create();
-                    RespostaPadrao resp = null;
+                    if (statusCode >= 200 && statusCode <= 202) {
+                        // Obtem string do Body retorno HTTP
+                        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                        String responseBody = responseHandler.handleResponse(response);
 
-                    resp = gson.fromJson(responseData, RespostaPadrao.class);
+                        GsonBuilder gsonb = new GsonBuilder();
+                        Gson gson = gsonb.create();
+                        RespostaPadrao resp = null;
 
-                    retorno = resp.status;
-                    mensagem = resp.mensagem;
+                        resp = gson.fromJson(responseBody, RespostaPadrao.class);
+
+                        retorno = resp.status;
+                        mensagem = resp.mensagem;
+                    }
+                    else {
+                        // mensagem
+
+                    }
 
                 } catch (UnsupportedEncodingException e) {
                     retorno = false;

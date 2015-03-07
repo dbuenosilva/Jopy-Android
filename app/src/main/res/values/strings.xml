@@ -6,11 +6,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Configurações</string>
     <string name="title_activity_main">Concebra Pro</string>
-    <string name="login_padrao">marcelorosadev@gmail.com</string>
+    <string name="login_padrao">contato@gwaya.com</string>
+
     <string name="title_activity_login">Concebra Pro</string>
     <string name="title_activity_opcoes">Opções</string>
     <string name="menu_settings">Configuracoes</string>
-    <!-- <string name="rest_api_url">api.jopy.gwaya.com.br</string> -->
+    <!--<string name="rest_api_url">api.jopy.gwaya.com.br</string>-->
     <string name="rest_api_url">homologacao.api.jopy.gwaya.com.br</string>
     <string name="device_path">/api/v1/device</string>
     <string name="esqueceu_path">/api/v1/oauth/esqueceu</string>
@@ -25,16 +26,19 @@
     <string name="grant_type">password</string>
     <string name="client_id">jopy</string>
     <string name="client_secret">Webc4mp0</string>
+
     <string name="deviceKey">deviceKey</string>
     <string name="deviceType">deviceType</string>
     <string name="osType">osType</string>
     <string name="osVersion">osVersion</string>
     <string name="AppVersion">AppVersion</string>
+
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="title_activity_detalhe">Carregando...</string>
     <string name="title_activity_aprov_rejeicao">Carregando...</string>
+
     <string name="error_config">Please set the %1$s constant and recompile the app.</string>
     <string name="already_registered">Device is already registered on server.</string>
     <string name="gcm_registered">From GCM: device successfully registered!</string>
@@ -52,6 +56,5 @@
     <string name="options_unregister">Unregister</string>
     <string name="options_clear">Clear</string>
     <string name="options_exit">Exit</string>
-    <string name="title_activity_recebe_notificacao">RecebeNotificacaoActivity</string>
 
 </resources>

@@ -25,6 +25,10 @@ public class AcessoDataSource {
 	  public AcessoDataSource(Context context) {
 
 	  }
+
+      public AcessoDataSource( ) {
+
+      }
 	
 	  public void open() throws SQLException {
 

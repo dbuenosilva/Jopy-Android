@@ -210,18 +210,23 @@ public class FilaPedidoCompraDataSource {
 		  pedido._id = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_ID));
 		  pedido.idSistema = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.ID_SISTEMA));
 		  pedido.aprovadores = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.APROVADORES));
+         // pedido.enviado = cursor.getInt(cursor.getColumnIndex(MySQLiteHelper.ENVIADO));
 		  pedido.statusPedido = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.STATUS_PEDIDO));
 		  pedido.nomeForn = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.NOME_FORN));
 		  pedido.cpfCnpjForn = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.CPF_CNPJ_FORN));
+          pedido.condPagto = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COND_PAGTO));
 		  pedido.codForn = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COD_FORN));
+          pedido.centroCusto = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.CENTRO_CUSTO));
 		  pedido.idSolicitante = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.ID_SOLICITANTE));
 		  pedido.solicitante = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.SOLICITANTE));
 		  pedido.totalPedido = cursor.getFloat(cursor.getColumnIndex(MySQLiteHelper.TOTAL_PEDIDO));
 		  pedido.dtMod = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_MOD));
 		  pedido.dtNeces = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_NECES));
 		  pedido.dtEmi = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_EMI));
-          pedido.condPagto = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COND_PAGTO));
-          pedido.centroCusto = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.CENTRO_CUSTO));
+          pedido.dtRej = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_REJ));
+          pedido.motivo = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO));
+          pedido.motivoRejeicao = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO_REJEICAO));
+          pedido.obs = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.OBS));
 
 		  return pedido;
 	  }

@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -100,16 +101,32 @@ public class EmitidosActivity extends MyBaseActivity {
 
             httpGet.setHeader("Authorization", acesso.Token_Type + " " + acesso.Access_Token);
 
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+//            ResponseHandler<String> responseHandler = new BasicResponseHandler();
             try {
-                String str = httpclient.execute(httpGet, responseHandler);
-                GsonBuilder gsonb = new GsonBuilder();
-                Gson gson = gsonb.create();
-                PedidoCompra[] array = null;
+//                String str = httpclient.execute(httpGet, responseHandler);
+                HttpResponse response = httpclient.execute(httpGet);
 
-                array = gson.fromJson(str, PedidoCompra[].class);
+                // Obtem codigo de retorno HTTP
+                int statusCode = response.getStatusLine().getStatusCode();
 
-                pedidos = Arrays.asList(array);
+                if (statusCode >= 200 && statusCode <= 202) {
+                    // Obtem string do Body retorno HTTP
+                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                    String responseBody = responseHandler.handleResponse(response);
+
+                    GsonBuilder gsonb = new GsonBuilder();
+                    Gson gson = gsonb.create();
+                    PedidoCompra[] array = null;
+
+                    array = gson.fromJson(responseBody, PedidoCompra[].class);
+
+                    pedidos = Arrays.asList(array);
+                } else {
+                    // mensagem
+                    // logout
+                    acesso.logoff(EmitidosActivity.this);
+                }
+
 
             } catch (IOException e) {
                 e.printStackTrace();

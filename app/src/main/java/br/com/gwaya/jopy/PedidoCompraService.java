@@ -1,6 +1,8 @@
 package br.com.gwaya.jopy;
 
+import android.app.Application;
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
@@ -9,6 +11,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -39,6 +42,7 @@ public class PedidoCompraService extends IntentService {
 	
 	@Override
 	protected void onHandleIntent(Intent intent) {
+
 		if (acessoDatasource == null) {
 			acessoDatasource = new AcessoDataSource(this.getApplicationContext());
 		}
@@ -67,7 +71,7 @@ public class PedidoCompraService extends IntentService {
 				
 				String responseData = "";
 				
-	            responseData = loadFromNetwork(url, acesso);
+	            responseData = loadFromNetwork(url, acesso, this.getApplicationContext());
 	            
 	            GsonBuilder gsonb = new GsonBuilder();
 		        Gson gson = gsonb.create();
@@ -155,17 +159,31 @@ public class PedidoCompraService extends IntentService {
 
                     httpPut.setEntity(entity);
 
-                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                    String str = httpclient.execute(httpPut, responseHandler);
+                   // ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                  //  String str = httpclient.execute(httpPut, responseHandler);
 
-                    filaDataSource.deleteFilaPedidoCompra(pedidoCompra);
-                    filaDataSource.commit();
+                    HttpResponse response = httpclient.execute(httpPut);
 
-                    if (pedidoCompraDatasource == null) {
-                        pedidoCompraDatasource = new PedidoCompraDataSource(this);
+                    // Obtem codigo de retorno HTTP
+                    int statusCode = response.getStatusLine().getStatusCode();
+
+                    if (statusCode >= 200 && statusCode <= 202) {
+                        // Obtem string do Body retorno HTTP
+                        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                        String responseBody = responseHandler.handleResponse(response);
+
+                        filaDataSource.deleteFilaPedidoCompra(pedidoCompra);
+                        filaDataSource.commit();
+
+                        if (pedidoCompraDatasource == null) {
+                            pedidoCompraDatasource = new PedidoCompraDataSource(this);
+                        }
+                        pedidoCompra.enviado = 1;
+                        pedidoCompraDatasource.updatePedidoCompra(pedidoCompra);
+                    } else {
+                        // mensagem
+                        //acesso.logoff( tem que descobri qual é a active que esta ativa na tela do usuario ); // logout
                     }
-                    pedidoCompra.enviado = 1;
-                    pedidoCompraDatasource.updatePedidoCompra(pedidoCompra);
                 }
                 filaDataSource.close();
             } else {
@@ -197,16 +215,31 @@ public class PedidoCompraService extends IntentService {
 	    sendBroadcast(intent);
 	}
 	
-	public static String loadFromNetwork(String urlString, Acesso acesso) throws IOException {
-        String str ="";
+	public static String loadFromNetwork(String urlString, Acesso acesso, Context context) throws IOException {
+        String responseBody ="";
         try {
 	        HttpClient httpclient = new DefaultHttpClient();
 	        HttpGet httpGet = new HttpGet(urlString);
 	        
 	        httpGet.setHeader("Authorization", acesso.Token_Type + " " + acesso.Access_Token);
 	        
-	        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-	        str = httpclient.execute(httpGet, responseHandler);
+//	        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+//	        str = httpclient.execute(httpGet, responseHandler);
+            HttpResponse response = httpclient.execute(httpGet);
+
+            // Obtem codigo de retorno HTTP
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            if (statusCode >= 200 && statusCode <= 202) {
+                // Obtem string do Body retorno HTTP
+                ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                responseBody = responseHandler.handleResponse(response);
+            }
+            else {
+                // mensagem
+                acesso.logoff(context); // logout
+            }
+
         } catch(Exception e)
         {
         	Log.e("", "");
@@ -214,7 +247,7 @@ public class PedidoCompraService extends IntentService {
         finally {
             
         }
-        return str;
+        return responseBody;
     }
 
 	@Override

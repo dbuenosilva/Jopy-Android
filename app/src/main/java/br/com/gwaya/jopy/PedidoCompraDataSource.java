@@ -50,6 +50,10 @@ public class PedidoCompraDataSource {
 
 	  }
 
+       public PedidoCompraDataSource() {
+
+      }
+
 	  public void open() throws SQLException {
           //database = DatabaseManager.getInstance().openDatabase();
 	  }

@@ -9,41 +9,46 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <permission
         android:name="br.com.gwaya.jopy.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="br.com.gwaya.jopy.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission
+        android:name="br.com.gwaya.jopy.permission.C2D_MESSAGE" />
+
+    <uses-permission
+        android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
-        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/MyAppTheme" >
+        android:theme="@style/MyAppTheme"
+        android:name=".MyApplication">
         <activity
             android:name=".LoginActivity"
             android:alwaysRetainTaskState="false"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_login"
             android:launchMode="singleTask"
-            android:noHistory="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:noHistory="true" >
+
         </activity>
         <activity
             android:name=".OpcoesActivity"
-            android:label="@string/title_activity_opcoes"
+            android:screenOrientation="portrait"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait" >
+            android:label="@string/title_activity_opcoes"
+            >
         </activity>
         <activity
             android:name=".MainSplashScreen"
+            android:screenOrientation="portrait"
             android:launchMode="singleTask"
-            android:noHistory="true"
-            android:screenOrientation="portrait" >
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,37 +57,25 @@
         </activity>
         <activity
             android:name=".EmitidosActivity"
-            android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop" >
-        </activity>
-        <activity
-            android:name=".AprovadosActivity"
-            android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop" >
-        </activity>
-        <activity
-            android:name=".AprovRejeicaoActivity"
-            android:label="@string/title_activity_main_tab"
             android:launchMode="singleTop"
-            android:parentActivityName=".DetalheActivity" >
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DetalheActivity" />
+            android:label="@string/title_activity_main_tab"
             >
         </activity>
         <activity
+            android:name=".AprovadosActivity"
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_main_tab" >
+        </activity>
+        <activity
             android:name=".RejeitadosActivity"
-            android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_main_tab" >
         </activity>
         <activity
             android:name=".DetalheActivity"
-            android:label="@string/title_activity_main_tab"
             android:launchMode="singleTop"
+            android:label="@string/title_activity_main_tab"
             android:parentActivityName=".MainActivity" >
-
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -91,10 +84,9 @@
         </activity>
         <activity
             android:name=".HistoricoActivity"
-            android:label="@string/title_activity_main_tab"
             android:launchMode="singleTop"
+            android:label="@string/title_activity_main_tab"
             android:parentActivityName=".DetalheActivity" >
-
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -103,10 +95,9 @@
         </activity>
         <activity
             android:name=".DetalheHistoricoActivity"
-            android:label="@string/title_activity_main_tab"
             android:launchMode="singleTask"
+            android:label="@string/title_activity_main_tab"
             android:parentActivityName=".HistoricoActivity" >
-
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -115,45 +106,34 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation"
             android:label="@string/title_activity_main" >
         </activity>
-
         <receiver android:name=".PedidoCompraReceiver" >
         </receiver>
 
         <service android:name=".PedidoCompraService" >
         </service>
-
         <receiver android:name=".BootReceiver" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".GCMIntentService" />
+        <service android:name=".GCMIntentService" ></service>
 
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
-
                 <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
                 <category android:name="br.com.gwaya.jopy" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".GCMIntentService" />
-
-        <activity
-            android:name=".RecebeNotificacaoActivity"
-            android:label="@string/title_activity_recebe_notificacao" >
-        </activity>
+        <service android:name="br.com.gwaya.jopy.GCMIntentService" />
     </application>
 
 </manifest>

@@ -26,10 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.DAOAcesso;
-import br.com.gwaya.jopy.dao.DAOFilaPedidoCompra;
-import br.com.gwaya.jopy.dao.DAOPedidoCompra;
+import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
@@ -41,8 +41,8 @@ public class PedidoCompraService extends IntentService {
     public static final String PEDIDOS_APROVADOS = "PEDIDOS_APROVADOS";
     private final IBinder mBinder = new MyBinder();
     private List<PedidoCompra> list = new ArrayList<PedidoCompra>();
-    private DAOAcesso acessoDatasource;
-    private DAOPedidoCompra pedidoCompraDatasource;
+    private AcessoDAO acessoDatasource;
+    private PedidoCompraDAO pedidoCompraDatasource;
 
     public PedidoCompraService() {
         super("PedidoCompraService");
@@ -84,15 +84,13 @@ public class PedidoCompraService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         if (acessoDatasource == null) {
-            acessoDatasource = new DAOAcesso();
+            acessoDatasource = new AcessoDAO();
         }
         try {
-            acessoDatasource.open();
-            List<Acesso> lstAcesso = acessoDatasource.getAllAcesso();
-            acessoDatasource.close();
 
-            pedidoCompraDatasource = new DAOPedidoCompra();
-            pedidoCompraDatasource.open();
+            List<Acesso> lstAcesso = acessoDatasource.getAllAcesso();
+
+            pedidoCompraDatasource = new PedidoCompraDAO();
 
             if (lstAcesso.size() > 0) {
 
@@ -151,24 +149,19 @@ public class PedidoCompraService extends IntentService {
                 }
             }
         } catch (Exception e) {
-            String msg = e.getMessage();
-        } finally {
-            if (pedidoCompraDatasource != null) {
-                pedidoCompraDatasource.close();
-            }
+            e.printStackTrace();
         }
     }
 
     private void descarregaFila(String urlString, Acesso acesso) {
-        DAOFilaPedidoCompra filaDataSource = null;
+        FilaPedidoCompraDAO filaDataSource = null;
         try {
 
             String url = getResources().getString(R.string.protocolo)
                     + getResources().getString(R.string.rest_api_url)
                     + getResources().getString(R.string.pedidocompra_path);
 
-            filaDataSource = new DAOFilaPedidoCompra();
-            filaDataSource.open();
+            filaDataSource = new FilaPedidoCompraDAO();
 
             List<PedidoCompra> pedidos = filaDataSource.getAllPedidoCompra();
 
@@ -190,8 +183,6 @@ public class PedidoCompraService extends IntentService {
                     HttpPut httpPut = new HttpPut(url + "/" + pedidoCompra.get_id());
                     httpPut.setHeader("Authorization", acesso.getToken_Type() + " " + acesso.getAccess_Token());
 
-                    filaDataSource.beginTransaction();
-
                     StringEntity entity = new StringEntity(new Gson().toJson(pedidoCompra), HTTP.UTF_8);
 
                     entity.setContentType("application/json");
@@ -212,10 +203,9 @@ public class PedidoCompraService extends IntentService {
                         String responseBody = responseHandler.handleResponse(response);
 
                         filaDataSource.deleteFilaPedidoCompra(pedidoCompra);
-                        filaDataSource.commit();
 
                         if (pedidoCompraDatasource == null) {
-                            pedidoCompraDatasource = new DAOPedidoCompra();
+                            pedidoCompraDatasource = new PedidoCompraDAO();
                         }
                         pedidoCompra.setEnviado(1);
                         pedidoCompraDatasource.updatePedidoCompra(pedidoCompra);
@@ -224,7 +214,7 @@ public class PedidoCompraService extends IntentService {
                         //acesso.logoff( tem que descobri qual é a active que esta ativa na tela do usuario ); // logout
                     }
                 }
-                filaDataSource.close();
+
             } else {
                 //todo
             }
@@ -241,7 +231,7 @@ public class PedidoCompraService extends IntentService {
             Log.e("", "");
         } finally {
             if (filaDataSource != null) {
-                filaDataSource.close();
+
             }
         }
     }

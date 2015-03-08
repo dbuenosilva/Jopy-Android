@@ -52,7 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.DAOAcesso;
+import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 import br.com.gwaya.jopy.model.RespostaPadrao;
@@ -84,7 +84,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
     private View mLoginFormView;
     //
     private String regId;
-    private DAOAcesso acessoDatasource;
+    private AcessoDAO acessoDatasource;
     private BroadcastReceiver mHandleMessageReceiver;
 
     private void hideKeyboard() {
@@ -125,7 +125,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
         mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        acessoDatasource = new DAOAcesso();
+        acessoDatasource = new AcessoDAO();
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -174,9 +174,8 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
         //(new Runnable() {
         //@Override
         //public void run() {
-        acessoDatasource.open();
+
         List<Acesso> lst = acessoDatasource.getAllAcesso();
-        acessoDatasource.close();
 
         if (lst.size() > 0) {
             acesso = lst.get(0);
@@ -435,11 +434,9 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
                             j = new JSONObject(responseBody);
                             resp = gson.fromJson(j.toString(), RespostaLogin.class);
 
-                            acessoDatasource.open();
 
                             acesso = acessoDatasource.createAcesso(resp, usuario, senha);
 
-                            acessoDatasource.close();
 
                             retorno = true;
                         } else {

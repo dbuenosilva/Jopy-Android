@@ -29,7 +29,7 @@ import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
-import br.com.gwaya.jopy.dao.DAOAcesso;
+import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
@@ -127,13 +127,11 @@ public class ActivityPendentes extends ActivityMyBase {
 
         login = extras.getBoolean("login");
 
-        DAOAcesso DAOAcesso = new DAOAcesso();
-        DAOAcesso.open();
-        List<Acesso> lst = DAOAcesso.getAllAcesso();
+        AcessoDAO AcessoDAO = new AcessoDAO();
+        List<Acesso> lst = AcessoDAO.getAllAcesso();
         if (lst.size() > 0) {
             acesso = lst.get(0);
         }
-        DAOAcesso.close();
 
         if (login) {
             if (downloadTask == null) {
@@ -179,14 +177,14 @@ public class ActivityPendentes extends ActivityMyBase {
         protected Boolean doInBackground(Void... params) {
             Boolean retorno = true;
             try {
-                dao.open();
+
                 dao.createUpdatePedidoCompra(mPedidos.toArray(new PedidoCompra[mPedidos.size()]));
-                dao.close();
+
             } catch (Exception e) {
                 retorno = false;
                 e.printStackTrace();
             } finally {
-                dao.close();
+
             }
 
             return retorno;
@@ -195,9 +193,9 @@ public class ActivityPendentes extends ActivityMyBase {
         @Override
         protected void onPostExecute(final Boolean success) {
             saveAllTask = null;
-            dao.open();
+
             setPedidos(dao.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null));
-            dao.close();
+
         }
 
         @Override
@@ -213,7 +211,6 @@ public class ActivityPendentes extends ActivityMyBase {
 
             List<PedidoCompra> pedidos = null;
 
-            dao.open();
 
             HttpClient httpclient = new DefaultHttpClient();
 
@@ -259,8 +256,6 @@ public class ActivityPendentes extends ActivityMyBase {
 
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                dao.close();
             }
 
             return pedidos;

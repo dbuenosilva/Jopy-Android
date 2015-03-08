@@ -22,8 +22,8 @@ import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterHistorico;
-import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 /**
@@ -36,7 +36,7 @@ public class ActivityHistorico extends ActionBarActivity {
     private String codForn;
     private List<PedidoCompra> _pedidos;
     private PopulateTask mTask;
-    private DAOPedidoCompra dataSource;
+    private PedidoCompraDAO dataSource;
 
     @Override
     public void onBackPressed() {
@@ -62,7 +62,7 @@ public class ActivityHistorico extends ActionBarActivity {
             codForn = extras.getString("codForn");
         }
 
-        dataSource = new DAOPedidoCompra();
+        dataSource = new PedidoCompraDAO();
 
         showProgress(true);
         mTask = new PopulateTask(codForn);
@@ -114,10 +114,10 @@ public class ActivityHistorico extends ActionBarActivity {
             List<PedidoCompra> pedidos = null;
 
             try {
-                dataSource.open();
+
                 List<PedidoCompra> list = dataSource.getAllPedidoCompra(MySQLiteHelper.COD_FORN + " = '" + codForn
                         + "' AND " + MySQLiteHelper.STATUS_PEDIDO + " IN ('aprovado', 'rejeitado')", " 3 ");
-                dataSource.close();
+
                 pedidos = list;
             } catch (Exception e) {
                 e.printStackTrace();

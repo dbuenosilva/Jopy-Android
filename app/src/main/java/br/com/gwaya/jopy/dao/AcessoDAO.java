@@ -1,9 +1,7 @@
 package br.com.gwaya.jopy.dao;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import br.com.gwaya.jopy.interfaces.QueryExecutor;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 
-public class DAOAcesso {
+public class AcessoDAO {
 
     private String[] allColumns = {
             MySQLiteHelper.COLUMN_ID,
@@ -24,7 +22,7 @@ public class DAOAcesso {
             MySQLiteHelper.TOKEN_TYPE
     };
 
-    public DAOAcesso() {
+    public AcessoDAO() {
 
     }
 

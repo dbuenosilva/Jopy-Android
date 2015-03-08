@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import br.com.gwaya.jopy.activity.ActivityLogin;
-import br.com.gwaya.jopy.dao.DAOAcesso;
-import br.com.gwaya.jopy.dao.DAOPedidoCompra;
+import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 
 
 @SuppressWarnings("ResourceType")
@@ -22,16 +22,11 @@ public class Acesso {
     public static final void logoff(Context context) {
 
         try {
-            DAOAcesso DAOAcesso = new DAOAcesso();
-            DAOPedidoCompra pedidoCompraDatasource = new DAOPedidoCompra();
+            AcessoDAO AcessoDAO = new AcessoDAO();
+            PedidoCompraDAO pedidoCompraDatasource = new PedidoCompraDAO();
 
-            DAOAcesso.open();
-            DAOAcesso.deleteAcesso(null);
-            DAOAcesso.close();
-
-            pedidoCompraDatasource.open();
+            AcessoDAO.deleteAcesso(null);
             pedidoCompraDatasource.deleteAll();
-            pedidoCompraDatasource.close();
 /*
             AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
             builder.setMessage("Por favor faça login novamente.")

@@ -26,20 +26,20 @@ import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
-import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class ActivityMyBase extends ActionBarActivity {
 
-    protected DAOPedidoCompra dao;
+    protected PedidoCompraDAO dao;
 
     protected UpdateTask updateTask;
     protected List<PedidoCompra> _pedidos;
     protected FrameLayout frmTipo;
     protected ListView listView;
     protected int currentPosition;
-    DAOPedidoCompra pedidoDataSource;
+    PedidoCompraDAO pedidoDataSource;
     CarregaPedidos carregaPedidos;
     private View mProgressView;
 
@@ -89,7 +89,7 @@ public class ActivityMyBase extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
 
-        dao = new DAOPedidoCompra();
+        dao = new PedidoCompraDAO();
 
         setContentView(getResourceLayout());
 
@@ -106,7 +106,7 @@ public class ActivityMyBase extends ActionBarActivity {
         });
 
         if (pedidoDataSource == null) {
-            pedidoDataSource = new DAOPedidoCompra();
+            pedidoDataSource = new PedidoCompraDAO();
         }
         if (carregaPedidos == null) {
             carregaPedidos = new CarregaPedidos();
@@ -246,15 +246,9 @@ public class ActivityMyBase extends ActionBarActivity {
             List<PedidoCompra> pedidos = null;
 
             try {
-                pedidoDataSource.open();
-
-                List<PedidoCompra> lst = pedidoDataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _statusPedido() + "'", null);
-
-                pedidos = lst;
+                pedidos = pedidoDataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _statusPedido() + "'", null);
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                pedidoDataSource.close();
             }
 
             return pedidos;
@@ -272,15 +266,10 @@ public class ActivityMyBase extends ActionBarActivity {
         protected List<PedidoCompra> doInBackground(Void... params) {
             List<PedidoCompra> pedidos = null;
             try {
-                dao.open();
                 pedidos = dao.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _status + "'", null);
-                dao.close();
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                dao.close();
             }
-
             return pedidos;
         }
 

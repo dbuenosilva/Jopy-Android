@@ -11,7 +11,7 @@ import br.com.gwaya.jopy.interfaces.QueryExecutor;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
-public class DAOPedidoCompra {
+public class PedidoCompraDAO {
 
     private String[] allColumns = {
             MySQLiteHelper.COLUMN_ID,
@@ -45,7 +45,7 @@ public class DAOPedidoCompra {
             MySQLiteHelper.TOTAL
     };
 
-    public DAOPedidoCompra() {
+    public PedidoCompraDAO() {
 
     }
 

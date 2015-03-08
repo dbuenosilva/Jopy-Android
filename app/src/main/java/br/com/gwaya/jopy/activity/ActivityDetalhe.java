@@ -36,8 +36,8 @@ import java.util.Date;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterDetalhePedidoCompra;
-import br.com.gwaya.jopy.dao.DAOFilaPedidoCompra;
-import br.com.gwaya.jopy.dao.DAOPedidoCompra;
+import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
@@ -90,20 +90,16 @@ public class ActivityDetalhe extends ActionBarActivity {
                         builder.setMessage("Deseja confirmar aprovação ?")
                                 .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        DAOFilaPedidoCompra filaDataSource = new DAOFilaPedidoCompra();
-                                        DAOPedidoCompra dataSource = new DAOPedidoCompra();
+                                        FilaPedidoCompraDAO filaDataSource = new FilaPedidoCompraDAO();
+                                        PedidoCompraDAO dataSource = new PedidoCompraDAO();
 
                                         pedido.setStatusPedido(STATUS_APROVADO);
                                         pedido.setEnviado(0);
                                         pedido.setMotivoRejeicao("");
 
-                                        filaDataSource.open();
                                         filaDataSource.createFilaPedidoCompra(pedido);
-                                        filaDataSource.close();
 
-                                        dataSource.open();
                                         dataSource.updatePedidoCompra(pedido);
-                                        dataSource.close();
 
                                         Toast toast = Toast.makeText(context, "Pedido aprovado!", duration);
                                         toast.show();
@@ -146,22 +142,18 @@ public class ActivityDetalhe extends ActionBarActivity {
                                     public void onClick(DialogInterface dialog, int id) {
 
                                         Intent data = new Intent();
-                                        DAOFilaPedidoCompra filaDataSource =
-                                                new DAOFilaPedidoCompra();
-                                        DAOPedidoCompra dataSource =
-                                                new DAOPedidoCompra();
+                                        FilaPedidoCompraDAO filaDataSource =
+                                                new FilaPedidoCompraDAO();
+                                        PedidoCompraDAO dataSource =
+                                                new PedidoCompraDAO();
 
                                         pedido.setStatusPedido("rejeitado");
                                         pedido.setEnviado(0);
                                         pedido.setMotivoRejeicao(textRej.getText().toString().replace("\n", "").replace("\r", ""));
 
-                                        filaDataSource.open();
                                         filaDataSource.createFilaPedidoCompra(pedido);
-                                        filaDataSource.close();
 
-                                        dataSource.open();
                                         dataSource.updatePedidoCompra(pedido);
-                                        dataSource.close();
 
                                         ActivityDetalhe.this.setResult(101, data);
                                         ActivityDetalhe.this.finish();

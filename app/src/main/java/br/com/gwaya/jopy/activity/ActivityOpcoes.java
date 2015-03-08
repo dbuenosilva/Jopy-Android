@@ -12,16 +12,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.DAOAcesso;
-import br.com.gwaya.jopy.dao.DAOPedidoCompra;
+import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 
 /**
  * Created by marcelorosa on 11/01/15.
  */
 public class ActivityOpcoes extends ActionBarActivity {
 
-    DAOAcesso DAOAcesso;
-    DAOPedidoCompra dataSource;
+    AcessoDAO AcessoDAO;
+    PedidoCompraDAO dataSource;
     private RelativeLayout layoutLogoff;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -54,22 +54,20 @@ public class ActivityOpcoes extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        dataSource = new DAOPedidoCompra();
+        dataSource = new PedidoCompraDAO();
 
-        DAOAcesso = new DAOAcesso();
+        AcessoDAO = new AcessoDAO();
 
         layoutLogoff = (RelativeLayout) findViewById(R.id.layoutLogoff);
         layoutLogoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    DAOAcesso.open();
-                    DAOAcesso.deleteAcesso(null);
-                    DAOAcesso.close();
+                    AcessoDAO.deleteAcesso(null);
 
-                    dataSource.open();
+
                     dataSource.deleteAll();
-                    dataSource.close();
+
 
                     Intent intent = new Intent(ActivityOpcoes.this, ActivityLogin.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

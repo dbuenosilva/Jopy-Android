@@ -22,8 +22,8 @@ import java.util.List;
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
-import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
@@ -34,7 +34,7 @@ public class ActivityMain extends TabActivity {
 
     private DownloadTask downloadTask;
 
-    private DAOPedidoCompra dataSource;
+    private PedidoCompraDAO dataSource;
     private Boolean login;
 
     private TabHost tabHost;
@@ -49,7 +49,7 @@ public class ActivityMain extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dataSource = new DAOPedidoCompra();
+        dataSource = new PedidoCompraDAO();
 
         String jsonMyObject = "";
 
@@ -64,9 +64,7 @@ public class ActivityMain extends TabActivity {
             acesso = new Gson().fromJson(jsonMyObject, Acesso.class);
         }
         if (login) {
-            dataSource.open();
             dataSource.deleteAll();
-            dataSource.close();
         }
 
         tabHost = getTabHost();
@@ -144,7 +142,6 @@ public class ActivityMain extends TabActivity {
         protected List<PedidoCompra> doInBackground(Void... params) {
             List<PedidoCompra> lst = null;
             try {
-                dataSource.open();
                 String url = getResources().getString(R.string.protocolo)
                         + getResources().getString(R.string.rest_api_url)
                         + getResources().getString(R.string.pedidocompra_path);
@@ -182,24 +179,14 @@ public class ActivityMain extends TabActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                dataSource.close();
             }
+
             return lst;
         }
 
         @Override
         protected void onPostExecute(final List<PedidoCompra> pedidos) {
             downloadTask = null;
-
-            try {
-                //dao.openRead();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                //dao.close();
-            }
         }
 
         protected void onCancelled() {

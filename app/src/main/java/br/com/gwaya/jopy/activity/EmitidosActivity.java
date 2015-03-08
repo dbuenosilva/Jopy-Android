@@ -29,8 +29,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.com.gwaya.jopy.model.Acesso;
-import br.com.gwaya.jopy.AcessoDataSource;
-import br.com.gwaya.jopy.MySQLiteHelper;
+import br.com.gwaya.jopy.dao.AcessoDataSource;
+import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.PedidoCompraService;
 import br.com.gwaya.jopy.R;

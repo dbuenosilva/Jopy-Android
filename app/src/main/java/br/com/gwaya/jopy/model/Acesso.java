@@ -3,8 +3,8 @@ package br.com.gwaya.jopy.model;
 import android.content.Context;
 import android.content.Intent;
 
-import br.com.gwaya.jopy.AcessoDataSource;
-import br.com.gwaya.jopy.PedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.AcessoDataSource;
+import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
 import br.com.gwaya.jopy.activity.LoginActivity;
 
 

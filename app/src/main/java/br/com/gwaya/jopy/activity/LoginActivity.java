@@ -52,7 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gwaya.jopy.model.Acesso;
-import br.com.gwaya.jopy.AcessoDataSource;
+import br.com.gwaya.jopy.dao.AcessoDataSource;
 import br.com.gwaya.jopy.CommonUtilities;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.model.RespostaLogin;

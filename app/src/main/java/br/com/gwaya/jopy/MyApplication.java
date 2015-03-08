@@ -2,6 +2,9 @@ package br.com.gwaya.jopy;
 
 import android.app.Application;
 
+import br.com.gwaya.jopy.dao.DatabaseManager;
+import br.com.gwaya.jopy.dao.MySQLiteHelper;
+
 /**
  * Created by marcelorosa on 14/01/15.
  */

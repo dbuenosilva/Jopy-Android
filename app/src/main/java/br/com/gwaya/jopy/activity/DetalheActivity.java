@@ -35,9 +35,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import br.com.gwaya.jopy.adapter.DetalhePedidoCompraAdapterItem;
-import br.com.gwaya.jopy.FilaPedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.FilaPedidoCompraDataSource;
 import br.com.gwaya.jopy.model.PedidoCompra;
-import br.com.gwaya.jopy.PedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 import br.com.gwaya.jopy.R;
 

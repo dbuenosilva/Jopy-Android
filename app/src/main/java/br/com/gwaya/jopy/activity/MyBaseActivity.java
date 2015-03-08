@@ -238,7 +238,6 @@ public class MyBaseActivity extends ActionBarActivity {
                 pedidoDataSource.close();
             }
 
-            // TODO Auto-generated method stub
             return pedidos;
         }
     }

@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import java.text.NumberFormat;
 
+import br.com.gwaya.jopy.model.PedidoCompraItem;
+
 
 public class DetalhePedidoCompraAdapterItem extends ArrayAdapter<PedidoCompraItem> {
 

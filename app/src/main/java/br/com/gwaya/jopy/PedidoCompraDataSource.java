@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gwaya.jopy.model.PedidoCompra;
+import br.com.gwaya.jopy.model.PedidoCompraItem;
+
 public class PedidoCompraDataSource {
     // Database fields
     private boolean endTransaction = true;

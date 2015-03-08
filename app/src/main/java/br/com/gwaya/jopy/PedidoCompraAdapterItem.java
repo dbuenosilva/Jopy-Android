@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import br.com.gwaya.jopy.model.PedidoCompra;
+
 
 public class PedidoCompraAdapterItem extends ArrayAdapter<PedidoCompra> {
 

@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.model;
 
 /**
  * Created by marcelorosa on 20/01/15.

@@ -55,8 +55,8 @@ import br.com.gwaya.jopy.Acesso;
 import br.com.gwaya.jopy.AcessoDataSource;
 import br.com.gwaya.jopy.CommonUtilities;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.RespostaLogin;
-import br.com.gwaya.jopy.RespostaPadrao;
+import br.com.gwaya.jopy.model.RespostaLogin;
+import br.com.gwaya.jopy.model.RespostaPadrao;
 
 import static br.com.gwaya.jopy.CommonUtilities.SENDER_ID;
 

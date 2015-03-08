@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gwaya.jopy.model.PedidoCompra;
+
 public class PedidoCompraService extends IntentService {
     public static final String NOTIFICATION = "br.com.gwaya.android.service.receiver";
     public static final String PEDIDOS_EMITIDOS = "PEDIDOS_EMITIDOS";

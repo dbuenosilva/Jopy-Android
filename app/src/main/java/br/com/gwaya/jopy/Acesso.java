@@ -50,7 +50,6 @@ public class Acesso {
 
         } catch (Exception e) {
             e.printStackTrace();
-            ;
         }
     }
 }

@@ -70,17 +70,17 @@ public class ActivityPendentes extends ActivityMyBase {
     };
 
     @Override
-    protected String getTheTitle() {
+    public String getTheTitle() {
         return "Pedidos Pendentes";
     }
 
     @Override
-    protected String _statusPedido() {
+    public String _statusPedido() {
         return "emitido";
     }
 
     @Override
-    protected ListView setPedidos(List<PedidoCompra> pedidos) {
+    public ListView setPedidos(List<PedidoCompra> pedidos) {
 
         ListView pedidoList = super.setPedidos(pedidos);
 
@@ -90,11 +90,9 @@ public class ActivityPendentes extends ActivityMyBase {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                currentPosition = position;
-
                 Activity tab = ActivityPendentes.this.getParent();
 
-                PedidoCompra pedido = _pedidos.get(position);
+                PedidoCompra pedido = getPedidoCompraList().get(position);
                 Intent intent = new Intent(tab, ActivityDetalhe.class);
                 intent.putExtra("pedidocompra", new Gson().toJson(pedido));
 
@@ -127,16 +125,16 @@ public class ActivityPendentes extends ActivityMyBase {
                 downloadTask = new DownloadTask();
                 downloadTask.execute((Void) null);
             }
-        } else if (updateTask == null) {
-            updateTask = new UpdateTask(_statusPedido());
-            updateTask.execute((Void) null);
+        } else if (getUpdateAsyncTask() == null) {
+            setUpdateAsyncTask(new UpdateAsyncTask(_statusPedido()));
+            getUpdateAsyncTask().execute((Void) null);
         }
 
         registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         try {
             if (receiver != null) {
@@ -156,32 +154,25 @@ public class ActivityPendentes extends ActivityMyBase {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        public Boolean doInBackground(Void... params) {
             Boolean retorno = true;
             try {
-
-                dao.createUpdatePedidoCompra(mPedidos.toArray(new PedidoCompra[mPedidos.size()]));
-
+                getPedidoCompraDAO().createUpdatePedidoCompra(mPedidos.toArray(new PedidoCompra[mPedidos.size()]));
             } catch (Exception e) {
                 retorno = false;
                 e.printStackTrace();
-            } finally {
-
             }
-
             return retorno;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        public void onPostExecute(final Boolean success) {
             saveAllTask = null;
-
-            setPedidos(dao.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null));
-
+            setPedidos(getPedidoCompraDAO().getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null));
         }
 
         @Override
-        protected void onCancelled() {
+        public void onCancelled() {
             saveAllTask = null;
         }
     }
@@ -189,7 +180,7 @@ public class ActivityPendentes extends ActivityMyBase {
     public class DownloadTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
 
         @Override
-        protected List<PedidoCompra> doInBackground(Void... params) {
+        public List<PedidoCompra> doInBackground(Void... params) {
 
             List<PedidoCompra> pedidos = null;
 
@@ -199,7 +190,7 @@ public class ActivityPendentes extends ActivityMyBase {
             String url = getResources().getString(R.string.protocolo)
                     + getResources().getString(R.string.rest_api_url)
                     + getResources().getString(R.string.pedidocompra_path),
-                    dtMod = dao.ultimoSync();
+                    dtMod = getPedidoCompraDAO().ultimoSync();
 
             if (dtMod != null) {
                 url += "?gte=" + dtMod;
@@ -244,7 +235,7 @@ public class ActivityPendentes extends ActivityMyBase {
         }
 
         @Override
-        protected void onPostExecute(final List<PedidoCompra> pedidos) {
+        public void onPostExecute(final List<PedidoCompra> pedidos) {
             if (pedidos != null) {
                 //setPedidos(pedidos);
             }
@@ -258,7 +249,7 @@ public class ActivityPendentes extends ActivityMyBase {
         }
 
         @Override
-        protected void onCancelled() {
+        public void onCancelled() {
             downloadTask = null;
 
             getSwipyRefreshLayout().setRefreshing(false);

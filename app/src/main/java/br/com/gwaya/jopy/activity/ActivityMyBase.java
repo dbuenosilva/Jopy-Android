@@ -28,31 +28,47 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class ActivityMyBase extends ActionBarActivity {
 
-    protected PedidoCompraDAO dao;
+    private FrameLayout frmTipo;
+    private ListView listView;
 
-    protected UpdateTask updateTask;
-    protected List<PedidoCompra> _pedidos;
-    protected FrameLayout frmTipo;
-    protected ListView listView;
-    protected int currentPosition;
-    PedidoCompraDAO pedidoDataSource;
-    CarregaPedidos carregaPedidos;
+    private PedidoCompraDAO pedidoCompraDAO;
+
+    private List<PedidoCompra> pedidoCompraList;
+
+    private CarregaPedidosAsyncTask carregaPedidosAsyncTask;
+    private UpdateAsyncTask updateAsyncTask;
 
     private SwipyRefreshLayout mSwipyRefreshLayout;
+
+    public UpdateAsyncTask getUpdateAsyncTask() {
+        return updateAsyncTask;
+    }
+
+    public void setUpdateAsyncTask(UpdateAsyncTask updateAsyncTask) {
+        this.updateAsyncTask = updateAsyncTask;
+    }
+
+    public PedidoCompraDAO getPedidoCompraDAO() {
+        return pedidoCompraDAO;
+    }
+
+    public List<PedidoCompra> getPedidoCompraList() {
+        return pedidoCompraList;
+    }
 
     public SwipyRefreshLayout getSwipyRefreshLayout() {
         return mSwipyRefreshLayout;
     }
 
-    protected String _statusPedido() {
+    public String _statusPedido() {
         return "";
     }
 
-    protected String getTheTitle() {
+    public String getTheTitle() {
         return "";
     }
 
-    protected int getResourceLayout() {
+    private int getResourceLayout() {
         return R.layout.list_view_pedido_compra_emitido;
     }
 
@@ -61,7 +77,7 @@ public class ActivityMyBase extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
 
-        dao = new PedidoCompraDAO();
+        pedidoCompraDAO = new PedidoCompraDAO();
 
         setContentView(getResourceLayout());
 
@@ -76,11 +92,11 @@ public class ActivityMyBase extends ActionBarActivity {
             }
         });
 
-        if (pedidoDataSource == null) {
-            pedidoDataSource = new PedidoCompraDAO();
+        if (pedidoCompraDAO == null) {
+            pedidoCompraDAO = new PedidoCompraDAO();
         }
-        if (carregaPedidos == null) {
-            carregaPedidos = new CarregaPedidos();
+        if (carregaPedidosAsyncTask == null) {
+            carregaPedidosAsyncTask = new CarregaPedidosAsyncTask();
         }
 
         if (_statusPedido().equals("emitido")) {
@@ -109,9 +125,9 @@ public class ActivityMyBase extends ActionBarActivity {
             @Override
             public void onClick(View view) {
 
-                if (updateTask == null) {
-                    updateTask = new UpdateTask(_statusPedido());
-                    updateTask.execute((Void) null);
+                if (updateAsyncTask == null) {
+                    updateAsyncTask = new UpdateAsyncTask(_statusPedido());
+                    updateAsyncTask.execute((Void) null);
                 }
 
                 Toast.makeText(getApplicationContext(), "Pedidos atualizados!",
@@ -127,9 +143,9 @@ public class ActivityMyBase extends ActionBarActivity {
 
     }
 
-    protected ListView setPedidos(List<PedidoCompra> pedidos) {
+    public ListView setPedidos(List<PedidoCompra> pedidos) {
 
-        _pedidos = pedidos;
+        pedidoCompraList = pedidos;
 
         if (pedidos != null) {
 
@@ -151,13 +167,11 @@ public class ActivityMyBase extends ActionBarActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 101 || requestCode == 101) {
             try {
                 AdapterPedidoCompra adapter = (AdapterPedidoCompra) listView.getAdapter();
-                adapter.remove(_pedidos.get(currentPosition));
                 adapter.notifyDataSetChanged();
-                currentPosition = -1;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -165,12 +179,12 @@ public class ActivityMyBase extends ActionBarActivity {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         try {
-            if (carregaPedidos != null) {
-                if (carregaPedidos.getStatus() == Status.RUNNING) {
-                    carregaPedidos.cancel(true);
+            if (carregaPedidosAsyncTask != null) {
+                if (carregaPedidosAsyncTask.getStatus() == Status.RUNNING) {
+                    carregaPedidosAsyncTask.cancel(true);
                 }
             }
         } catch (Exception e) {
@@ -178,25 +192,25 @@ public class ActivityMyBase extends ActionBarActivity {
         }
     }
 
-    public class CarregaPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
+    public class CarregaPedidosAsyncTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
 
         @Override
-        protected void onPostExecute(List<PedidoCompra> result) {
+        public void onPostExecute(List<PedidoCompra> result) {
             super.onPostExecute(result);
 
-            _pedidos = result;
+            pedidoCompraList = result;
 
-            if (_pedidos != null) {
-                setPedidos(_pedidos);
+            if (pedidoCompraList != null) {
+                setPedidos(pedidoCompraList);
             }
         }
 
         @Override
-        protected List<PedidoCompra> doInBackground(Void... params) {
+        public List<PedidoCompra> doInBackground(Void... params) {
             List<PedidoCompra> pedidos = null;
 
             try {
-                pedidos = pedidoDataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _statusPedido() + "'", null);
+                pedidos = pedidoCompraDAO.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _statusPedido() + "'", null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -205,18 +219,18 @@ public class ActivityMyBase extends ActionBarActivity {
         }
     }
 
-    public class UpdateTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
+    public class UpdateAsyncTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
         private final String _status;
 
-        UpdateTask(String status) {
+        UpdateAsyncTask(String status) {
             _status = status;
         }
 
         @Override
-        protected List<PedidoCompra> doInBackground(Void... params) {
+        public List<PedidoCompra> doInBackground(Void... params) {
             List<PedidoCompra> pedidos = null;
             try {
-                pedidos = dao.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _status + "'", null);
+                pedidos = pedidoCompraDAO.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _status + "'", null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -224,15 +238,15 @@ public class ActivityMyBase extends ActionBarActivity {
         }
 
         @Override
-        protected void onPostExecute(final List<PedidoCompra> pedidos) {
-            _pedidos = pedidos;
+        public void onPostExecute(final List<PedidoCompra> pedidos) {
+            pedidoCompraList = pedidos;
             setPedidos(pedidos);
-            updateTask = null;
+            updateAsyncTask = null;
         }
 
         @Override
-        protected void onCancelled() {
-            updateTask = null;
+        public void onCancelled() {
+            updateAsyncTask = null;
         }
     }
 }

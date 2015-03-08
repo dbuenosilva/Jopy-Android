@@ -81,7 +81,7 @@ public class ActivityAprovados extends ActivityMyBase {
     };
 
     @Override
-    protected ListView setPedidos(List<PedidoCompra> pedidos) {
+    public ListView setPedidos(List<PedidoCompra> pedidos) {
 
         ListView pedidoList = super.setPedidos(pedidos);
 
@@ -91,11 +91,9 @@ public class ActivityAprovados extends ActivityMyBase {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                currentPosition = position;
-
                 Activity tab = ActivityAprovados.this.getParent();
 
-                PedidoCompra pedido = _pedidos.get(position);
+                PedidoCompra pedido = getPedidoCompraList().get(position);
                 Intent intent = new Intent(tab, ActivityDetalhe.class);
                 intent.putExtra("pedidocompra", new Gson().toJson(pedido));
 
@@ -110,12 +108,12 @@ public class ActivityAprovados extends ActivityMyBase {
     }
 
     @Override
-    protected String getTheTitle() {
+    public String getTheTitle() {
         return "Pedidos Aprovados";
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         (new Runnable() {
@@ -144,12 +142,12 @@ public class ActivityAprovados extends ActivityMyBase {
     }
 
     @Override
-    protected String _statusPedido() {
+    public String _statusPedido() {
         return "aprovado";
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
         unregisterReceiver(receiverNovaAprov);

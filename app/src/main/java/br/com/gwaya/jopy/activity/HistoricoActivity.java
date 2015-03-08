@@ -21,9 +21,9 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.adapter.HistoricoAdapterItem;
+import br.com.gwaya.jopy.adapter.AdapterHistorico;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 /**
@@ -36,7 +36,7 @@ public class HistoricoActivity extends ActionBarActivity {
     private String codForn;
     private List<PedidoCompra> _pedidos;
     private PopulateTask mTask;
-    private PedidoCompraDataSource dataSource;
+    private PedidoCompraDAO dataSource;
 
     @Override
     public void onBackPressed() {
@@ -62,7 +62,7 @@ public class HistoricoActivity extends ActionBarActivity {
             codForn = extras.getString("codForn");
         }
 
-        dataSource = new PedidoCompraDataSource(this);
+        dataSource = new PedidoCompraDAO(this);
 
         showProgress(true);
         mTask = new PopulateTask(codForn);
@@ -146,7 +146,7 @@ public class HistoricoActivity extends ActionBarActivity {
 
                 ListView pedidoList = (ListView) HistoricoActivity.this.findViewById(R.id.listViewHistorico);
 
-                HistoricoAdapterItem adapter = new HistoricoAdapterItem(HistoricoActivity.this,
+                AdapterHistorico adapter = new AdapterHistorico(HistoricoActivity.this,
                         R.layout.rowitem_historico, _pedidos);
 
                 pedidoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

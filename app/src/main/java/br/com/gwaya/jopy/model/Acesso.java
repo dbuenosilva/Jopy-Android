@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import br.com.gwaya.jopy.activity.LoginActivity;
-import br.com.gwaya.jopy.dao.AcessoDataSource;
-import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 
 
 @SuppressWarnings("ResourceType")
@@ -22,12 +22,12 @@ public class Acesso {
     public static final void logoff(Context context) {
 
         try {
-            AcessoDataSource acessoDataSource = new AcessoDataSource();
-            PedidoCompraDataSource pedidoCompraDatasource = new PedidoCompraDataSource();
+            AcessoDAO acessoDAO = new AcessoDAO();
+            PedidoCompraDAO pedidoCompraDatasource = new PedidoCompraDAO();
 
-            acessoDataSource.open();
-            acessoDataSource.deleteAcesso(null);
-            acessoDataSource.close();
+            acessoDAO.open();
+            acessoDAO.deleteAcesso(null);
+            acessoDAO.close();
 
             pedidoCompraDatasource.open();
             pedidoCompraDatasource.deleteAll();

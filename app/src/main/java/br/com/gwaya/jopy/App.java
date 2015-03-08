@@ -8,7 +8,7 @@ import br.com.gwaya.jopy.dao.MySQLiteHelper;
 /**
  * Created by marcelorosa on 14/01/15.
  */
-public class MyApplication extends Application {
+public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

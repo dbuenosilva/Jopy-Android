@@ -27,7 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.adapter.DetalhePedidoCompraAdapterItem;
+import br.com.gwaya.jopy.adapter.AdapterDetalhePedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
@@ -77,7 +77,7 @@ public class DetalheHistoricoActivity extends ActionBarActivity {
 
         ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 
-        DetalhePedidoCompraAdapterItem adapter = new DetalhePedidoCompraAdapterItem(this,
+        AdapterDetalhePedidoCompra adapter = new AdapterDetalhePedidoCompra(this,
                 R.layout.list_view_row_item_detalhe, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
 
         pedidoList.setAdapter(adapter);

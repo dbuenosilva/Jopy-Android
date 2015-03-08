@@ -25,10 +25,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.gwaya.jopy.dao.AcessoDataSource;
-import br.com.gwaya.jopy.dao.FilaPedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
@@ -39,8 +39,8 @@ public class PedidoCompraService extends IntentService {
     public static final String PEDIDOS_APROVADOS = "PEDIDOS_APROVADOS";
     private final IBinder mBinder = new MyBinder();
     private List<PedidoCompra> list = new ArrayList<PedidoCompra>();
-    private AcessoDataSource acessoDatasource;
-    private PedidoCompraDataSource pedidoCompraDatasource;
+    private AcessoDAO acessoDatasource;
+    private PedidoCompraDAO pedidoCompraDatasource;
 
     public PedidoCompraService() {
         super("PedidoCompraService");
@@ -82,14 +82,14 @@ public class PedidoCompraService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         if (acessoDatasource == null) {
-            acessoDatasource = new AcessoDataSource(this.getApplicationContext());
+            acessoDatasource = new AcessoDAO(this.getApplicationContext());
         }
         try {
             acessoDatasource.open();
             List<Acesso> lstAcesso = acessoDatasource.getAllAcesso();
             acessoDatasource.close();
 
-            pedidoCompraDatasource = new PedidoCompraDataSource(this.getApplicationContext());
+            pedidoCompraDatasource = new PedidoCompraDAO(this.getApplicationContext());
             pedidoCompraDatasource.open();
 
             if (lstAcesso.size() > 0) {
@@ -158,14 +158,14 @@ public class PedidoCompraService extends IntentService {
     }
 
     private void descarregaFila(String urlString, Acesso acesso) {
-        FilaPedidoCompraDataSource filaDataSource = null;
+        FilaPedidoCompraDAO filaDataSource = null;
         try {
 
             String url = getResources().getString(R.string.protocolo)
                     + getResources().getString(R.string.rest_api_url)
                     + getResources().getString(R.string.pedidocompra_path);
 
-            filaDataSource = new FilaPedidoCompraDataSource(this.getApplicationContext());
+            filaDataSource = new FilaPedidoCompraDAO(this.getApplicationContext());
             filaDataSource.open();
 
             List<PedidoCompra> pedidos = filaDataSource.getAllPedidoCompra();
@@ -213,7 +213,7 @@ public class PedidoCompraService extends IntentService {
                         filaDataSource.commit();
 
                         if (pedidoCompraDatasource == null) {
-                            pedidoCompraDatasource = new PedidoCompraDataSource(this);
+                            pedidoCompraDatasource = new PedidoCompraDAO(this);
                         }
                         pedidoCompra.setEnviado(1);
                         pedidoCompraDatasource.updatePedidoCompra(pedidoCompra);

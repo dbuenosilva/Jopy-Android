@@ -22,21 +22,21 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.adapter.PedidoCompraAdapterItem;
+import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class MyBaseActivity extends ActionBarActivity {
 
-    protected PedidoCompraDataSource dataSource;
+    protected PedidoCompraDAO dataSource;
 
     protected UpdateTask updateTask;
     protected List<PedidoCompra> _pedidos;
     protected FrameLayout frmTipo;
     protected ListView listView;
     protected int currentPosition;
-    PedidoCompraDataSource pedidoDataSource;
+    PedidoCompraDAO pedidoDataSource;
     CarregaPedidos carregaPedidos;
     private View mProgressView;
 
@@ -80,14 +80,14 @@ public class MyBaseActivity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
 
-        dataSource = new PedidoCompraDataSource(this);
+        dataSource = new PedidoCompraDAO(this);
 
         setContentView(getResourceLayout());
 
         mProgressView = findViewById(R.id.baseProgress);
 
         if (pedidoDataSource == null) {
-            pedidoDataSource = new PedidoCompraDataSource(this);
+            pedidoDataSource = new PedidoCompraDAO(this);
         }
         if (carregaPedidos == null) {
             carregaPedidos = new CarregaPedidos();
@@ -148,7 +148,7 @@ public class MyBaseActivity extends ActionBarActivity {
 
         if (pedidos != null) {
 
-            PedidoCompraAdapterItem adapter = new PedidoCompraAdapterItem(this,
+            AdapterPedidoCompra adapter = new AdapterPedidoCompra(this,
                     R.layout.list_view_row_item, pedidos);
 
             listView.setAdapter(adapter);
@@ -169,7 +169,7 @@ public class MyBaseActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 101 || requestCode == 101) {
             try {
-                PedidoCompraAdapterItem adapter = (PedidoCompraAdapterItem) listView.getAdapter();
+                AdapterPedidoCompra adapter = (AdapterPedidoCompra) listView.getAdapter();
                 adapter.remove(_pedidos.get(currentPosition));
                 adapter.notifyDataSetChanged();
                 currentPosition = -1;

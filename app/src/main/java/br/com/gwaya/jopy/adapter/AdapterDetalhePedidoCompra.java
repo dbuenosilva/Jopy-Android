@@ -18,13 +18,13 @@ import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
 
-public class DetalhePedidoCompraAdapterItem extends ArrayAdapter<PedidoCompraItem> {
+public class AdapterDetalhePedidoCompra extends ArrayAdapter<PedidoCompraItem> {
 
     Context mContext;
     int layoutResourceId;
     PedidoCompraItem data[] = null;
 
-    public DetalhePedidoCompraAdapterItem(Context mContext, int layoutResourceId, PedidoCompraItem[] data) {
+    public AdapterDetalhePedidoCompra(Context mContext, int layoutResourceId, PedidoCompraItem[] data) {
         super(mContext, layoutResourceId, data);
 
         this.layoutResourceId = layoutResourceId;

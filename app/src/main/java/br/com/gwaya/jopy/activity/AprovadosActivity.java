@@ -22,7 +22,7 @@ import java.util.List;
 import br.com.gwaya.jopy.PedidoCompraService;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 /**
@@ -133,7 +133,7 @@ public class AprovadosActivity extends MyBaseActivity {
             @Override
             public void run() {
 
-                PedidoCompraDataSource dataSource = new PedidoCompraDataSource(getApplicationContext());
+                PedidoCompraDAO dataSource = new PedidoCompraDAO(getApplicationContext());
 
                 List<PedidoCompra> aprovados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
 

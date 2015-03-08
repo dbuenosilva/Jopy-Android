@@ -23,7 +23,7 @@ import java.util.List;
 import br.com.gwaya.jopy.PedidoCompraService;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class RejeitadosActivity extends MyBaseActivity {
@@ -102,7 +102,7 @@ public class RejeitadosActivity extends MyBaseActivity {
 
         registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
 
-        PedidoCompraDataSource dataSource = new PedidoCompraDataSource(getApplicationContext());
+        PedidoCompraDAO dataSource = new PedidoCompraDAO(getApplicationContext());
 
         List<PedidoCompra> rejeitados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
 

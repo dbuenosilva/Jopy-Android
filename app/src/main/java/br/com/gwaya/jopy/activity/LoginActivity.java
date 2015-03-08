@@ -53,7 +53,7 @@ import java.util.List;
 
 import br.com.gwaya.jopy.CommonUtilities;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.AcessoDataSource;
+import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 import br.com.gwaya.jopy.model.RespostaPadrao;
@@ -84,7 +84,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private View mLoginFormView;
     //
     private String regId;
-    private AcessoDataSource acessoDatasource;
+    private AcessoDAO acessoDatasource;
     private BroadcastReceiver mHandleMessageReceiver;
 
     private void hideKeyboard() {
@@ -125,7 +125,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        acessoDatasource = new AcessoDataSource(this.getApplicationContext());
+        acessoDatasource = new AcessoDAO(this.getApplicationContext());
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);

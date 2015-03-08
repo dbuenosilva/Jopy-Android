@@ -22,7 +22,7 @@ import java.util.List;
 import br.com.gwaya.jopy.PedidoCompraService;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
@@ -33,7 +33,7 @@ public class MainActivity extends TabActivity {
 
     private DownloadTask downloadTask;
 
-    private PedidoCompraDataSource dataSource;
+    private PedidoCompraDAO dataSource;
     private Boolean login;
 
     private void publishResults(PedidoCompra[] pedidos, String tipo) {
@@ -46,7 +46,7 @@ public class MainActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dataSource = new PedidoCompraDataSource(this.getApplicationContext());
+        dataSource = new PedidoCompraDAO(this.getApplicationContext());
 
         String jsonMyObject = "";
 

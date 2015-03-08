@@ -13,7 +13,7 @@ import br.com.gwaya.jopy.QueryExecutor;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
-public class PedidoCompraDataSource {
+public class PedidoCompraDAO {
     // Database fields
     private boolean endTransaction = true;
     //private SQLiteDatabase database;
@@ -50,11 +50,11 @@ public class PedidoCompraDataSource {
             MySQLiteHelper.TOTAL
     };
 
-    public PedidoCompraDataSource(Context context) {
+    public PedidoCompraDAO(Context context) {
 
     }
 
-    public PedidoCompraDataSource() {
+    public PedidoCompraDAO() {
 
     }
 

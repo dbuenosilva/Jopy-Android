@@ -12,16 +12,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.AcessoDataSource;
-import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
+import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 
 /**
  * Created by marcelorosa on 11/01/15.
  */
 public class OpcoesActivity extends ActionBarActivity {
 
-    AcessoDataSource acessoDataSource;
-    PedidoCompraDataSource dataSource;
+    AcessoDAO acessoDAO;
+    PedidoCompraDAO dataSource;
     private RelativeLayout layoutLogoff;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -54,18 +54,18 @@ public class OpcoesActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        dataSource = new PedidoCompraDataSource(this);
+        dataSource = new PedidoCompraDAO(this);
 
-        acessoDataSource = new AcessoDataSource(this);
+        acessoDAO = new AcessoDAO(this);
 
         layoutLogoff = (RelativeLayout) findViewById(R.id.layoutLogoff);
         layoutLogoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    acessoDataSource.open();
-                    acessoDataSource.deleteAcesso(null);
-                    acessoDataSource.close();
+                    acessoDAO.open();
+                    acessoDAO.deleteAcesso(null);
+                    acessoDAO.close();
 
                     dataSource.open();
                     dataSource.deleteAll();

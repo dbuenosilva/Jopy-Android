@@ -35,9 +35,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.adapter.DetalhePedidoCompraAdapterItem;
-import br.com.gwaya.jopy.dao.FilaPedidoCompraDataSource;
-import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
+import br.com.gwaya.jopy.adapter.AdapterDetalhePedidoCompra;
+import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
+import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
@@ -90,8 +90,8 @@ public class DetalheActivity extends ActionBarActivity {
                         builder.setMessage("Deseja confirmar aprovação ?")
                                 .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        FilaPedidoCompraDataSource filaDataSource = new FilaPedidoCompraDataSource(DetalheActivity.this);
-                                        PedidoCompraDataSource dataSource = new PedidoCompraDataSource(DetalheActivity.this);
+                                        FilaPedidoCompraDAO filaDataSource = new FilaPedidoCompraDAO(DetalheActivity.this);
+                                        PedidoCompraDAO dataSource = new PedidoCompraDAO(DetalheActivity.this);
 
                                         pedido.setStatusPedido(STATUS_APROVADO);
                                         pedido.setEnviado(0);
@@ -146,10 +146,10 @@ public class DetalheActivity extends ActionBarActivity {
                                     public void onClick(DialogInterface dialog, int id) {
 
                                         Intent data = new Intent();
-                                        FilaPedidoCompraDataSource filaDataSource =
-                                                new FilaPedidoCompraDataSource(DetalheActivity.this);
-                                        PedidoCompraDataSource dataSource =
-                                                new PedidoCompraDataSource(DetalheActivity.this);
+                                        FilaPedidoCompraDAO filaDataSource =
+                                                new FilaPedidoCompraDAO(DetalheActivity.this);
+                                        PedidoCompraDAO dataSource =
+                                                new PedidoCompraDAO(DetalheActivity.this);
 
                                         pedido.setStatusPedido("rejeitado");
                                         pedido.setEnviado(0);
@@ -282,7 +282,7 @@ public class DetalheActivity extends ActionBarActivity {
 
                 ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 
-                DetalhePedidoCompraAdapterItem adapter = new DetalhePedidoCompraAdapterItem(DetalheActivity.this,
+                AdapterDetalhePedidoCompra adapter = new AdapterDetalhePedidoCompra(DetalheActivity.this,
                         R.layout.list_view_row_item_detalhe, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
 
                 pedidoList.setAdapter(adapter);

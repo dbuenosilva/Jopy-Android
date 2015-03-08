@@ -30,7 +30,7 @@ import java.util.List;
 
 import br.com.gwaya.jopy.PedidoCompraService;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.AcessoDataSource;
+import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
@@ -122,13 +122,13 @@ public class EmitidosActivity extends MyBaseActivity {
 
         login = extras.getBoolean("login");
 
-        AcessoDataSource acessoDataSource = new AcessoDataSource(this);
-        acessoDataSource.open();
-        List<Acesso> lst = acessoDataSource.getAllAcesso();
+        AcessoDAO acessoDAO = new AcessoDAO(this);
+        acessoDAO.open();
+        List<Acesso> lst = acessoDAO.getAllAcesso();
         if (lst.size() > 0) {
             acesso = lst.get(0);
         }
-        acessoDataSource.close();
+        acessoDAO.close();
 
         if (login) {
             if (downloadTask == null) {

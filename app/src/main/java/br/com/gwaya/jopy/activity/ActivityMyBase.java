@@ -149,7 +149,7 @@ public class ActivityMyBase extends ActionBarActivity {
         if (pedidos != null) {
 
             AdapterPedidoCompra adapter = new AdapterPedidoCompra(this,
-                    R.layout.list_view_row_item, pedidos);
+                    R.layout.adapter_pedidocompra, pedidos);
 
             listView.setAdapter(adapter);
         }

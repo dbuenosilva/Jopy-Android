@@ -77,43 +77,6 @@ public class ActivityPendentes extends ActivityAba {
     }
 
     @Override
-    public String getTheTitle() {
-        return "Pedidos Pendentes";
-    }
-
-    @Override
-    public String _statusPedido() {
-        return "emitido";
-    }
-
-    @Override
-    public ListView setPedidos(List<PedidoCompra> pedidos) {
-
-        ListView pedidoList = super.setPedidos(pedidos);
-
-        pedidoList.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                Activity tab = ActivityPendentes.this.getParent();
-
-                PedidoCompra pedido = getPedidoCompraList().get(position);
-                Intent intent = new Intent(tab, ActivityDetalhe.class);
-                intent.putExtra("pedidocompra", new Gson().toJson(pedido));
-
-                ActivityPendentes.this.startActivityForResult(intent, 101);
-            }
-        });
-
-        pedidoList.setDivider(new ColorDrawable(this.getResources().getColor(R.color.emitido)));
-        pedidoList.setDividerHeight(1);
-
-        return pedidoList;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -267,5 +230,38 @@ public class ActivityPendentes extends ActivityAba {
 
             getSwipyRefreshLayout().setRefreshing(false);
         }
+    }
+
+    @Override
+    public ListView setPedidos(List<PedidoCompra> pedidos) {
+
+        ListView pedidoList = super.setPedidos(pedidos);
+
+        pedidoList.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                PedidoCompra pedido = getPedidoCompraList().get(position);
+                Intent intent = new Intent(ActivityPendentes.this, ActivityDetalhe.class);
+                intent.putExtra("pedidocompra", new Gson().toJson(pedido));
+                ActivityPendentes.this.startActivityForResult(intent, 101);
+            }
+        });
+
+        pedidoList.setDivider(new ColorDrawable(this.getResources().getColor(R.color.emitido)));
+        pedidoList.setDividerHeight(1);
+
+        return pedidoList;
+    }
+
+    @Override
+    public String _statusPedido() {
+        return "emitido";
+    }
+
+    @Override
+    public String getTheTitle() {
+        return "Pedidos Pendentes";
     }
 }

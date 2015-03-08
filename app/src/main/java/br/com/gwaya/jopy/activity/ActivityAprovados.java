@@ -1,6 +1,5 @@
 package br.com.gwaya.jopy.activity;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -41,11 +40,11 @@ public class ActivityAprovados extends ActivityAba {
                 if (strPedidos != null && strPedidos != "") {
                     GsonBuilder gsonb = new GsonBuilder();
                     Gson gson = gsonb.create();
-                    JSONArray j;
+                    JSONArray jsonArray;
                     List<PedidoCompra> pedidos = null;
                     try {
-                        j = new JSONArray(strPedidos);
-                        pedidos = Arrays.asList(gson.fromJson(j.toString(), PedidoCompra[].class));
+                        jsonArray = new JSONArray(strPedidos);
+                        pedidos = Arrays.asList(gson.fromJson(jsonArray.toString(), PedidoCompra[].class));
                         setPedidos(pedidos);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -65,11 +64,11 @@ public class ActivityAprovados extends ActivityAba {
                 if (strPedidos != null && strPedidos != "") {
                     GsonBuilder gsonb = new GsonBuilder();
                     Gson gson = gsonb.create();
-                    JSONArray j;
+                    JSONArray jsonArray;
                     List<PedidoCompra> pedidos = null;
                     try {
-                        j = new JSONArray(strPedidos);
-                        pedidos = Arrays.asList(gson.fromJson(j.toString(), PedidoCompra[].class));
+                        jsonArray = new JSONArray(strPedidos);
+                        pedidos = Arrays.asList(gson.fromJson(jsonArray.toString(), PedidoCompra[].class));
                         setPedidos(pedidos);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -79,38 +78,6 @@ public class ActivityAprovados extends ActivityAba {
         }
 
     };
-
-    @Override
-    public ListView setPedidos(List<PedidoCompra> pedidos) {
-
-        ListView pedidoList = super.setPedidos(pedidos);
-
-        pedidoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                Activity tab = ActivityAprovados.this.getParent();
-
-                PedidoCompra pedido = getPedidoCompraList().get(position);
-                Intent intent = new Intent(tab, ActivityDetalhe.class);
-                intent.putExtra("pedidocompra", new Gson().toJson(pedido));
-
-                ActivityAprovados.this.startActivityForResult(intent, 101);
-            }
-        });
-
-        pedidoList.setDivider(new ColorDrawable(this.getResources().getColor(R.color.aprovado)));
-        pedidoList.setDividerHeight(1);
-
-        return pedidoList;
-    }
-
-    @Override
-    public String getTheTitle() {
-        return "Pedidos Aprovados";
-    }
 
     @Override
     public void onResume() {
@@ -142,15 +109,43 @@ public class ActivityAprovados extends ActivityAba {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+        unregisterReceiver(receiverNovaAprov);
+    }
+
+    @Override
+    public ListView setPedidos(List<PedidoCompra> pedidos) {
+
+        ListView pedidoList = super.setPedidos(pedidos);
+
+        pedidoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                PedidoCompra pedido = getPedidoCompraList().get(position);
+                Intent intent = new Intent(ActivityAprovados.this, ActivityDetalhe.class);
+                intent.putExtra("pedidocompra", new Gson().toJson(pedido));
+                ActivityAprovados.this.startActivityForResult(intent, 101);
+            }
+        });
+
+        pedidoList.setDivider(new ColorDrawable(this.getResources().getColor(R.color.aprovado)));
+        pedidoList.setDividerHeight(1);
+
+        return pedidoList;
+    }
+
+    @Override
     public String _statusPedido() {
         return "aprovado";
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        unregisterReceiver(receiver);
-        unregisterReceiver(receiverNovaAprov);
+    public String getTheTitle() {
+        return "Pedidos Aprovados";
     }
 
 }

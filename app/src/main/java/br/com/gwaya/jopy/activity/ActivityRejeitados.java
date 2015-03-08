@@ -54,8 +54,28 @@ public class ActivityRejeitados extends ActivityAba {
     };
 
     @Override
-    public String _statusPedido() {
-        return "rejeitado";
+    public void onResume() {
+        super.onResume();
+
+        (new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(ActivityRejeitados.this, PedidoCompraService.class);
+                startService(intent);
+            }
+        }).run();
+
+        registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
+
+        List<PedidoCompra> rejeitados = new PedidoCompraDAO().getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
+
+        setPedidos(rejeitados);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -82,32 +102,12 @@ public class ActivityRejeitados extends ActivityAba {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        (new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(ActivityRejeitados.this, PedidoCompraService.class);
-                startService(intent);
-            }
-        }).run();
-
-        registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
-
-        List<PedidoCompra> rejeitados = new PedidoCompraDAO().getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
-
-        setPedidos(rejeitados);
+    public String _statusPedido() {
+        return "rejeitado";
     }
 
     @Override
     public String getTheTitle() {
         return "Pedidos Rejeitados";
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        unregisterReceiver(receiver);
     }
 }

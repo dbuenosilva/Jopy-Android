@@ -180,6 +180,12 @@ public class ActivityPendentes extends ActivityAba {
     public class DownloadTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            getSwipyRefreshLayout().setRefreshing(true);
+        }
+
+        @Override
         public List<PedidoCompra> doInBackground(Void... params) {
 
             List<PedidoCompra> pedidos = null;

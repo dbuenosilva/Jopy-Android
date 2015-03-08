@@ -135,7 +135,7 @@ public class ActivityAba extends ActionBarActivity {
     }
 
     public void atualizarListView() {
-
+        getSwipyRefreshLayout().setRefreshing(false);
     }
 
     public ListView setPedidos(List<PedidoCompra> pedidos) {

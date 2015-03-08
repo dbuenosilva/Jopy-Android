@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,10 @@ import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import br.com.gwaya.jopy.AcessoDataSource;
+import br.com.gwaya.jopy.PedidoCompraDataSource;
+import br.com.gwaya.jopy.R;
 
 /**
  * Created by marcelorosa on 11/01/15.

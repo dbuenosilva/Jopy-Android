@@ -12,6 +12,8 @@ import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
+import br.com.gwaya.jopy.activity.MainActivity;
+
 import static br.com.gwaya.jopy.CommonUtilities.SENDER_ID;
 import static br.com.gwaya.jopy.CommonUtilities.displayMessage;
 

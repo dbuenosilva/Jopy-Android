@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,6 +19,12 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import br.com.gwaya.jopy.MySQLiteHelper;
+import br.com.gwaya.jopy.PedidoCompra;
+import br.com.gwaya.jopy.PedidoCompraDataSource;
+import br.com.gwaya.jopy.PedidoCompraService;
+import br.com.gwaya.jopy.R;
 
 public class RejeitadosActivity extends MyBaseActivity {
 

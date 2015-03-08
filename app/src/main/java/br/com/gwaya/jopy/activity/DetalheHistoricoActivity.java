@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.activity;
 
 
 import android.content.Context;
@@ -25,6 +25,11 @@ import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import br.com.gwaya.jopy.DetalhePedidoCompraAdapterItem;
+import br.com.gwaya.jopy.PedidoCompra;
+import br.com.gwaya.jopy.PedidoCompraItem;
+import br.com.gwaya.jopy.R;
 
 //import android.app.ActionBar;
 

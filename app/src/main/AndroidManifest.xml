@@ -28,7 +28,7 @@
         android:theme="@style/MyAppTheme"
         android:name=".MyApplication">
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:alwaysRetainTaskState="false"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_login"
@@ -38,14 +38,14 @@
 
         </activity>
         <activity
-            android:name=".OpcoesActivity"
+            android:name=".activity.OpcoesActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleInstance"
             android:label="@string/title_activity_opcoes"
             >
         </activity>
         <activity
-            android:name=".MainSplashScreen"
+            android:name=".activity.MainSplashScreen"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:noHistory="true" >
@@ -56,56 +56,56 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EmitidosActivity"
+            android:name=".activity.EmitidosActivity"
             android:launchMode="singleTop"
             android:label="@string/title_activity_main_tab"
             >
         </activity>
         <activity
-            android:name=".AprovadosActivity"
+            android:name=".activity.AprovadosActivity"
             android:launchMode="singleTop"
             android:label="@string/title_activity_main_tab" >
         </activity>
         <activity
-            android:name=".RejeitadosActivity"
+            android:name=".activity.RejeitadosActivity"
             android:launchMode="singleTop"
             android:label="@string/title_activity_main_tab" >
         </activity>
         <activity
-            android:name=".DetalheActivity"
+            android:name=".activity.DetalheActivity"
             android:launchMode="singleTop"
             android:label="@string/title_activity_main_tab"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".activity.MainActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
             >
         </activity>
         <activity
-            android:name=".HistoricoActivity"
+            android:name=".activity.HistoricoActivity"
             android:launchMode="singleTop"
             android:label="@string/title_activity_main_tab"
-            android:parentActivityName=".DetalheActivity" >
+            android:parentActivityName=".activity.DetalheActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DetalheActivity" />
+                android:value=".activity.DetalheActivity" />
             >
         </activity>
         <activity
-            android:name=".DetalheHistoricoActivity"
+            android:name=".activity.DetalheHistoricoActivity"
             android:launchMode="singleTask"
             android:label="@string/title_activity_main_tab"
-            android:parentActivityName=".HistoricoActivity" >
+            android:parentActivityName=".activity.HistoricoActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HistoricoActivity" />
+                android:value=".activity.HistoricoActivity" />
             >
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
         <receiver android:name=".PedidoCompraReceiver" >

@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -52,7 +51,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static br.com.gwaya.jopy.CommonUtilities.DISPLAY_MESSAGE_ACTION;
+import br.com.gwaya.jopy.Acesso;
+import br.com.gwaya.jopy.AcessoDataSource;
+import br.com.gwaya.jopy.CommonUtilities;
+import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.RespostaLogin;
+import br.com.gwaya.jopy.RespostaPadrao;
+
 import static br.com.gwaya.jopy.CommonUtilities.EXTRA_MESSAGE;
 import static br.com.gwaya.jopy.CommonUtilities.SENDER_ID;
 /**
@@ -92,14 +97,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mHandleMessageReceiver =
                 new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
-                        String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
+                        String newMessage = intent.getExtras().getString(CommonUtilities.EXTRA_MESSAGE);
                     }
                 };
 
@@ -113,7 +118,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             registerReceiver(mHandleMessageReceiver,new IntentFilter(DISPLAY_MESSAGE_ACTION));
         }
         */
-        GCMRegistrar.register(this, SENDER_ID);
+        GCMRegistrar.register(this, CommonUtilities.SENDER_ID);
 
         GCMRegistrar.setRegisteredOnServer(this, true);
 
@@ -360,7 +365,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        public Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
             String usuario = mEmail,
@@ -482,7 +487,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        public void onPostExecute(final Boolean success) {
             mAuthTask = null;
             if (success) {
                 //Intent intent = new Intent(LoginActivity.this,MainActivity.class);
@@ -500,7 +505,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
-        protected void onCancelled() {
+        public void onCancelled() {
             mAuthTask = null;
             showProgress(false);
         }
@@ -517,7 +522,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        public Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
             String usuario = mEmail;
@@ -579,13 +584,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        public void onPostExecute(final Boolean success) {
             showProgress(false);
             Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        protected void onCancelled() {
+        public void onCancelled() {
             showProgress(false);
             Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_SHORT);
         }

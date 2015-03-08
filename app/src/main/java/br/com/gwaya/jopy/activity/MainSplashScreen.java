@@ -1,8 +1,10 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import br.com.gwaya.jopy.R;
 
 /**
  * Created by marcelorosa on 20/01/15.

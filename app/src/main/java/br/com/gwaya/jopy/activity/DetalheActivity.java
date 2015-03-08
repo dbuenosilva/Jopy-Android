@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.activity;
 
 
 import android.app.AlertDialog;
@@ -33,6 +33,13 @@ import com.google.gson.GsonBuilder;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import br.com.gwaya.jopy.DetalhePedidoCompraAdapterItem;
+import br.com.gwaya.jopy.FilaPedidoCompraDataSource;
+import br.com.gwaya.jopy.PedidoCompra;
+import br.com.gwaya.jopy.PedidoCompraDataSource;
+import br.com.gwaya.jopy.PedidoCompraItem;
+import br.com.gwaya.jopy.R;
 
 
 public class DetalheActivity extends ActionBarActivity {

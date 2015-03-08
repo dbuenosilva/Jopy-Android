@@ -24,27 +24,27 @@ import android.content.Intent;
  */
 public final class CommonUtilities {
 
-    static final String SERVER_URL = "http://54.173.134.168/api/v1/device";
-    
-    static final String TOKEN = "aNnUOQoVrT7QRoMhR6zglyOUPWAi76f9nZwwa1SxoTY=";
+    public static final String SERVER_URL = "http://54.173.134.168/api/v1/device";
 
-    static final String SENDER_ID = "569142009262";
+    public static final String TOKEN = "aNnUOQoVrT7QRoMhR6zglyOUPWAi76f9nZwwa1SxoTY=";
+
+    public static final String SENDER_ID = "569142009262";
 
     /**
      * Tag used on log messages.
      */
-    static final String TAG = "GCMDemo";
+    public static final String TAG = "GCMDemo";
 
     /**
      * Intent used to display a message in the screen.
      */
-    static final String DISPLAY_MESSAGE_ACTION =
+    public static final String DISPLAY_MESSAGE_ACTION =
             "br.com.gwaya.jopy.DISPLAY_MESSAGE";
 
     /**
      * Intent's extra that contains the message to be displayed.
      */
-    static final String EXTRA_MESSAGE = "message";
+    public static final String EXTRA_MESSAGE = "message";
 
     /**
      * Notifies UI to display a message.
@@ -55,7 +55,7 @@ public final class CommonUtilities {
      * @param context application's context.
      * @param message message to be displayed.
      */
-    static void displayMessage(Context context, String message) {
+    public static void displayMessage(Context context, String message) {
         Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
         intent.putExtra(EXTRA_MESSAGE, message);
         context.sendBroadcast(intent);

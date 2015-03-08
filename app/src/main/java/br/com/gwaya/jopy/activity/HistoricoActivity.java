@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -19,6 +19,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.util.List;
+
+import br.com.gwaya.jopy.HistoricoAdapterItem;
+import br.com.gwaya.jopy.MySQLiteHelper;
+import br.com.gwaya.jopy.PedidoCompra;
+import br.com.gwaya.jopy.PedidoCompraDataSource;
+import br.com.gwaya.jopy.R;
 
 /**
  * Created by marcelorosa on 10/01/15.

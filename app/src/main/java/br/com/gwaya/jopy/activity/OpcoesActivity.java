@@ -20,9 +20,9 @@ import br.com.gwaya.jopy.R;
  */
 public class OpcoesActivity extends ActionBarActivity {
 
-    private RelativeLayout layoutLogoff;
     AcessoDataSource acessoDataSource;
     PedidoCompraDataSource dataSource;
+    private RelativeLayout layoutLogoff;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +75,9 @@ public class OpcoesActivity extends ActionBarActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     OpcoesActivity.this.startActivity(intent);
 
-                } catch(Exception e) {
-                    e.printStackTrace();;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ;
                 }
             }
         });

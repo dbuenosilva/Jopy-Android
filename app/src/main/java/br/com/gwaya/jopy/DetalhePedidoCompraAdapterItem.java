@@ -16,29 +16,29 @@ import java.text.NumberFormat;
 
 
 public class DetalhePedidoCompraAdapterItem extends ArrayAdapter<PedidoCompraItem> {
-	
-	Context mContext;
-	int layoutResourceId;
-	PedidoCompraItem data[] = null;
-	
-	public DetalhePedidoCompraAdapterItem(Context mContext, int layoutResourceId, PedidoCompraItem[] data) {
-		super(mContext, layoutResourceId, data);
 
-		this.layoutResourceId = layoutResourceId;
-		this.mContext = mContext;
-		this.data = data;	
-	}
-	
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		
+    Context mContext;
+    int layoutResourceId;
+    PedidoCompraItem data[] = null;
+
+    public DetalhePedidoCompraAdapterItem(Context mContext, int layoutResourceId, PedidoCompraItem[] data) {
+        super(mContext, layoutResourceId, data);
+
+        this.layoutResourceId = layoutResourceId;
+        this.mContext = mContext;
+        this.data = data;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
         }
-        
+
         final PedidoCompraItem pedido = data[position];
-        
+
         String qtde = String.format("%.2f", pedido.qtde);
         String valor = String.format("%.2f", pedido.valor);
         String subTotal = String.format("%.2f", pedido.total);
@@ -52,15 +52,15 @@ public class DetalhePedidoCompraAdapterItem extends ArrayAdapter<PedidoCompraIte
         TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewProduto);
         textViewItem.setText(pedido.produto);
         textViewItem.setTag(pedido._id);
-        
+
         textViewItem = (TextView) convertView.findViewById(R.id.textViewQtde);
         textViewItem.setText(qtde);
         textViewItem.setTag(pedido._id);
-        
+
         textViewItem = (TextView) convertView.findViewById(R.id.textViewSubTotal);
         textViewItem.setText(valor);
         textViewItem.setTag(pedido._id);
-        
+
         textViewItem = (TextView) convertView.findViewById(R.id.txtSubTotal);
         textViewItem.setText(subTotal);
         textViewItem.setTag(pedido._id);
@@ -86,5 +86,5 @@ public class DetalhePedidoCompraAdapterItem extends ArrayAdapter<PedidoCompraIte
         });
 
         return convertView;
-	}
+    }
 }

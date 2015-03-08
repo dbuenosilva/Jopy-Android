@@ -28,8 +28,33 @@ import br.com.gwaya.jopy.R;
 
 public class RejeitadosActivity extends MyBaseActivity {
 
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                String strPedidos = bundle.getString(PedidoCompraService.PEDIDOS_REJEITADOS);
+                if (strPedidos != null && strPedidos != "") {
+                    GsonBuilder gsonb = new GsonBuilder();
+                    Gson gson = gsonb.create();
+                    JSONArray j;
+                    List<PedidoCompra> pedidos = new ArrayList<PedidoCompra>();
+                    try {
+                        j = new JSONArray(strPedidos);
+                        pedidos = Arrays.asList(gson.fromJson(j.toString(), PedidoCompra[].class));
+                        setPedidos(pedidos);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+    };
+
     @Override
-    protected String _statusPedido(){
+    protected String _statusPedido() {
         return "rejeitado";
     }
 
@@ -85,7 +110,7 @@ public class RejeitadosActivity extends MyBaseActivity {
     }
 
     @Override
-    protected String getTheTitle(){
+    protected String getTheTitle() {
         return "Pedidos Rejeitados";
     }
 
@@ -94,29 +119,4 @@ public class RejeitadosActivity extends MyBaseActivity {
         super.onPause();
         unregisterReceiver(receiver);
     }
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                String strPedidos = bundle.getString(PedidoCompraService.PEDIDOS_REJEITADOS);
-                if (strPedidos != null && strPedidos != "") {
-                    GsonBuilder gsonb = new GsonBuilder();
-                    Gson gson = gsonb.create();
-                    JSONArray j;
-                    List<PedidoCompra> pedidos = new ArrayList<PedidoCompra>();
-                    try {
-                        j = new JSONArray(strPedidos);
-                        pedidos = Arrays.asList(gson.fromJson(j.toString(), PedidoCompra[].class));
-                        setPedidos(pedidos);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-    };
 }

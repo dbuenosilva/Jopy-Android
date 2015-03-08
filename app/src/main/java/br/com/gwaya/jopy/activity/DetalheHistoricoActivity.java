@@ -37,18 +37,16 @@ import br.com.gwaya.jopy.R;
 
 public class DetalheHistoricoActivity extends ActionBarActivity {
 
+    Button buttonPrev;
+    Button buttonNext;
+    ImageView imgPrev;
+    ImageView imgNext;
     private int indice;
     private PedidoCompra[] _pedidos;
     private String codForn;
 
-    Button buttonPrev;
-    Button buttonNext;
-
-    ImageView imgPrev;
-    ImageView imgNext;
-
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
     }
 
@@ -77,7 +75,7 @@ public class DetalheHistoricoActivity extends ActionBarActivity {
         mActionBar.setDisplayShowCustomEnabled(true);
         //CUSTOM VIEW ACTIONBAR
 
-        ListView pedidoList = (ListView)findViewById(R.id.listViewItens);
+        ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 
         DetalhePedidoCompraAdapterItem adapter = new DetalhePedidoCompraAdapterItem(this,
                 R.layout.list_view_row_item_detalhe, pedido.itens.toArray(new PedidoCompraItem[pedido.itens.size()]));
@@ -85,8 +83,7 @@ public class DetalheHistoricoActivity extends ActionBarActivity {
         pedidoList.setAdapter(adapter);
 
         int totalHeight = 0;
-        for (int i = 0; i < adapter.getCount(); i++)
-        {
+        for (int i = 0; i < adapter.getCount(); i++) {
             View listItem = adapter.getView(i, null, pedidoList);
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();

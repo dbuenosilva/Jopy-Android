@@ -31,7 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gcm.*;
+import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -58,8 +58,8 @@ import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.RespostaLogin;
 import br.com.gwaya.jopy.RespostaPadrao;
 
-import static br.com.gwaya.jopy.CommonUtilities.EXTRA_MESSAGE;
 import static br.com.gwaya.jopy.CommonUtilities.SENDER_ID;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -72,11 +72,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "contato@gwaya.com", "contato@gwaya.com:jopy"
     };
+    public Acesso acesso;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -85,7 +85,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     //
     private String regId;
     private AcessoDataSource acessoDatasource;
-    public Acesso acesso;
+    private BroadcastReceiver mHandleMessageReceiver;
 
     private void hideKeyboard() {
         // Check if no view has focus:
@@ -154,7 +154,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
                 final String email = mEmailView.getText().toString();
 
-                if(!isEmailValid(email)) {
+                if (!isEmailValid(email)) {
                     Toast toast = Toast.makeText(LoginActivity.this, "Por favor, preencha o usuário corretamente.", Toast.LENGTH_SHORT);
                     toast.show();
                 } else {
@@ -172,27 +172,26 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         });
 
         //(new Runnable() {
-            //@Override
-            //public void run() {
-                acessoDatasource.open();
-                List<Acesso> lst = acessoDatasource.getAllAcesso();
-                acessoDatasource.close();
+        //@Override
+        //public void run() {
+        acessoDatasource.open();
+        List<Acesso> lst = acessoDatasource.getAllAcesso();
+        acessoDatasource.close();
 
-                if (lst.size() > 0) {
-                    acesso = lst.get(0);
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("ACESSO", new Gson().toJson(acesso));
-                    intent.putExtra("login", false);
-                    LoginActivity.this.startActivity(intent);
-                }
-            //}
+        if (lst.size() > 0) {
+            acesso = lst.get(0);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra("ACESSO", new Gson().toJson(acesso));
+            intent.putExtra("login", false);
+            LoginActivity.this.startActivity(intent);
+        }
+        //}
         //}).run();
     }
 
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -328,17 +327,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     }
 
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -348,7 +336,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mEmailView.setAdapter(adapter);
     }
 
-    private BroadcastReceiver mHandleMessageReceiver;
+    private interface ProfileQuery {
+        String[] PROJECTION = {
+                ContactsContract.CommonDataKinds.Email.ADDRESS,
+                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
+        };
+
+        int ADDRESS = 0;
+        int IS_PRIMARY = 1;
+    }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -415,8 +411,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
                     httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-                    try
-                    {
+                    try {
                         //ResponseHandler<String> responseHandler = new BasicResponseHandler();
                         //String responseData = httpclient.execute(httpPost, responseHandler);
 
@@ -447,14 +442,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                             acessoDatasource.close();
 
                             retorno = true;
-                        }
-                        else {
+                        } else {
                             retorno = false;
                             // mensagem
                         }
-                    }
-                    catch(Exception e)
-                    {
+                    } catch (Exception e) {
                         Toast toast = Toast.makeText(LoginActivity.this, "Você esta sem conexão com a internet, por favor tente mais tarde.", Toast.LENGTH_SHORT);
                         toast.show();
 
@@ -563,8 +555,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
                         retorno = resp.status;
                         mensagem = resp.mensagem;
-                    }
-                    else {
+                    } else {
                         // mensagem
 
                     }

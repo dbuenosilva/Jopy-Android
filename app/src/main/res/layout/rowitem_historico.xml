@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="70dp">
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="vertical">
 
     <FrameLayout
+        android:id="@+id/frmStatus"
         android:layout_width="10dp"
         android:layout_height="fill_parent"
-        android:background="#000000"
-        android:id="@+id/frmStatus"></FrameLayout>
+        android:background="#000000"></FrameLayout>
 
     <TextView
+        android:id="@+id/txtHNomeFor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fornecedor de Produto S/A"
-        android:id="@+id/txtHNomeFor"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="30dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/frmStatus"
         android:layout_toEndOf="@+id/frmStatus"
+        android:layout_toRightOf="@+id/frmStatus"
+        android:text="Fornecedor de Produto S/A"
         android:textColor="#000000"
         android:textSize="17dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="10/12/2014"
         android:id="@+id/txtHDtMod"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txtHNomeFor"
+        android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/txtHNomeFor"
+        android:layout_marginBottom="10dp"
+        android:text="10/12/2014"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#000000"
         android:textSize="17dp" />
 
 
-
     <TextView
+        android:id="@+id/txtHTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="R$ 99.999,99"
-        android:layout_marginRight="10dp"
-        android:id="@+id/txtHTotal"
         android:layout_alignBottom="@+id/txtHDtMod"
+        android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/imageButton2"
         android:layout_toStartOf="@+id/imageButton2"
+        android:text="R$ 99.999,99"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000"
         android:textSize="17dp"
         android:textStyle="bold" />
 
     <ImageView
+        android:id="@+id/imageButton2"
         android:layout_width="30dp"
         android:layout_height="fill_parent"
-        android:id="@+id/imageButton2"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentTop="true" />
 </RelativeLayout>

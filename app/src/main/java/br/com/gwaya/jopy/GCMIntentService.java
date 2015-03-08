@@ -29,6 +29,57 @@ public class GCMIntentService extends GCMBaseIntentService {
         super(SENDER_ID);
     }
 
+    /**
+     * Issues a notification to inform the user that server has sent a message.
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private static void generateNotification(Context context, String message) {
+        int icon = R.drawable.concebra_pro_64;
+        long when = System.currentTimeMillis();
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Notification.Builder builder =
+                new Notification.Builder(context)
+                        .setSmallIcon(icon)
+                                //.setLargeIcon()
+                        .setContentTitle(context.getString(R.string.app_name))
+                        .setContentText(message)
+                        .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
+                        .setStyle(new Notification.BigTextStyle()
+                                        .bigText(message)
+                                //.setSummaryText(message)
+                        );
+        //builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+        Notification notification;
+        Intent notificationIntent;
+        PendingIntent intent;
+
+        notification = builder.build();
+        //notification.contentView.setImageViewResource(android.R.id.icon, R.drawable.concebra_pro_24);
+        notificationIntent = new Intent(context, MainActivity.class);
+        // set intent so it does not start a new activity
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+        notification.setLatestEventInfo(context, context.getString(R.string.app_name), message, intent);
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notificationManager.notify(0, notification);
+
+        return;
+/*
+        notification = new Notification(icon, message, when);
+        String title = context.getString(R.string.app_name);
+        notificationIntent = new Intent(context, MainActivity.class);
+        // set intent so it does not start a new activity
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+        notification.setLatestEventInfo(context, title, message, intent);
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notificationManager.notify(0, notification);*/
+    }
+
     @Override
     protected void onRegistered(Context context, String registrationId) {
         Log.i(TAG, "Device registered: regId = " + registrationId);
@@ -85,61 +136,6 @@ public class GCMIntentService extends GCMBaseIntentService {
                 errorId));
         return super.onRecoverableError(context, errorId);
     }
-
-    /**
-     * Issues a notification to inform the user that server has sent a message.
-     */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private static void generateNotification(Context context, String message) {
-        int icon = R.drawable.concebra_pro_64;
-        long when = System.currentTimeMillis();
-        NotificationManager notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        Notification.Builder builder =
-                new Notification.Builder(context)
-                        .setSmallIcon(icon)
-                        //.setLargeIcon()
-                        .setContentTitle(context.getString(R.string.app_name))
-                        .setContentText(message)
-                        .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
-                        .setStyle(new Notification.BigTextStyle()
-                                .bigText(message)
-                                //.setSummaryText(message)
-                        );
-        //builder.setVisibility(Notification.VISIBILITY_PUBLIC);
-        Notification notification;
-        Intent notificationIntent;
-        PendingIntent intent;
-
-        notification = builder.build();
-        //notification.contentView.setImageViewResource(android.R.id.icon, R.drawable.concebra_pro_24);
-        notificationIntent = new Intent(context, MainActivity.class);
-        // set intent so it does not start a new activity
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-        notification.setLatestEventInfo(context, context.getString(R.string.app_name), message, intent);
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(0, notification);
-
-        return;
-/*
-        notification = new Notification(icon, message, when);
-        String title = context.getString(R.string.app_name);
-        notificationIntent = new Intent(context, MainActivity.class);
-        // set intent so it does not start a new activity
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-        notification.setLatestEventInfo(context, title, message, intent);
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(0, notification);*/
-    }
-
-
-
-
 
 
 }

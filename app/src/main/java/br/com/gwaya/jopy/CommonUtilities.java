@@ -48,7 +48,7 @@ public final class CommonUtilities {
 
     /**
      * Notifies UI to display a message.
-     * <p>
+     * <p/>
      * This method is defined in the common helper because it's used both by
      * the UI and the background service.
      *

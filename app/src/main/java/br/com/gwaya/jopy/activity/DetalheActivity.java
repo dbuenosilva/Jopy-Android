@@ -43,27 +43,31 @@ import br.com.gwaya.jopy.R;
 
 
 public class DetalheActivity extends ActionBarActivity {
-	
-	public static final String PEDIDO = "PEDIDO";
-	public static final String TIPO = "TIPO";
-	public static final String APROVAR = "APROVAR";
-	public static final String REJEITAR = "REJEITAR";
-	public static final String STATUS_APROVADO = "aprovado";
+
+    public static final String PEDIDO = "PEDIDO";
+    public static final String TIPO = "TIPO";
+    public static final String APROVAR = "APROVAR";
+    public static final String REJEITAR = "REJEITAR";
+    public static final String STATUS_APROVADO = "aprovado";
 
     private PedidoCompra pedido;
     private String codForn;
-	
-	@Override
-	protected void onResume(){
+    private ScrollView scrollView;
+    private View relStatusRdp;
+    private TextView txtStatusRdp;
+    private View imgView;
+
+    @Override
+    protected void onResume() {
         super.onResume();
         scrollView.fullScroll(View.FOCUS_UP);
-	}
-	
-	@Override
-	public void onBackPressed() {
-		setResult(RESULT_OK, new Intent());
-		finish();
-	}
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK, new Intent());
+        finish();
+    }
 
     private void setRodapeEmitido() {
 
@@ -193,7 +197,7 @@ public class DetalheActivity extends ActionBarActivity {
                                 button.setEnabled(textRej.getText().length() > 0);
                             }
                         });
-                        dialog.getWindow().setSoftInputMode (WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
 
                         /*
@@ -213,12 +217,10 @@ public class DetalheActivity extends ActionBarActivity {
         buttonRejeitar.setOnClickListener(click);
     }
 
-    private ScrollView scrollView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 
 
         (new Runnable() {
@@ -323,7 +325,7 @@ public class DetalheActivity extends ActionBarActivity {
                     data = (Date) isoFormat.parse(dtMod);
                     dtMod = dateFormat.format(data);
 
-                    if (dtAprovRej!= null && !dtAprovRej.equals("")) {
+                    if (dtAprovRej != null && !dtAprovRej.equals("")) {
                         data = (Date) isoFormat.parse(dtAprovRej);
                         dtAprovRej = dateFormat.format(data);
                     }
@@ -416,7 +418,7 @@ public class DetalheActivity extends ActionBarActivity {
                         relativeLayout.setBackgroundResource(R.color.rejeitado);
                         relativeLayout.setVisibility(View.VISIBLE);
                         relStatusRdp.setBackgroundResource(R.color.rejeitado);
-                        txtStatusRdp.setText("Pedido rejeitado" + (dtAprovRej == null ? "" : " em " + dtAprovRej ));
+                        txtStatusRdp.setText("Pedido rejeitado" + (dtAprovRej == null ? "" : " em " + dtAprovRej));
 
                         textViewItem = (TextView) findViewById(R.id.txtStatus2);
                         textViewItem.setText(pedido.motivoRejeicao == null ? "" : pedido.motivoRejeicao);
@@ -433,12 +435,6 @@ public class DetalheActivity extends ActionBarActivity {
             }
         }).run();
 
-	}
-
-    private View relStatusRdp;
-
-    private TextView txtStatusRdp;
-
-    private View imgView;
+    }
 
 }

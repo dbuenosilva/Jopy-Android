@@ -27,11 +27,58 @@ import br.com.gwaya.jopy.R;
 
 /**
  * @author Adil Soomro
- *
  */
 public class AprovadosActivity extends MyBaseActivity {
 
     public static String NOVA_APROV = "NOVA_APROV";
+    private BroadcastReceiver receiverNovaAprov = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                String strPedidos = bundle.getString(NOVA_APROV);
+                if (strPedidos != null && strPedidos != "") {
+                    GsonBuilder gsonb = new GsonBuilder();
+                    Gson gson = gsonb.create();
+                    JSONArray j;
+                    List<PedidoCompra> pedidos = null;
+                    try {
+                        j = new JSONArray(strPedidos);
+                        pedidos = Arrays.asList(gson.fromJson(j.toString(), PedidoCompra[].class));
+                        setPedidos(pedidos);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+    };
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                String strPedidos = bundle.getString(PedidoCompraService.PEDIDOS_APROVADOS);
+                if (strPedidos != null && strPedidos != "") {
+                    GsonBuilder gsonb = new GsonBuilder();
+                    Gson gson = gsonb.create();
+                    JSONArray j;
+                    List<PedidoCompra> pedidos = null;
+                    try {
+                        j = new JSONArray(strPedidos);
+                        pedidos = Arrays.asList(gson.fromJson(j.toString(), PedidoCompra[].class));
+                        setPedidos(pedidos);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+    };
 
     @Override
     protected ListView setPedidos(List<PedidoCompra> pedidos) {
@@ -63,7 +110,7 @@ public class AprovadosActivity extends MyBaseActivity {
     }
 
     @Override
-    protected String getTheTitle(){
+    protected String getTheTitle() {
         return "Pedidos Aprovados";
     }
 
@@ -96,10 +143,10 @@ public class AprovadosActivity extends MyBaseActivity {
         }).run();
     }
 
-	@Override
-	protected String _statusPedido(){
-		return "aprovado";
-	}
+    @Override
+    protected String _statusPedido() {
+        return "aprovado";
+    }
 
     @Override
     protected void onPause() {
@@ -108,60 +155,10 @@ public class AprovadosActivity extends MyBaseActivity {
         unregisterReceiver(receiverNovaAprov);
     }
 
-    private BroadcastReceiver receiverNovaAprov = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                String strPedidos = bundle.getString(NOVA_APROV);
-                if (strPedidos != null && strPedidos != "") {
-                    GsonBuilder gsonb = new GsonBuilder();
-                    Gson gson = gsonb.create();
-                    JSONArray j;
-                    List<PedidoCompra> pedidos = null;
-                    try {
-                        j = new JSONArray(strPedidos);
-                        pedidos = Arrays.asList(gson.fromJson(j.toString(), PedidoCompra[].class));
-                        setPedidos(pedidos);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-    };
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
     }
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                String strPedidos = bundle.getString(PedidoCompraService.PEDIDOS_APROVADOS);
-                if (strPedidos != null && strPedidos != "") {
-                    GsonBuilder gsonb = new GsonBuilder();
-                    Gson gson = gsonb.create();
-                    JSONArray j;
-                    List<PedidoCompra> pedidos = null;
-                    try {
-                        j = new JSONArray(strPedidos);
-                        pedidos = Arrays.asList(gson.fromJson(j.toString(), PedidoCompra[].class));
-                        setPedidos(pedidos);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-    };
 }

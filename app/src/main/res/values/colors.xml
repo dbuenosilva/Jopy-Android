@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	
-	
-	
-	<color name="tabMedium">#2B2B2B</color>
-	<color name="tabDark">#000000</color>
-	<color name="tabTransparent">#10ffffff</color>
-	<color name="seccao">#99C6C6</color>
-	<color name="actionbar">#FFFFFF</color>
+
+
+    <color name="tabMedium">#2B2B2B</color>
+    <color name="tabDark">#000000</color>
+    <color name="tabTransparent">#10ffffff</color>
+    <color name="seccao">#99C6C6</color>
+    <color name="actionbar">#FFFFFF</color>
 
     <color name="actionbar_text">#FFFFFF</color>
     <color name="header">#EEEEF3</color>
@@ -23,6 +22,6 @@
     <color name="actionbar_colortext">#FFFFFF</color>
     <color name="icon_foreground">#A3AAAE</color>
     <color name="line_background">#B2292E</color>
-	
-	
+
+
 </resources>

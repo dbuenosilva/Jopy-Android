@@ -119,7 +119,7 @@ public class HistoricoActivity extends ActionBarActivity {
                         + "' AND " + MySQLiteHelper.STATUS_PEDIDO + " IN ('aprovado', 'rejeitado')", " 3 ");
                 dataSource.close();
                 pedidos = list;
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 if (pedidos == null || (pedidos != null && pedidos.size() == 0)) {
@@ -144,7 +144,7 @@ public class HistoricoActivity extends ActionBarActivity {
             } else {
                 _pedidos = pedidos;
 
-                ListView pedidoList = (ListView)HistoricoActivity.this.findViewById(R.id.listViewHistorico);
+                ListView pedidoList = (ListView) HistoricoActivity.this.findViewById(R.id.listViewHistorico);
 
                 HistoricoAdapterItem adapter = new HistoricoAdapterItem(HistoricoActivity.this,
                         R.layout.rowitem_historico, _pedidos);

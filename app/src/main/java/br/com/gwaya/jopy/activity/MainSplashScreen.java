@@ -31,7 +31,7 @@ public class MainSplashScreen extends Activity {
                 try {
 
                     // Thread will sleep for 5 seconds
-                    sleep(3*1000);
+                    sleep(3 * 1000);
 
                     // After 5 seconds redirect to another intent
 

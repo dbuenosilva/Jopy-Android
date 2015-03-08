@@ -32,40 +32,13 @@ public class MyBaseActivity extends ActionBarActivity {
     protected PedidoCompraDataSource dataSource;
 
     protected UpdateTask updateTask;
-	
-	public class CarregaPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
-
-		@Override
-		protected void onPostExecute(List<PedidoCompra> result) {
-			super.onPostExecute(result);
-			
-			_pedidos = result;
-			
-			if (_pedidos != null) {
-				setPedidos(_pedidos);
-			}
-		}
-		
-		@Override
-		protected List<PedidoCompra> doInBackground(Void... params) {
-			List<PedidoCompra> pedidos = null;
-			
-			try {
-				pedidoDataSource.open();
-			    
-				List<PedidoCompra> lst = pedidoDataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _statusPedido() + "'", null);
-			    
-			    pedidos = lst;
-			} catch(Exception e) {
-				e.printStackTrace();
-			} finally {
-				pedidoDataSource.close();
-			}
-			
-			// TODO Auto-generated method stub
-			return pedidos;
-		}
-	}
+    protected List<PedidoCompra> _pedidos;
+    protected FrameLayout frmTipo;
+    protected ListView listView;
+    protected int currentPosition;
+    PedidoCompraDataSource pedidoDataSource;
+    CarregaPedidos carregaPedidos;
+    private View mProgressView;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
@@ -90,49 +63,39 @@ public class MyBaseActivity extends ActionBarActivity {
         }
     }
 
-    private View mProgressView;
+    protected String _statusPedido() {
+        return "";
+    }
 
-	PedidoCompraDataSource pedidoDataSource;
-	
-	CarregaPedidos carregaPedidos;
+    protected String getTheTitle() {
+        return "";
+    }
 
-	protected List<PedidoCompra> _pedidos;
-	
-	protected String _statusPedido(){
-		return "";
-	}
-
-    protected String getTheTitle() { return ""; }
-
-    protected int getResourceLayout(){ return R.layout.list_view_pedido_compra_emitido; }
-
-    protected FrameLayout frmTipo;
-
-    protected ListView listView;
-
-    protected int currentPosition;
+    protected int getResourceLayout() {
+        return R.layout.list_view_pedido_compra_emitido;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-	    
-		super.onCreate(savedInstanceState);
+
+        super.onCreate(savedInstanceState);
 
         dataSource = new PedidoCompraDataSource(this);
-		
-		setContentView(getResourceLayout());
 
-        mProgressView =  findViewById(R.id.baseProgress);
-		
-		if (pedidoDataSource == null) {
-			pedidoDataSource = new PedidoCompraDataSource(this);
-		}
-		if (carregaPedidos == null) {
-			carregaPedidos = new CarregaPedidos();
-		}
+        setContentView(getResourceLayout());
+
+        mProgressView = findViewById(R.id.baseProgress);
+
+        if (pedidoDataSource == null) {
+            pedidoDataSource = new PedidoCompraDataSource(this);
+        }
+        if (carregaPedidos == null) {
+            carregaPedidos = new CarregaPedidos();
+        }
 
         frmTipo = (FrameLayout) findViewById(R.id.frmTipo);
 
-        listView = (ListView)findViewById(R.id.listViewPedidoCompraEmitido);
+        listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
 
         if (_statusPedido().equals("emitido")) {
             frmTipo.setBackgroundResource(R.color.header);
@@ -177,11 +140,11 @@ public class MyBaseActivity extends ActionBarActivity {
 
         //Intent service = new Intent(this, PedidoCompraService.class);
         //this.startService(service);
-	}
-	
-	protected ListView setPedidos(List<PedidoCompra> pedidos) {
-		
-		_pedidos = pedidos;
+    }
+
+    protected ListView setPedidos(List<PedidoCompra> pedidos) {
+
+        _pedidos = pedidos;
 
         if (pedidos != null) {
 
@@ -199,8 +162,8 @@ public class MyBaseActivity extends ActionBarActivity {
             listView.setDivider(new ColorDrawable(getResources().getColor(R.color.header)));
         }
 
-	    return listView;
-	}
+        return listView;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -210,17 +173,17 @@ public class MyBaseActivity extends ActionBarActivity {
                 adapter.remove(_pedidos.get(currentPosition));
                 adapter.notifyDataSetChanged();
                 currentPosition = -1;
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-	@Override
-	  protected void onResume() {
-	    super.onResume();
+    @Override
+    protected void onResume() {
+        super.onResume();
         /*
-	    try {
+        try {
 	    	if (carregaPedidos != null) {
 	    		if (carregaPedidos.getStatus() == Status.RUNNING) {
 	    			carregaPedidos.cancel(true);
@@ -230,21 +193,55 @@ public class MyBaseActivity extends ActionBarActivity {
 	    } catch(Exception e) {
 	    	String str = e.getMessage();
 	    }*/
-	  }
-	  
-	  @Override
-	  protected void onPause() {
-	    super.onPause();
-	    try {
-	    	if (carregaPedidos != null) {
-	    		if (carregaPedidos.getStatus() == Status.RUNNING) {
-	    			carregaPedidos.cancel(true);
-	    		}
-		    }
-	    } catch(Exception e) {
-	    	String str = e.getMessage();
-	    }
-	  }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            if (carregaPedidos != null) {
+                if (carregaPedidos.getStatus() == Status.RUNNING) {
+                    carregaPedidos.cancel(true);
+                }
+            }
+        } catch (Exception e) {
+            String str = e.getMessage();
+        }
+    }
+
+    public class CarregaPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
+
+        @Override
+        protected void onPostExecute(List<PedidoCompra> result) {
+            super.onPostExecute(result);
+
+            _pedidos = result;
+
+            if (_pedidos != null) {
+                setPedidos(_pedidos);
+            }
+        }
+
+        @Override
+        protected List<PedidoCompra> doInBackground(Void... params) {
+            List<PedidoCompra> pedidos = null;
+
+            try {
+                pedidoDataSource.open();
+
+                List<PedidoCompra> lst = pedidoDataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _statusPedido() + "'", null);
+
+                pedidos = lst;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                pedidoDataSource.close();
+            }
+
+            // TODO Auto-generated method stub
+            return pedidos;
+        }
+    }
 
     public class UpdateTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
         private final String _status;
@@ -256,13 +253,13 @@ public class MyBaseActivity extends ActionBarActivity {
         @Override
         protected List<PedidoCompra> doInBackground(Void... params) {
             List<PedidoCompra> pedidos = null;
-            try{
+            try {
                 dataSource.open();
                 pedidos = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _status + "'", null);
                 dataSource.close();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 dataSource.close();
             }
 

@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical">
 
     <TextView
+        android:id="@+id/textView9"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Motivo da rejeição"
-        android:id="@+id/textView9"
+        android:layout_marginTop="15dp"
         android:gravity="center|center_vertical|center_horizontal"
-        android:layout_marginTop="15dp" />
+        android:text="Motivo da rejeição"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
+        android:id="@+id/txtPutRej"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/txtPutRej"
         android:layout_gravity="top"
-        android:layout_margin="15dp" />
-
+        android:layout_margin="15dp"
+        android:ems="10"
+        android:inputType="textMultiLine" />
 
 
 </LinearLayout>

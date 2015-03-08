@@ -6,9 +6,9 @@ import android.content.Intent;
 
 
 public class PedidoCompraReceiver extends BroadcastReceiver {
-	  @Override
-	  public void onReceive(Context context, Intent intent) {
-	    Intent service = new Intent(context, PedidoCompraService.class);
-	    context.startService(service);
-	  }
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Intent service = new Intent(context, PedidoCompraService.class);
+        context.startService(service);
+    }
 }

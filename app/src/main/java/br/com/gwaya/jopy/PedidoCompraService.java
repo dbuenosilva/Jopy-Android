@@ -1,6 +1,5 @@
 package br.com.gwaya.jopy;
 
-import android.app.Application;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
@@ -27,68 +26,99 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PedidoCompraService extends IntentService {
-	private final IBinder mBinder = new MyBinder();
-	private List<PedidoCompra> list = new ArrayList<PedidoCompra>();
-	private AcessoDataSource acessoDatasource;
-	private PedidoCompraDataSource pedidoCompraDatasource;
-	public static final String NOTIFICATION = "br.com.gwaya.android.service.receiver";
-	public static final String PEDIDOS_EMITIDOS = "PEDIDOS_EMITIDOS";
-	public static final String PEDIDOS_REJEITADOS = "PEDIDOS_REJEITADOS";
-	public static final String PEDIDOS_APROVADOS = "PEDIDOS_APROVADOS";
-	
-	public PedidoCompraService() {
-		super("PedidoCompraService");
-	}
-	
-	@Override
-	protected void onHandleIntent(Intent intent) {
+    public static final String NOTIFICATION = "br.com.gwaya.android.service.receiver";
+    public static final String PEDIDOS_EMITIDOS = "PEDIDOS_EMITIDOS";
+    public static final String PEDIDOS_REJEITADOS = "PEDIDOS_REJEITADOS";
+    public static final String PEDIDOS_APROVADOS = "PEDIDOS_APROVADOS";
+    private final IBinder mBinder = new MyBinder();
+    private List<PedidoCompra> list = new ArrayList<PedidoCompra>();
+    private AcessoDataSource acessoDatasource;
+    private PedidoCompraDataSource pedidoCompraDatasource;
 
-		if (acessoDatasource == null) {
-			acessoDatasource = new AcessoDataSource(this.getApplicationContext());
-		}
-		try {
-			acessoDatasource.open();
-			List<Acesso> lstAcesso = acessoDatasource.getAllAcesso();
-			acessoDatasource.close();
+    public PedidoCompraService() {
+        super("PedidoCompraService");
+    }
+
+    public static String loadFromNetwork(String urlString, Acesso acesso, Context context) throws IOException {
+        String responseBody = "";
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(urlString);
+
+            httpGet.setHeader("Authorization", acesso.Token_Type + " " + acesso.Access_Token);
+
+//	        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+//	        str = httpclient.execute(httpGet, responseHandler);
+            HttpResponse response = httpclient.execute(httpGet);
+
+            // Obtem codigo de retorno HTTP
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            if (statusCode >= 200 && statusCode <= 202) {
+                // Obtem string do Body retorno HTTP
+                ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                responseBody = responseHandler.handleResponse(response);
+            } else {
+                // mensagem
+                acesso.logoff(context); // logout
+            }
+
+        } catch (Exception e) {
+            Log.e("", "");
+        } finally {
+
+        }
+        return responseBody;
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+
+        if (acessoDatasource == null) {
+            acessoDatasource = new AcessoDataSource(this.getApplicationContext());
+        }
+        try {
+            acessoDatasource.open();
+            List<Acesso> lstAcesso = acessoDatasource.getAllAcesso();
+            acessoDatasource.close();
 
             pedidoCompraDatasource = new PedidoCompraDataSource(this.getApplicationContext());
             pedidoCompraDatasource.open();
-			
-			if (lstAcesso.size() > 0) {
-				
-				Acesso acesso = lstAcesso.get(0);
-				
-				String url = getResources().getString(R.string.protocolo) 
-						+ getResources().getString(R.string.rest_api_url)
-						+ getResources().getString(R.string.pedidocompra_path),
+
+            if (lstAcesso.size() > 0) {
+
+                Acesso acesso = lstAcesso.get(0);
+
+                String url = getResources().getString(R.string.protocolo)
+                        + getResources().getString(R.string.rest_api_url)
+                        + getResources().getString(R.string.pedidocompra_path),
                         dtMod = pedidoCompraDatasource.ultimoSync();
 
                 if (dtMod != null) {
                     url += "?gte=" + dtMod;
                 }
-				
-				descarregaFila(url, acesso);
-				
-				String responseData = "";
-				
-	            responseData = loadFromNetwork(url, acesso, this.getApplicationContext());
-	            
-	            GsonBuilder gsonb = new GsonBuilder();
-		        Gson gson = gsonb.create();
-		        PedidoCompra[] pedidos = null;
 
-	            pedidos = gson.fromJson(responseData, PedidoCompra[].class);
-	            
-	            if (pedidos != null && pedidos.length > 0) {
+                descarregaFila(url, acesso);
+
+                String responseData = "";
+
+                responseData = loadFromNetwork(url, acesso, this.getApplicationContext());
+
+                GsonBuilder gsonb = new GsonBuilder();
+                Gson gson = gsonb.create();
+                PedidoCompra[] pedidos = null;
+
+                pedidos = gson.fromJson(responseData, PedidoCompra[].class);
+
+                if (pedidos != null && pedidos.length > 0) {
 
                     // Diego Bueno - 10/02/2015 - verifica se pedido já existe, caso sim, deleta e inclui com nova alteração
-                    for (int i = 0 ; i < pedidos.length; i++) {
+                    for (int i = 0; i < pedidos.length; i++) {
 
                         if (pedidoCompraDatasource.ExistePedidoCompra(pedidos[i]._id)) {
                             pedidoCompraDatasource.deletePedidoCompra(pedidos[i]);
                             pedidoCompraDatasource.createUpdatePedidoCompra(pedidos[i], false);
-                        }
-                        else{
+                        } else {
                             pedidoCompraDatasource.createUpdatePedidoCompra(pedidos, false);
                         }
 
@@ -99,8 +129,8 @@ public class PedidoCompraService extends IntentService {
                     List<PedidoCompra> rejeitados = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
 
                     if (emitidos.size() > 0) {
-                       //publishResults(emitidos.toArray(new PedidoCompra[emitidos.size()]), PEDIDOS_EMITIDOS);
-                       publishResults(emitidos, PEDIDOS_EMITIDOS);
+                        //publishResults(emitidos.toArray(new PedidoCompra[emitidos.size()]), PEDIDOS_EMITIDOS);
+                        publishResults(emitidos, PEDIDOS_EMITIDOS);
                     }
                     if (aprovados.size() > 0) {
                         //publishResults(aprovados.toArray(new PedidoCompra[aprovados.size()]), PEDIDOS_APROVADOS);
@@ -109,19 +139,19 @@ public class PedidoCompraService extends IntentService {
                         //publishResults(rejeitados.toArray(new PedidoCompra[rejeitados.size()]), PEDIDOS_REJEITADOS);
                     }
 
-	            }
-			}
-		} catch(Exception e) {
-			String msg = e.getMessage();
-		} finally {
-			if (pedidoCompraDatasource != null) {
-				pedidoCompraDatasource.close();
-			}
-		}
-	}
-	
-	private void descarregaFila(String urlString, Acesso acesso){
-		FilaPedidoCompraDataSource filaDataSource = null;
+                }
+            }
+        } catch (Exception e) {
+            String msg = e.getMessage();
+        } finally {
+            if (pedidoCompraDatasource != null) {
+                pedidoCompraDatasource.close();
+            }
+        }
+    }
+
+    private void descarregaFila(String urlString, Acesso acesso) {
+        FilaPedidoCompraDataSource filaDataSource = null;
         try {
 
             String url = getResources().getString(R.string.protocolo)
@@ -159,8 +189,8 @@ public class PedidoCompraService extends IntentService {
 
                     httpPut.setEntity(entity);
 
-                   // ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                  //  String str = httpclient.execute(httpPut, responseHandler);
+                    // ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                    //  String str = httpclient.execute(httpPut, responseHandler);
 
                     HttpResponse response = httpclient.execute(httpPut);
 
@@ -189,7 +219,7 @@ public class PedidoCompraService extends IntentService {
             } else {
                 //todo
             }
-        } catch(HttpResponseException e) {
+        } catch (HttpResponseException e) {
             switch (e.getStatusCode()) {
                 case 404:
                     break;
@@ -198,70 +228,34 @@ public class PedidoCompraService extends IntentService {
                     break;
             }
             e.printStackTrace();
-        } catch(Exception e) {
-        	Log.e("", "");
-        }
-        finally {
-        	if (filaDataSource != null) {
-        		filaDataSource.close();
-        	}
-        }
-	}
-	
-	private void publishResults(List<PedidoCompra> pedidos, String tipo) {
-	    Intent intent = new Intent(NOTIFICATION);
-        String strJson = new Gson().toJson(pedidos);
-	    intent.putExtra(tipo, strJson);
-	    sendBroadcast(intent);
-	}
-	
-	public static String loadFromNetwork(String urlString, Acesso acesso, Context context) throws IOException {
-        String responseBody ="";
-        try {
-	        HttpClient httpclient = new DefaultHttpClient();
-	        HttpGet httpGet = new HttpGet(urlString);
-	        
-	        httpGet.setHeader("Authorization", acesso.Token_Type + " " + acesso.Access_Token);
-	        
-//	        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-//	        str = httpclient.execute(httpGet, responseHandler);
-            HttpResponse response = httpclient.execute(httpGet);
-
-            // Obtem codigo de retorno HTTP
-            int statusCode = response.getStatusLine().getStatusCode();
-
-            if (statusCode >= 200 && statusCode <= 202) {
-                // Obtem string do Body retorno HTTP
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                responseBody = responseHandler.handleResponse(response);
+        } catch (Exception e) {
+            Log.e("", "");
+        } finally {
+            if (filaDataSource != null) {
+                filaDataSource.close();
             }
-            else {
-                // mensagem
-                acesso.logoff(context); // logout
-            }
-
-        } catch(Exception e)
-        {
-        	Log.e("", "");
         }
-        finally {
-            
-        }
-        return responseBody;
     }
 
-	@Override
-	public IBinder onBind(Intent arg0) {
-		return mBinder;
-	}
+    private void publishResults(List<PedidoCompra> pedidos, String tipo) {
+        Intent intent = new Intent(NOTIFICATION);
+        String strJson = new Gson().toJson(pedidos);
+        intent.putExtra(tipo, strJson);
+        sendBroadcast(intent);
+    }
 
-	public class MyBinder extends Binder {
-		PedidoCompraService getService() {
-			return PedidoCompraService.this;
-		}
-  }
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return mBinder;
+    }
 
-	public List<PedidoCompra> getAll() {
-		return list;
-	}
+    public List<PedidoCompra> getAll() {
+        return list;
+    }
+
+    public class MyBinder extends Binder {
+        PedidoCompraService getService() {
+            return PedidoCompraService.this;
+        }
+    }
 }

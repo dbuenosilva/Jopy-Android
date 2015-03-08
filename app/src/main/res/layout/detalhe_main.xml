@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <include
-        layout="@layout/detalhe"
         android:id="@+id/id"
+        layout="@layout/detalhe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1" />
 
     <RelativeLayout
+        android:id="@+id/rodapeButtons"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/actionbar_background"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/rodapeButtons">
+        android:background="@color/actionbar_background">
 
         <Button
             android:id="@+id/buttonRejeitar"
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@color/actionbar_background"
             android:layout_marginLeft="15dp"
+            android:background="@color/actionbar_background"
             android:text="Rejeitar"
             android:textColor="@color/actionbar_text"
             android:textSize="20dp" />

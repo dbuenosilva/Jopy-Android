@@ -44,6 +44,123 @@ public class EmitidosActivity extends MyBaseActivity {
     private SaveAllTask saveAllTask;
 
     private Boolean login;
+    private Runnable runnable;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                String strPedidos = bundle.getString(PedidoCompraService.PEDIDOS_EMITIDOS);
+                if (strPedidos != null && !strPedidos.equals("")) {
+                    GsonBuilder gsonb = new GsonBuilder();
+                    Gson gson = gsonb.create();
+                    JSONArray j;
+                    List<PedidoCompra> pedidos = null;
+                    try {
+                        j = new JSONArray(strPedidos);
+                        pedidos = Arrays.asList(gson.fromJson(strPedidos, PedidoCompra[].class));
+                        setPedidos(pedidos);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+    };
+
+    @Override
+    protected String getTheTitle() {
+        return "Pedidos Pendentes";
+    }
+
+    @Override
+    protected String _statusPedido() {
+        return "emitido";
+    }
+
+    @Override
+    protected ListView setPedidos(List<PedidoCompra> pedidos) {
+
+        ListView pedidoList = super.setPedidos(pedidos);
+
+        pedidoList.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                currentPosition = position;
+
+                Activity tab = (Activity) EmitidosActivity.this.getParent();
+
+                PedidoCompra pedido = _pedidos.get(position);
+                Intent intent = new Intent(tab, DetalheActivity.class);
+                intent.putExtra("pedidocompra", new Gson().toJson(pedido));
+
+                EmitidosActivity.this.startActivityForResult(intent, 101);
+            }
+        });
+
+        pedidoList.setDivider(new ColorDrawable(this.getResources().getColor(R.color.emitido)));
+        pedidoList.setDividerHeight(1);
+
+        return pedidoList;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+
+        login = extras.getBoolean("login");
+
+        AcessoDataSource acessoDataSource = new AcessoDataSource(this);
+        acessoDataSource.open();
+        List<Acesso> lst = acessoDataSource.getAllAcesso();
+        if (lst.size() > 0) {
+            acesso = lst.get(0);
+        }
+        acessoDataSource.close();
+
+        if (login) {
+            if (downloadTask == null) {
+                showProgress(true);
+                downloadTask = new DownloadTask();
+                downloadTask.execute((Void) null);
+            }
+        } else if (updateTask == null) {
+            showProgress(true);
+            updateTask = new UpdateTask(_statusPedido());
+            updateTask.execute((Void) null);
+        }
+
+        registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            if (receiver != null) {
+                unregisterReceiver(receiver);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     public class SaveAllTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -56,14 +173,14 @@ public class EmitidosActivity extends MyBaseActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             Boolean retorno = true;
-            try{
+            try {
                 dataSource.open();
                 dataSource.createUpdatePedidoCompra(mPedidos.toArray(new PedidoCompra[mPedidos.size()]), false);
                 dataSource.close();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 retorno = false;
                 e.printStackTrace();
-            }finally {
+            } finally {
                 dataSource.close();
             }
 
@@ -165,123 +282,4 @@ public class EmitidosActivity extends MyBaseActivity {
             showProgress(false);
         }
     }
-
-    @Override
-    protected String getTheTitle(){
-        return "Pedidos Pendentes";
-    }
-
-	@Override
-	protected String _statusPedido(){
-		return "emitido";
-	}
-
-	@Override
-	protected ListView setPedidos(List<PedidoCompra> pedidos) {
-		
-		ListView pedidoList = super.setPedidos(pedidos);
-		
-	    pedidoList.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-
-            currentPosition = position;
-
-            Activity tab = (Activity) EmitidosActivity.this.getParent();
-
-            PedidoCompra pedido = _pedidos.get(position);
-            Intent intent = new Intent(tab, DetalheActivity.class);
-            intent.putExtra("pedidocompra", new Gson().toJson(pedido));
-
-            EmitidosActivity.this.startActivityForResult(intent, 101);
-			}
-		});
-
-        pedidoList.setDivider(new ColorDrawable(this.getResources().getColor(R.color.emitido)));
-        pedidoList.setDividerHeight(1);
-
-	    return pedidoList;
-	}
-
-    private Runnable runnable;
-
-      @Override
-      protected void onResume() {
-            super.onResume();
-      }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Bundle extras = getIntent().getExtras();
-
-        login = extras.getBoolean("login");
-
-        AcessoDataSource acessoDataSource = new AcessoDataSource(this);
-        acessoDataSource.open();
-        List<Acesso> lst = acessoDataSource.getAllAcesso();
-        if (lst.size() > 0) {
-            acesso = lst.get(0);
-        }
-        acessoDataSource.close();
-
-        if (login) {
-            if (downloadTask == null) {
-                showProgress(true);
-                downloadTask = new DownloadTask();
-                downloadTask.execute((Void) null);
-            }
-        } else if (updateTask == null) {
-            showProgress(true);
-            updateTask = new UpdateTask(_statusPedido());
-            updateTask.execute((Void) null);
-        }
-
-        registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
-    }
-
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        try {
-            if (receiver != null) {
-                unregisterReceiver(receiver);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-        protected void onPause() {
-            super.onPause();
-    }
-	
-	private BroadcastReceiver receiver = new BroadcastReceiver () {
-
-	    @Override
-	    public void onReceive(Context context, Intent intent) {
-	      Bundle bundle = intent.getExtras();
-	      if (bundle != null) {
-	        String strPedidos = bundle.getString(PedidoCompraService.PEDIDOS_EMITIDOS);
-	        if (strPedidos != null && !strPedidos.equals("")) {
-	        	GsonBuilder gsonb = new GsonBuilder();
-		        Gson gson = gsonb.create();
-		        JSONArray j;
-		        List<PedidoCompra> pedidos = null;
-	            try {
-					j = new JSONArray(strPedidos);
-					pedidos = Arrays.asList(gson.fromJson(strPedidos, PedidoCompra[].class));
-					setPedidos(pedidos);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-	        }
-	      }
-	    }
-	    
-	};
 }

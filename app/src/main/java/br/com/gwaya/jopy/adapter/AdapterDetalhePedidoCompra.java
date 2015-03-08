@@ -9,14 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
-
 
 public class AdapterDetalhePedidoCompra extends ArrayAdapter<PedidoCompraItem> {
 
@@ -43,32 +42,20 @@ public class AdapterDetalhePedidoCompra extends ArrayAdapter<PedidoCompraItem> {
         final PedidoCompraItem pedido = data[position];
 
         String qtde = String.format("%.2f", pedido.getQtde());
-        String valor = String.format("%.2f", pedido.getValor());
-        String subTotal = String.format("%.2f", pedido.getTotal());
+        String valor = NumberFormat.getCurrencyInstance().format(pedido.getValor());
+        String subTotal = "Total: ".concat(NumberFormat.getCurrencyInstance().format(pedido.getTotal()));
 
-        valor = NumberFormat.getCurrencyInstance().format(pedido.getValor());
-        subTotal = NumberFormat.getCurrencyInstance().format(pedido.getTotal());
+        TextView textViewProduto = (TextView) convertView.findViewById(R.id.textViewProduto);
+        TextView textViewQtde = (TextView) convertView.findViewById(R.id.textViewQtde);
+        TextView textViewSubTotal = (TextView) convertView.findViewById(R.id.textViewSubTotal);
+        TextView txtSubTotal = (TextView) convertView.findViewById(R.id.txtSubTotal);
+        ImageView imageButton = (ImageView) convertView.findViewById(R.id.imgBtnObs);
 
-        valor = NumberFormat.getCurrencyInstance().format(pedido.getValor());
-        subTotal = NumberFormat.getCurrencyInstance().format(pedido.getTotal());
+        textViewProduto.setText(pedido.getProduto());
+        textViewQtde.setText(qtde);
+        textViewSubTotal.setText(valor);
+        txtSubTotal.setText(subTotal);
 
-        TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewProduto);
-        textViewItem.setText(pedido.getProduto());
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) convertView.findViewById(R.id.textViewQtde);
-        textViewItem.setText(qtde);
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) convertView.findViewById(R.id.textViewSubTotal);
-        textViewItem.setText(valor);
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) convertView.findViewById(R.id.txtSubTotal);
-        textViewItem.setText(subTotal);
-        textViewItem.setTag(pedido.get_id());
-
-        ImageButton imageButton = (ImageButton) convertView.findViewById(R.id.imgBtnObs);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -208,7 +208,6 @@ public class ActivityDetalhe extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
 
@@ -266,8 +265,6 @@ public class ActivityDetalhe extends ActionBarActivity {
                 mActionBar.setCustomView(mCustomView);
                 mActionBar.setDisplayShowCustomEnabled(true);
                 //CUSTOM VIEW ACTIONBAR
-
-                //setTitle(pedido.nomeForn);
 
                 ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 

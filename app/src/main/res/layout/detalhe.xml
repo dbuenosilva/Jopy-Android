@@ -70,7 +70,7 @@
                     android:layout_marginStart="25dp"
                     android:layout_toEndOf="@+id/textView1"
                     android:layout_toRightOf="@+id/textView1"
-                    android:text="99.999"
+
                     android:textSize="17dp" />
 
             </RelativeLayout>
@@ -98,7 +98,7 @@
                     android:layout_alignBottom="@+id/textView2"
                     android:layout_marginLeft="19dp"
                     android:layout_toRightOf="@+id/textView2"
-                    android:text="99.999"
+
                     android:textSize="17dp" />
 
             </RelativeLayout>
@@ -126,7 +126,7 @@
                     android:layout_alignBottom="@+id/textView3"
                     android:layout_marginLeft="19dp"
                     android:layout_toRightOf="@+id/textView3"
-                    android:text="99.999"
+
                     android:textSize="17dp" />
 
             </RelativeLayout>
@@ -154,7 +154,7 @@
                     android:layout_alignBottom="@+id/textView4"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textView4"
-                    android:text="99.999"
+
                     android:textSize="17dp" />
 
             </RelativeLayout>
@@ -182,7 +182,7 @@
                     android:layout_alignBottom="@+id/textView5"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textView5"
-                    android:text="99.999"
+
                     android:textSize="17dp" />
 
             </RelativeLayout>
@@ -199,7 +199,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textView6"
-                    android:text="99.999"
+
                     android:textSize="17dp" />
 
                 <TextView
@@ -238,7 +238,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textView7"
-                    android:text="99.999"
+
                     android:textSize="17dp" />
 
             </RelativeLayout>
@@ -266,7 +266,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textView8"
-                    android:text="99.999"
+
                     android:textSize="17dp" />
 
             </RelativeLayout>
@@ -295,7 +295,7 @@
                         android:layout_alignParentTop="true"
                         android:background="@color/header"
                         android:gravity="center_vertical|center_horizontal"
-                        android:text="Data da ultima modificacao: 14/12/2014"
+                        android:text="Data da ultima modificacao:"
                         android:textColor="#6F7C7D"
                         android:textSize="15dp"
                         android:textStyle="normal" />
@@ -380,7 +380,6 @@
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:paddingTop="10dp"
-                    android:text="Eu estava precisando disso e daquilo, bla bla, porque sim e porque eu quero essa bosta"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/header_text" />
 

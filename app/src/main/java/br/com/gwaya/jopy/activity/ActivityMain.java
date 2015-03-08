@@ -32,8 +32,6 @@ public class ActivityMain extends TabActivity {
 
     public Acesso acesso;
 
-    private DownloadTask downloadTask;
-
     private PedidoCompraDAO dataSource;
     private Boolean login;
 
@@ -153,10 +151,7 @@ public class ActivityMain extends TabActivity {
                 GsonBuilder gsonb = new GsonBuilder();
                 Gson gson = gsonb.create();
                 JSONArray j;
-                PedidoCompra[] pedidos = null;
-
-                //j = new JSONArray(responseData);
-                pedidos = gson.fromJson(responseData, PedidoCompra[].class);
+                PedidoCompra[] pedidos = gson.fromJson(responseData, PedidoCompra[].class);
 
                 dataSource.deleteAll();
                 dataSource.createUpdatePedidoCompra(pedidos);
@@ -182,15 +177,6 @@ public class ActivityMain extends TabActivity {
             }
 
             return lst;
-        }
-
-        @Override
-        protected void onPostExecute(final List<PedidoCompra> pedidos) {
-            downloadTask = null;
-        }
-
-        protected void onCancelled() {
-            downloadTask = null;
         }
     }
 }

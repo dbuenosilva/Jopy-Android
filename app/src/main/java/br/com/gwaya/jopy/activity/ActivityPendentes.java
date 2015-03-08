@@ -34,7 +34,7 @@ import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class ActivityPendentes extends ActivityMyBase {
+public class ActivityPendentes extends ActivityAba {
 
     private Acesso acesso;
 
@@ -43,7 +43,7 @@ public class ActivityPendentes extends ActivityMyBase {
     private SaveAllTask saveAllTask;
 
     private Boolean login;
-    private Runnable runnable;
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override

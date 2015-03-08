@@ -26,7 +26,7 @@ import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class ActivityRejeitados extends ActivityMyBase {
+public class ActivityRejeitados extends ActivityAba {
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 

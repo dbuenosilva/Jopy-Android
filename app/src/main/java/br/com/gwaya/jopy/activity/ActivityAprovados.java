@@ -28,7 +28,7 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 /**
  * @author Adil Soomro
  */
-public class ActivityAprovados extends ActivityMyBase {
+public class ActivityAprovados extends ActivityAba {
 
     public static String NOVA_APROV = "NOVA_APROV";
     private BroadcastReceiver receiverNovaAprov = new BroadcastReceiver() {

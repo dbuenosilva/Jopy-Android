@@ -26,7 +26,7 @@ import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class ActivityMyBase extends ActionBarActivity {
+public class ActivityAba extends ActionBarActivity {
 
     private FrameLayout frmTipo;
     private ListView listView;
@@ -68,10 +68,6 @@ public class ActivityMyBase extends ActionBarActivity {
         return "";
     }
 
-    private int getResourceLayout() {
-        return R.layout.list_view_pedido_compra_emitido;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -79,7 +75,7 @@ public class ActivityMyBase extends ActionBarActivity {
 
         pedidoCompraDAO = new PedidoCompraDAO();
 
-        setContentView(getResourceLayout());
+        setContentView(R.layout.activity_aba_pedido);
 
         frmTipo = (FrameLayout) findViewById(R.id.frmTipo);
         listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);

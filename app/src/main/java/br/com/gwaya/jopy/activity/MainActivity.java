@@ -19,7 +19,7 @@ import org.json.JSONArray;
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.gwaya.jopy.Acesso;
+import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.MySQLiteHelper;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.PedidoCompraDataSource;

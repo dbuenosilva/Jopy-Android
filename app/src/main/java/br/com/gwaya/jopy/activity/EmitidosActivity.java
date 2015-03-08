@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.gwaya.jopy.Acesso;
+import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.AcessoDataSource;
 import br.com.gwaya.jopy.MySQLiteHelper;
 import br.com.gwaya.jopy.model.PedidoCompra;
@@ -223,7 +223,7 @@ public class EmitidosActivity extends MyBaseActivity {
 
             HttpGet httpGet = new HttpGet(url);
 
-            httpGet.setHeader("Authorization", acesso.Token_Type + " " + acesso.Access_Token);
+            httpGet.setHeader("Authorization", acesso.getToken_Type() + " " + acesso.getAccess_Token());
 
 //            ResponseHandler<String> responseHandler = new BasicResponseHandler();
             try {

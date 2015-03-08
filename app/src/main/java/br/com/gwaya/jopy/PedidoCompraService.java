@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class PedidoCompraService extends IntentService {
@@ -47,7 +48,7 @@ public class PedidoCompraService extends IntentService {
             HttpClient httpclient = new DefaultHttpClient();
             HttpGet httpGet = new HttpGet(urlString);
 
-            httpGet.setHeader("Authorization", acesso.Token_Type + " " + acesso.Access_Token);
+            httpGet.setHeader("Authorization", acesso.getToken_Type() + " " + acesso.getAccess_Token());
 
 //	        ResponseHandler<String> responseHandler = new BasicResponseHandler();
 //	        str = httpclient.execute(httpGet, responseHandler);
@@ -181,7 +182,7 @@ public class PedidoCompraService extends IntentService {
 
                     HttpClient httpclient = new DefaultHttpClient();
                     HttpPut httpPut = new HttpPut(url + "/" + pedidoCompra.get_id());
-                    httpPut.setHeader("Authorization", acesso.Token_Type + " " + acesso.Access_Token);
+                    httpPut.setHeader("Authorization", acesso.getToken_Type() + " " + acesso.getAccess_Token());
 
                     filaDataSource.beginTransaction();
 

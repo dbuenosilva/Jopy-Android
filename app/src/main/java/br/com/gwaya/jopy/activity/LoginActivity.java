@@ -51,7 +51,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.gwaya.jopy.Acesso;
+import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.AcessoDataSource;
 import br.com.gwaya.jopy.CommonUtilities;
 import br.com.gwaya.jopy.R;
@@ -553,8 +553,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
                         resp = gson.fromJson(responseBody, RespostaPadrao.class);
 
-                        retorno = resp.status;
-                        mensagem = resp.mensagem;
+                        retorno = resp.getStatus();
+                        mensagem = resp.getMensagem();
                     } else {
                         // mensagem
 

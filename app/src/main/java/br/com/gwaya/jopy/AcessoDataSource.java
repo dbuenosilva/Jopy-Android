@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 
 public class AcessoDataSource {
@@ -52,11 +53,11 @@ public class AcessoDataSource {
 
                 ContentValues values = new ContentValues();
 
-                values.put(MySQLiteHelper.ACCESS_TOKEN, respostaLogin.access_token);
-                values.put(MySQLiteHelper.REFRESH_TOKEN, respostaLogin.refresh_token);
+                values.put(MySQLiteHelper.ACCESS_TOKEN, respostaLogin.getAccess_token());
+                values.put(MySQLiteHelper.REFRESH_TOKEN, respostaLogin.getRefresh_token());
                 values.put(MySQLiteHelper.USUARIO, user);
                 values.put(MySQLiteHelper.SENHA, pass);
-                values.put(MySQLiteHelper.TOKEN_TYPE, respostaLogin.token_type);
+                values.put(MySQLiteHelper.TOKEN_TYPE, respostaLogin.getToken_type());
 
                 deleteAll();
 
@@ -87,14 +88,14 @@ public class AcessoDataSource {
     }
 
     public void updateAcesso(Acesso acesso) {
-        final long id = acesso.id;
+        final long id = acesso.getId();
         final Acesso tmpAcesso = acesso;
         DatabaseManager.getInstance().executeQuery(
                 new QueryExecutor() {
                     @Override
                     public void run(SQLiteDatabase database) {
                         ContentValues values = new ContentValues();
-                        values.put(MySQLiteHelper.DT_MOD, tmpAcesso.dtMod);
+                        values.put(MySQLiteHelper.DT_MOD, tmpAcesso.getDtMod());
                         database.update(MySQLiteHelper.TABLE_ACESSO, values, MySQLiteHelper.COLUMN_ID
                                 + " = " + id, null);
                     }
@@ -111,7 +112,7 @@ public class AcessoDataSource {
                             database.delete(MySQLiteHelper.TABLE_ACESSO, " 1 = 1 ", null);
                             return;
                         }
-                        long id = tmp.id;
+                        long id = tmp.getId();
                         System.out.println("Comment deleted with id: " + id);
                         database.delete(MySQLiteHelper.TABLE_ACESSO, MySQLiteHelper.COLUMN_ID
                                 + " = " + id, null);
@@ -144,12 +145,12 @@ public class AcessoDataSource {
 
     private Acesso cursorToAcesso(Cursor cursor) {
         Acesso acesso = new Acesso();
-        acesso.id = cursor.getLong(0);
-        acesso.Access_Token = cursor.getString(1);
-        acesso.Refresh_Token = cursor.getString(2);
-        acesso.Usuario = cursor.getString(3);
-        acesso.Senha = cursor.getString(4);
-        acesso.Token_Type = cursor.getString(5);
+        acesso.setId(cursor.getLong(0));
+        acesso.setAccess_Token(cursor.getString(1));
+        acesso.setRefresh_Token(cursor.getString(2));
+        acesso.setUsuario(cursor.getString(3));
+        acesso.setSenha(cursor.getString(4));
+        acesso.setToken_Type(cursor.getString(5));
         return acesso;
     }
 }

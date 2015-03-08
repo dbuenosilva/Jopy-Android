@@ -44,14 +44,11 @@ import br.com.gwaya.jopy.model.PedidoCompraItem;
 
 public class ActivityDetalhe extends ActionBarActivity {
 
-    public static final String PEDIDO = "PEDIDO";
-    public static final String TIPO = "TIPO";
     public static final String APROVAR = "APROVAR";
     public static final String REJEITAR = "REJEITAR";
     public static final String STATUS_APROVADO = "aprovado";
 
     private PedidoCompra pedido;
-    private String codForn;
     private ScrollView scrollView;
     private View relStatusRdp;
     private TextView txtStatusRdp;

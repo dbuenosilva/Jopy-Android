@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import java.util.Arrays;
 import java.util.List;
 
+import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.dao.DAOPedidoCompra;
@@ -35,6 +36,8 @@ public class ActivityMain extends TabActivity {
 
     private DAOPedidoCompra dataSource;
     private Boolean login;
+
+    private TabHost tabHost;
 
     private void publishResults(PedidoCompra[] pedidos, String tipo) {
         Intent intent = new Intent(PedidoCompraService.NOTIFICATION);
@@ -65,28 +68,10 @@ public class ActivityMain extends TabActivity {
             dataSource.deleteAll();
             dataSource.close();
         }
+
+        tabHost = getTabHost();
+
         setTabs();
-
-        //Add por Thiago A.Sousa
-        //new DownloadTask().execute();
-    }
-
-    private void setTabs() {
-        addTab("Pendentes", R.drawable.tab_pendentes, ActivityEmitidos.class);
-        addTab("Aprovados", R.drawable.tab_aprovados, ActivityAprovados.class);
-        addTab("Rejeitados", R.drawable.tab_rejeitados, ActivityRejeitados.class);
-        addTab("Sobre", R.drawable.tab_opcoes, ActivityOpcoes.class);
-    }
-
-    private void addTab(String labelId, int drawableId, Class<?> c) {
-        final TabHost tabHost = getTabHost();
-        Intent intent = new Intent(this, c);
-        intent.putExtra("login", login);
-        TabHost.TabSpec spec = tabHost.newTabSpec("tab" + labelId);
-
-        View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
-        TextView title = (TextView) tabIndicator.findViewById(R.id.title);
-        title.setText(labelId);
 
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
@@ -100,17 +85,45 @@ public class ActivityMain extends TabActivity {
 
                 if (tabId.equals("tabPendentes")) {
                     title.setTextColor(getResources().getColor(R.color.emitido));
+                    App.ABA_ATUAL = 0;
                 } else if (tabId.equals("tabAprovados")) {
                     title.setTextColor(getResources().getColor(R.color.aprovado));
+                    App.ABA_ATUAL = 1;
                 } else if (tabId.equals("tabRejeitados")) {
                     title.setTextColor(getResources().getColor(R.color.rejeitado));
+                    App.ABA_ATUAL = 2;
                 } else if (tabId.equals("tabOpções")) {
                     title.setTextColor(getResources().getColor(R.color.emitido));
+                    App.ABA_ATUAL = 3;
                 }
             }
         });
 
+        tabHost.setCurrentTab(App.ABA_ATUAL);
+
+        //Add por Thiago A.Sousa
+        //new DownloadTask().execute();
+    }
+
+    private void setTabs() {
+        addTab("Pendentes", R.drawable.tab_pendentes, ActivityEmitidos.class);
+        addTab("Aprovados", R.drawable.tab_aprovados, ActivityAprovados.class);
+        addTab("Rejeitados", R.drawable.tab_rejeitados, ActivityRejeitados.class);
+        addTab("Sobre", R.drawable.tab_opcoes, ActivityOpcoes.class);
+    }
+
+    private void addTab(String labelId, int drawableId, Class<?> c) {
+        Intent intent = new Intent(this, c);
+        intent.putExtra("login", login);
+
+        TabHost.TabSpec spec = tabHost.newTabSpec("tab" + labelId);
+
+        View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
+
+        TextView title = (TextView) tabIndicator.findViewById(R.id.title);
         ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
+
+        title.setText(labelId);
         icon.setImageResource(drawableId);
 
         if (labelId.equals("Pendentes")) {
@@ -118,8 +131,10 @@ public class ActivityMain extends TabActivity {
         } else {
             title.setTextColor(Color.parseColor("#FFFFFF"));
         }
+
         spec.setIndicator(tabIndicator);
         spec.setContent(intent);
+
         tabHost.addTab(spec);
     }
 

@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.interfaces;
 
 /**
  * Created by marcelorosa on 14/01/15.

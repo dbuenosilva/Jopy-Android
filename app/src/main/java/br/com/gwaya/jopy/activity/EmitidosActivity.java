@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.gwaya.jopy.PedidoCompraService;
+import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;

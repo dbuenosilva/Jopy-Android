@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import br.com.gwaya.jopy.QueryExecutor;
+import br.com.gwaya.jopy.interfaces.QueryExecutor;
 
 /**
  * Created by marcelorosa on 14/01/15.

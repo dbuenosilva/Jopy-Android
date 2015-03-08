@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.communication;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -12,10 +12,11 @@ import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
+import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.MainActivity;
 
-import static br.com.gwaya.jopy.CommonUtilities.SENDER_ID;
-import static br.com.gwaya.jopy.CommonUtilities.displayMessage;
+import static br.com.gwaya.jopy.utils.CommonUtilities.SENDER_ID;
+import static br.com.gwaya.jopy.utils.CommonUtilities.displayMessage;
 
 /**
  * IntentService responsible for handling GCM messages.

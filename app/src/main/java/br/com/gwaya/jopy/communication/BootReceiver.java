@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.communication;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

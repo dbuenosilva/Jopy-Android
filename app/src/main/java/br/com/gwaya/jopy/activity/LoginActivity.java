@@ -51,14 +51,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.gwaya.jopy.CommonUtilities;
+import br.com.gwaya.jopy.utils.CommonUtilities;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 import br.com.gwaya.jopy.model.RespostaPadrao;
 
-import static br.com.gwaya.jopy.CommonUtilities.SENDER_ID;
+import static br.com.gwaya.jopy.utils.CommonUtilities.SENDER_ID;
 
 /**
  * A login screen that offers login via email/password.

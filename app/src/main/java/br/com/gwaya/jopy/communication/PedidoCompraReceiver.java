@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.communication;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

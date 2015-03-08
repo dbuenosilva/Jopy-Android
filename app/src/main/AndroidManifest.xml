@@ -100,16 +100,16 @@
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"></activity>
 
-        <receiver android:name=".PedidoCompraReceiver"></receiver>
+        <receiver android:name=".communication.PedidoCompraReceiver"></receiver>
 
-        <service android:name=".PedidoCompraService"></service>
-        <receiver android:name=".BootReceiver">
+        <service android:name=".communication.PedidoCompraService"></service>
+        <receiver android:name=".communication.BootReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".GCMIntentService"></service>
+        <service android:name=".communication.GCMIntentService"></service>
 
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"
@@ -123,7 +123,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="br.com.gwaya.jopy.GCMIntentService" />
+        <service android:name=".communication.GCMIntentService" />
     </application>
 
 </manifest>

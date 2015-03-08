@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -68,6 +69,12 @@ public class ActivityPendentes extends ActivityAba {
         }
 
     };
+
+    @Override
+    public void atualizarListView() {
+        super.atualizarListView();
+        new DownloadTask().execute();
+    }
 
     @Override
     public String getTheTitle() {
@@ -149,13 +156,13 @@ public class ActivityPendentes extends ActivityAba {
 
         private final List<PedidoCompra> mPedidos;
 
-        SaveAllTask(List<PedidoCompra> pedidos) {
+        public SaveAllTask(List<PedidoCompra> pedidos) {
             mPedidos = pedidos;
         }
 
         @Override
         public Boolean doInBackground(Void... params) {
-            Boolean retorno = true;
+            boolean retorno = true;
             try {
                 getPedidoCompraDAO().createUpdatePedidoCompra(mPedidos.toArray(new PedidoCompra[mPedidos.size()]));
             } catch (Exception e) {
@@ -168,7 +175,10 @@ public class ActivityPendentes extends ActivityAba {
         @Override
         public void onPostExecute(final Boolean success) {
             saveAllTask = null;
-            setPedidos(getPedidoCompraDAO().getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null));
+            if (success) {
+                setPedidos(getPedidoCompraDAO().getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null));
+                Toast.makeText(ActivityPendentes.this, getString(R.string.a_lista_de_pedidos_pendentes_foi_atualizada), Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override
@@ -183,7 +193,6 @@ public class ActivityPendentes extends ActivityAba {
         public List<PedidoCompra> doInBackground(Void... params) {
 
             List<PedidoCompra> pedidos = null;
-
 
             HttpClient httpclient = new DefaultHttpClient();
 
@@ -228,6 +237,7 @@ public class ActivityPendentes extends ActivityAba {
 
 
             } catch (Exception e) {
+                getSwipyRefreshLayout().setRefreshing(false);
                 e.printStackTrace();
             }
 
@@ -236,13 +246,16 @@ public class ActivityPendentes extends ActivityAba {
 
         @Override
         public void onPostExecute(final List<PedidoCompra> pedidos) {
-            if (pedidos != null) {
-                //setPedidos(pedidos);
-            }
-            downloadTask = null;
-            if (saveAllTask == null) {
-                saveAllTask = new SaveAllTask(pedidos);
-                saveAllTask.execute((Void) null);
+            if (pedidos != null && pedidos.size() > 0) {
+                setPedidos(pedidos);
+
+                downloadTask = null;
+                if (saveAllTask == null) {
+                    saveAllTask = new SaveAllTask(pedidos);
+                    saveAllTask.execute();
+                }
+            } else {
+                Toast.makeText(ActivityPendentes.this, getString(R.string.nao_existe_novos_pedidos), Toast.LENGTH_SHORT).show();
             }
 
             getSwipyRefreshLayout().setRefreshing(false);

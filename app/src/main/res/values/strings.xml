@@ -66,4 +66,6 @@
     <string name="error_invalid_password">Senha muito curta</string>
     <string name="error_incorrect_password">Senha incorreta</string>
     <string name="error_field_required">Este campo é obrigatórioß</string>
+    <string name="nao_existe_novos_pedidos">Não existe novos pedidos</string>
+    <string name="a_lista_de_pedidos_pendentes_foi_atualizada">A lista de pedidos pendentes foi atualizada</string>
 </resources>

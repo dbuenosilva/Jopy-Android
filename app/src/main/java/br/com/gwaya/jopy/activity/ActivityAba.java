@@ -218,7 +218,7 @@ public class ActivityAba extends ActionBarActivity {
     public class UpdateAsyncTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
         private final String _status;
 
-        UpdateAsyncTask(String status) {
+        public UpdateAsyncTask(String status) {
             _status = status;
         }
 

@@ -33,6 +33,7 @@ import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class PedidoCompraService extends IntentService {
+
     public static final String NOTIFICATION = "br.com.gwaya.android.service.receiver";
     public static final String PEDIDOS_EMITIDOS = "PEDIDOS_EMITIDOS";
     public static final String PEDIDOS_REJEITADOS = "PEDIDOS_REJEITADOS";

@@ -26,7 +26,7 @@ import com.google.gson.GsonBuilder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.com.gwaya.jopy.DetalhePedidoCompraAdapterItem;
+import br.com.gwaya.jopy.adapter.DetalhePedidoCompraAdapterItem;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 import br.com.gwaya.jopy.R;

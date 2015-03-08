@@ -34,7 +34,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.com.gwaya.jopy.DetalhePedidoCompraAdapterItem;
+import br.com.gwaya.jopy.adapter.DetalhePedidoCompraAdapterItem;
 import br.com.gwaya.jopy.FilaPedidoCompraDataSource;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.PedidoCompraDataSource;

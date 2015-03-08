@@ -23,7 +23,7 @@ import java.util.List;
 
 import br.com.gwaya.jopy.MySQLiteHelper;
 import br.com.gwaya.jopy.model.PedidoCompra;
-import br.com.gwaya.jopy.PedidoCompraAdapterItem;
+import br.com.gwaya.jopy.adapter.PedidoCompraAdapterItem;
 import br.com.gwaya.jopy.PedidoCompraDataSource;
 import br.com.gwaya.jopy.R;
 

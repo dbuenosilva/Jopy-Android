@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -26,7 +25,7 @@ import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class ActivityAba extends ActionBarActivity {
+public class AbaPedidoCompra extends MasterActivity {
 
     private ListView listView;
 
@@ -59,9 +58,6 @@ public class ActivityAba extends ActionBarActivity {
         return mSwipyRefreshLayout;
     }
 
-    public String _statusPedido() {
-        return "";
-    }
 
     public String getTheTitle() {
         return "";
@@ -74,12 +70,12 @@ public class ActivityAba extends ActionBarActivity {
 
         pedidoCompraDAO = new PedidoCompraDAO();
 
-        setContentView(R.layout.activity_aba_pedido);
+        setContentView(R.layout.aba_pedidocompra);
 
-        FrameLayout frmTipo = (FrameLayout) findViewById(R.id.frmTipo);
+        FrameLayout frameLayoutCorPedido = (FrameLayout) findViewById(R.id.frameLayoutCorPedido);
         listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
-
         mSwipyRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.swipyrefreshlayout);
+
         mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(SwipyRefreshLayoutDirection swipyRefreshLayoutDirection) {
@@ -87,41 +83,42 @@ public class ActivityAba extends ActionBarActivity {
             }
         });
 
-        if (pedidoCompraDAO == null) {
-            pedidoCompraDAO = new PedidoCompraDAO();
-        }
-        if (carregaPedidosAsyncTask == null) {
-            carregaPedidosAsyncTask = new CarregaPedidosAsyncTask();
-        }
+        carregaPedidosAsyncTask = new CarregaPedidosAsyncTask();
 
-        if (_statusPedido().equals("emitido")) {
-            frmTipo.setBackgroundResource(R.color.header);
-        } else if (_statusPedido().equals("aprovado")) {
-            frmTipo.setBackgroundResource(R.color.aprovado);
+        setCorBackgroundComBaseNoPedido(frameLayoutCorPedido);
+
+        configurarActionBar();
+    }
+
+    private void setCorBackgroundComBaseNoPedido(FrameLayout frameLayoutCorPedido) {
+        if (getStatusPedido().equals("emitido")) {
+            frameLayoutCorPedido.setBackgroundResource(R.color.header);
+        } else if (getStatusPedido().equals("aprovado")) {
+            frameLayoutCorPedido.setBackgroundResource(R.color.aprovado);
         } else {
-            frmTipo.setBackgroundResource(R.color.rejeitado);
+            frameLayoutCorPedido.setBackgroundResource(R.color.rejeitado);
         }
+    }
 
-        //CUSTOM VIEW ACTIONBAR
+    private void configurarActionBar() {
         ActionBar mActionBar;
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
-        View mCustomView = mInflater.inflate(R.layout.actionbar_main, null);
-        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_main);
+        View customView = mInflater.inflate(R.layout.actionbar_main, null);
+        TextView mTitleTextView = (TextView) customView.findViewById(R.id.title_main);
         mTitleTextView.setText(getTheTitle());
 
-        ImageButton imageButton = (ImageButton) mCustomView
-                .findViewById(R.id.refreshButton);
+        ImageButton imageButton = (ImageButton) customView.findViewById(R.id.refreshButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
                 if (updateAsyncTask == null) {
-                    updateAsyncTask = new UpdateAsyncTask(_statusPedido());
+                    updateAsyncTask = new UpdateAsyncTask(getStatusPedido());
                     updateAsyncTask.execute((Void) null);
                 }
 
@@ -130,7 +127,7 @@ public class ActivityAba extends ActionBarActivity {
             }
         });
 
-        mActionBar.setCustomView(mCustomView);
+        mActionBar.setCustomView(customView);
         mActionBar.setDisplayShowCustomEnabled(true);
     }
 
@@ -142,21 +139,23 @@ public class ActivityAba extends ActionBarActivity {
         pedidoCompraList = pedidos;
 
         if (pedidos != null) {
-
             AdapterPedidoCompra adapter = new AdapterPedidoCompra(this, pedidos);
-
             listView.setAdapter(adapter);
         }
 
-        if (_statusPedido().equals("aprovado")) {
+        setDividerListView();
+
+        return listView;
+    }
+
+    private void setDividerListView() {
+        if (getStatusPedido().equals("aprovado")) {
             listView.setDivider(new ColorDrawable(getResources().getColor(R.color.aprovado)));
-        } else if (_statusPedido().equals("rejeitado")) {
+        } else if (getStatusPedido().equals("rejeitado")) {
             listView.setDivider(new ColorDrawable(getResources().getColor(R.color.rejeitado)));
         } else {
             listView.setDivider(new ColorDrawable(getResources().getColor(R.color.header)));
         }
-
-        return listView;
     }
 
     @Override
@@ -185,6 +184,11 @@ public class ActivityAba extends ActionBarActivity {
         }
     }
 
+    @Override
+    public String getStatusPedido() {
+        return "";
+    }
+
     public class CarregaPedidosAsyncTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
 
         @Override
@@ -203,7 +207,7 @@ public class ActivityAba extends ActionBarActivity {
             List<PedidoCompra> pedidos = null;
 
             try {
-                pedidos = pedidoCompraDAO.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _statusPedido() + "'", null);
+                pedidos = pedidoCompraDAO.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + getStatusPedido() + "'", null);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -34,7 +34,7 @@ import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class ActivityPendentes extends ActivityAba {
+public class ActivityPendentes extends AbaPedidoCompra {
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -90,7 +90,7 @@ public class ActivityPendentes extends ActivityAba {
                 downloadTask.execute((Void) null);
             }
         } else if (getUpdateAsyncTask() == null) {
-            setUpdateAsyncTask(new UpdateAsyncTask(_statusPedido()));
+            setUpdateAsyncTask(new UpdateAsyncTask(getStatusPedido()));
             getUpdateAsyncTask().execute();
         }
 
@@ -133,7 +133,7 @@ public class ActivityPendentes extends ActivityAba {
     }
 
     @Override
-    public String _statusPedido() {
+    public String getStatusPedido() {
         return "emitido";
     }
 

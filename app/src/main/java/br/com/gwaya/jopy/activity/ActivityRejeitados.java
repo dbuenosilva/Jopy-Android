@@ -26,7 +26,7 @@ import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class ActivityRejeitados extends ActivityAba {
+public class ActivityRejeitados extends AbaPedidoCompra {
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -102,7 +102,7 @@ public class ActivityRejeitados extends ActivityAba {
     }
 
     @Override
-    public String _statusPedido() {
+    public String getStatusPedido() {
         return "rejeitado";
     }
 

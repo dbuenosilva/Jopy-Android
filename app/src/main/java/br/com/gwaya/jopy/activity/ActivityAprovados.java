@@ -27,7 +27,7 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 /**
  * @author Adil Soomro
  */
-public class ActivityAprovados extends ActivityAba {
+public class ActivityAprovados extends AbaPedidoCompra {
 
     public static final String NOVA_APROV = "NOVA_APROV";
     private final BroadcastReceiver receiverNovaAprov = new BroadcastReceiver() {
@@ -136,7 +136,7 @@ public class ActivityAprovados extends ActivityAba {
     }
 
     @Override
-    public String _statusPedido() {
+    public String getStatusPedido() {
         return "aprovado";
     }
 

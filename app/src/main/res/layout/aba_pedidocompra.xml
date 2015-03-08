@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/frmTipo"
+        android:id="@+id/frameLayoutCorPedido"
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@color/line_background"

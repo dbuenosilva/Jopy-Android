@@ -13,7 +13,7 @@ import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.activity.MainActivity;
+import br.com.gwaya.jopy.activity.ActivityMain;
 
 import static br.com.gwaya.jopy.utils.CommonUtilities.SENDER_ID;
 import static br.com.gwaya.jopy.utils.CommonUtilities.displayMessage;
@@ -58,7 +58,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
         notification = builder.build();
         //notification.contentView.setImageViewResource(android.R.id.icon, R.drawable.concebra_pro_24);
-        notificationIntent = new Intent(context, MainActivity.class);
+        notificationIntent = new Intent(context, ActivityMain.class);
         // set intent so it does not start a new activity
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);

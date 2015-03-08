@@ -51,19 +51,19 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.gwaya.jopy.utils.CommonUtilities;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.DAOAcesso;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 import br.com.gwaya.jopy.model.RespostaPadrao;
+import br.com.gwaya.jopy.utils.CommonUtilities;
 
 import static br.com.gwaya.jopy.utils.CommonUtilities.SENDER_ID;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -84,7 +84,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private View mLoginFormView;
     //
     private String regId;
-    private AcessoDAO acessoDatasource;
+    private DAOAcesso acessoDatasource;
     private BroadcastReceiver mHandleMessageReceiver;
 
     private void hideKeyboard() {
@@ -125,7 +125,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        acessoDatasource = new AcessoDAO(this.getApplicationContext());
+        acessoDatasource = new DAOAcesso(this.getApplicationContext());
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -155,7 +155,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 final String email = mEmailView.getText().toString();
 
                 if (!isEmailValid(email)) {
-                    Toast toast = Toast.makeText(LoginActivity.this, "Por favor, preencha o usuário corretamente.", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(ActivityLogin.this, "Por favor, preencha o usuário corretamente.", Toast.LENGTH_SHORT);
                     toast.show();
                 } else {
                     showProgress(true);
@@ -180,10 +180,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         if (lst.size() > 0) {
             acesso = lst.get(0);
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(ActivityLogin.this, ActivityMain.class);
             intent.putExtra("ACESSO", new Gson().toJson(acesso));
             intent.putExtra("login", false);
-            LoginActivity.this.startActivity(intent);
+            ActivityLogin.this.startActivity(intent);
         }
         //}
         //}).run();
@@ -330,7 +330,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
+                new ArrayAdapter<String>(ActivityLogin.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -371,12 +371,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             if (usuario != "" && senha != "") {
 
-                GCMRegistrar.checkDevice(LoginActivity.this);
-                GCMRegistrar.checkManifest(LoginActivity.this);
+                GCMRegistrar.checkDevice(ActivityLogin.this);
+                GCMRegistrar.checkManifest(ActivityLogin.this);
 
-                regId = GCMRegistrar.getRegistrationId(LoginActivity.this.getApplicationContext());
+                regId = GCMRegistrar.getRegistrationId(ActivityLogin.this.getApplicationContext());
                 if (true || regId.equals("")) {
-                    GCMRegistrar.register(LoginActivity.this.getApplicationContext(), SENDER_ID);
+                    GCMRegistrar.register(ActivityLogin.this.getApplicationContext(), SENDER_ID);
                 }
 
                 HttpClient httpclient = new DefaultHttpClient();
@@ -447,7 +447,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                             // mensagem
                         }
                     } catch (Exception e) {
-                        Toast toast = Toast.makeText(LoginActivity.this, "Você esta sem conexão com a internet, por favor tente mais tarde.", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(ActivityLogin.this, "Você esta sem conexão com a internet, por favor tente mais tarde.", Toast.LENGTH_SHORT);
                         toast.show();
 
                         retorno = false;
@@ -455,7 +455,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                         e.printStackTrace();
 
                         if (e.getMessage().contains("refuse")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityLogin.this);
                             builder.setMessage("Serviço indisponível temporariamente.")
                                     .setCancelable(false)
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -483,10 +483,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mAuthTask = null;
             if (success) {
                 //Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(ActivityLogin.this, ActivityMain.class);
                 intent.putExtra("ACESSO", new Gson().toJson(acesso));
                 intent.putExtra("login", true);
-                LoginActivity.this.startActivity(intent);
+                ActivityLogin.this.startActivity(intent);
                 //LoginActivity.this.overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                 mLoginFormView.setVisibility(View.INVISIBLE);
             } else {

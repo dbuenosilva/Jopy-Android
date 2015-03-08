@@ -36,13 +36,13 @@ import java.util.Date;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterDetalhePedidoCompra;
-import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
+import br.com.gwaya.jopy.dao.DAOFilaPedidoCompra;
+import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
 
-public class DetalheActivity extends ActionBarActivity {
+public class ActivityDetalhe extends ActionBarActivity {
 
     public static final String PEDIDO = "PEDIDO";
     public static final String TIPO = "TIPO";
@@ -86,12 +86,12 @@ public class DetalheActivity extends ActionBarActivity {
                     if (v.getId() == R.id.buttonAprovar) {
                         tipo = APROVAR;
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(DetalheActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityDetalhe.this);
                         builder.setMessage("Deseja confirmar aprovação ?")
                                 .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        FilaPedidoCompraDAO filaDataSource = new FilaPedidoCompraDAO(DetalheActivity.this);
-                                        PedidoCompraDAO dataSource = new PedidoCompraDAO(DetalheActivity.this);
+                                        DAOFilaPedidoCompra filaDataSource = new DAOFilaPedidoCompra(ActivityDetalhe.this);
+                                        DAOPedidoCompra dataSource = new DAOPedidoCompra(ActivityDetalhe.this);
 
                                         pedido.setStatusPedido(STATUS_APROVADO);
                                         pedido.setEnviado(0);
@@ -112,8 +112,8 @@ public class DetalheActivity extends ActionBarActivity {
                                         data.putExtra("myData1", "Data 1 value");
                                         data.putExtra("myData2", "Data 2 value");
 
-                                        DetalheActivity.this.setResult(101, data);
-                                        DetalheActivity.this.finish();
+                                        ActivityDetalhe.this.setResult(101, data);
+                                        ActivityDetalhe.this.finish();
                                     }
                                 })
                                 .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
@@ -130,9 +130,9 @@ public class DetalheActivity extends ActionBarActivity {
 
                         tipo = REJEITAR;
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(DetalheActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityDetalhe.this);
                         // Get the layout inflater
-                        final LayoutInflater inflater = DetalheActivity.this.getLayoutInflater();
+                        final LayoutInflater inflater = ActivityDetalhe.this.getLayoutInflater();
 
                         // Inflate and set the layout for the dialogdxc
                         // Pass null as the parent view because its going in the dialog layout
@@ -146,10 +146,10 @@ public class DetalheActivity extends ActionBarActivity {
                                     public void onClick(DialogInterface dialog, int id) {
 
                                         Intent data = new Intent();
-                                        FilaPedidoCompraDAO filaDataSource =
-                                                new FilaPedidoCompraDAO(DetalheActivity.this);
-                                        PedidoCompraDAO dataSource =
-                                                new PedidoCompraDAO(DetalheActivity.this);
+                                        DAOFilaPedidoCompra filaDataSource =
+                                                new DAOFilaPedidoCompra(ActivityDetalhe.this);
+                                        DAOPedidoCompra dataSource =
+                                                new DAOPedidoCompra(ActivityDetalhe.this);
 
                                         pedido.setStatusPedido("rejeitado");
                                         pedido.setEnviado(0);
@@ -163,8 +163,8 @@ public class DetalheActivity extends ActionBarActivity {
                                         dataSource.updatePedidoCompra(pedido);
                                         dataSource.close();
 
-                                        DetalheActivity.this.setResult(101, data);
-                                        DetalheActivity.this.finish();
+                                        ActivityDetalhe.this.setResult(101, data);
+                                        ActivityDetalhe.this.finish();
 
                                         Toast toast = Toast.makeText(context, "Rejeição confirmada!", duration);
                                         toast.show();
@@ -250,7 +250,7 @@ public class DetalheActivity extends ActionBarActivity {
                 mActionBar = getSupportActionBar();
                 mActionBar.setDisplayShowHomeEnabled(false);
                 mActionBar.setDisplayShowTitleEnabled(false);
-                LayoutInflater mInflater = LayoutInflater.from(DetalheActivity.this);
+                LayoutInflater mInflater = LayoutInflater.from(ActivityDetalhe.this);
 
                 View mCustomView = mInflater.inflate(R.layout.actionbar_custom_title_view_centered, null);
                 TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
@@ -268,9 +268,9 @@ public class DetalheActivity extends ActionBarActivity {
 
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(DetalheActivity.this, HistoricoActivity.class);
+                        Intent intent = new Intent(ActivityDetalhe.this, ActivityHistorico.class);
                         intent.putExtra("codForn", pedido.getCodForn());
-                        DetalheActivity.this.startActivityForResult(intent, RESULT_OK);
+                        ActivityDetalhe.this.startActivityForResult(intent, RESULT_OK);
                     }
                 });
 
@@ -282,7 +282,7 @@ public class DetalheActivity extends ActionBarActivity {
 
                 ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 
-                AdapterDetalhePedidoCompra adapter = new AdapterDetalhePedidoCompra(DetalheActivity.this,
+                AdapterDetalhePedidoCompra adapter = new AdapterDetalhePedidoCompra(ActivityDetalhe.this,
                         R.layout.list_view_row_item_detalhe, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
 
                 pedidoList.setAdapter(adapter);

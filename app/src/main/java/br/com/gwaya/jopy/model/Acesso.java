@@ -3,9 +3,9 @@ package br.com.gwaya.jopy.model;
 import android.content.Context;
 import android.content.Intent;
 
-import br.com.gwaya.jopy.activity.LoginActivity;
-import br.com.gwaya.jopy.dao.AcessoDAO;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
+import br.com.gwaya.jopy.activity.ActivityLogin;
+import br.com.gwaya.jopy.dao.DAOAcesso;
+import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 
 
 @SuppressWarnings("ResourceType")
@@ -22,12 +22,12 @@ public class Acesso {
     public static final void logoff(Context context) {
 
         try {
-            AcessoDAO acessoDAO = new AcessoDAO();
-            PedidoCompraDAO pedidoCompraDatasource = new PedidoCompraDAO();
+            DAOAcesso DAOAcesso = new DAOAcesso();
+            DAOPedidoCompra pedidoCompraDatasource = new DAOPedidoCompra();
 
-            acessoDAO.open();
-            acessoDAO.deleteAcesso(null);
-            acessoDAO.close();
+            DAOAcesso.open();
+            DAOAcesso.deleteAcesso(null);
+            DAOAcesso.close();
 
             pedidoCompraDatasource.open();
             pedidoCompraDatasource.deleteAll();
@@ -46,7 +46,7 @@ public class Acesso {
             dialog.show();
 */
 
-            Intent intent = new Intent(context, LoginActivity.class);
+            Intent intent = new Intent(context, ActivityLogin.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(intent);
 

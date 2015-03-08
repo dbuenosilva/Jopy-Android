@@ -23,20 +23,20 @@ import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
+import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class MyBaseActivity extends ActionBarActivity {
+public class ActivityMyBase extends ActionBarActivity {
 
-    protected PedidoCompraDAO dataSource;
+    protected DAOPedidoCompra dataSource;
 
     protected UpdateTask updateTask;
     protected List<PedidoCompra> _pedidos;
     protected FrameLayout frmTipo;
     protected ListView listView;
     protected int currentPosition;
-    PedidoCompraDAO pedidoDataSource;
+    DAOPedidoCompra pedidoDataSource;
     CarregaPedidos carregaPedidos;
     private View mProgressView;
 
@@ -80,14 +80,14 @@ public class MyBaseActivity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
 
-        dataSource = new PedidoCompraDAO(this);
+        dataSource = new DAOPedidoCompra(this);
 
         setContentView(getResourceLayout());
 
         mProgressView = findViewById(R.id.baseProgress);
 
         if (pedidoDataSource == null) {
-            pedidoDataSource = new PedidoCompraDAO(this);
+            pedidoDataSource = new DAOPedidoCompra(this);
         }
         if (carregaPedidos == null) {
             carregaPedidos = new CarregaPedidos();

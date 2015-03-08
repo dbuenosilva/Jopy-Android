@@ -19,16 +19,16 @@ import org.json.JSONArray;
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.communication.PedidoCompraService;
+import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 /**
  * @author Adil Soomro
  */
-public class AprovadosActivity extends MyBaseActivity {
+public class ActivityAprovados extends ActivityMyBase {
 
     public static String NOVA_APROV = "NOVA_APROV";
     private BroadcastReceiver receiverNovaAprov = new BroadcastReceiver() {
@@ -93,13 +93,13 @@ public class AprovadosActivity extends MyBaseActivity {
 
                 currentPosition = position;
 
-                Activity tab = (Activity) AprovadosActivity.this.getParent();
+                Activity tab = (Activity) ActivityAprovados.this.getParent();
 
                 PedidoCompra pedido = _pedidos.get(position);
-                Intent intent = new Intent(tab, DetalheActivity.class);
+                Intent intent = new Intent(tab, ActivityDetalhe.class);
                 intent.putExtra("pedidocompra", new Gson().toJson(pedido));
 
-                AprovadosActivity.this.startActivityForResult(intent, 101);
+                ActivityAprovados.this.startActivityForResult(intent, 101);
             }
         });
 
@@ -121,7 +121,7 @@ public class AprovadosActivity extends MyBaseActivity {
         (new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(AprovadosActivity.this, PedidoCompraService.class);
+                Intent intent = new Intent(ActivityAprovados.this, PedidoCompraService.class);
                 startService(intent);
             }
         }).run();
@@ -133,7 +133,7 @@ public class AprovadosActivity extends MyBaseActivity {
             @Override
             public void run() {
 
-                PedidoCompraDAO dataSource = new PedidoCompraDAO(getApplicationContext());
+                DAOPedidoCompra dataSource = new DAOPedidoCompra(getApplicationContext());
 
                 List<PedidoCompra> aprovados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
 

@@ -19,34 +19,34 @@ import org.json.JSONArray;
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.communication.PedidoCompraService;
+import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 
-public class MainActivity extends TabActivity {
+public class ActivityMain extends TabActivity {
 
     public Acesso acesso;
 
     private DownloadTask downloadTask;
 
-    private PedidoCompraDAO dataSource;
+    private DAOPedidoCompra dataSource;
     private Boolean login;
 
     private void publishResults(PedidoCompra[] pedidos, String tipo) {
         Intent intent = new Intent(PedidoCompraService.NOTIFICATION);
         intent.putExtra(tipo, new Gson().toJson(pedidos));
-        MainActivity.this.sendBroadcast(intent);
+        ActivityMain.this.sendBroadcast(intent);
     }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dataSource = new PedidoCompraDAO(this.getApplicationContext());
+        dataSource = new DAOPedidoCompra(this.getApplicationContext());
 
         String jsonMyObject = "";
 
@@ -72,10 +72,10 @@ public class MainActivity extends TabActivity {
     }
 
     private void setTabs() {
-        addTab("Pendentes", R.drawable.tab_pendentes, EmitidosActivity.class);
-        addTab("Aprovados", R.drawable.tab_aprovados, AprovadosActivity.class);
-        addTab("Rejeitados", R.drawable.tab_rejeitados, RejeitadosActivity.class);
-        addTab("Sobre", R.drawable.tab_opcoes, OpcoesActivity.class);
+        addTab("Pendentes", R.drawable.tab_pendentes, ActivityEmitidos.class);
+        addTab("Aprovados", R.drawable.tab_aprovados, ActivityAprovados.class);
+        addTab("Rejeitados", R.drawable.tab_rejeitados, ActivityRejeitados.class);
+        addTab("Sobre", R.drawable.tab_opcoes, ActivityOpcoes.class);
     }
 
     private void addTab(String labelId, int drawableId, Class<?> c) {
@@ -136,7 +136,7 @@ public class MainActivity extends TabActivity {
 
                 String responseData = "";
 
-                responseData = PedidoCompraService.loadFromNetwork(url, acesso, MainActivity.this.getApplicationContext());
+                responseData = PedidoCompraService.loadFromNetwork(url, acesso, ActivityMain.this.getApplicationContext());
 
                 GsonBuilder gsonb = new GsonBuilder();
                 Gson gson = gsonb.create();

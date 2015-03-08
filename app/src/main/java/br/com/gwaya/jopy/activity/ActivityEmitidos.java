@@ -28,14 +28,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.communication.PedidoCompraService;
+import br.com.gwaya.jopy.dao.DAOAcesso;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class EmitidosActivity extends MyBaseActivity {
+public class ActivityEmitidos extends ActivityMyBase {
 
     private Acesso acesso;
 
@@ -93,13 +93,13 @@ public class EmitidosActivity extends MyBaseActivity {
 
                 currentPosition = position;
 
-                Activity tab = (Activity) EmitidosActivity.this.getParent();
+                Activity tab = (Activity) ActivityEmitidos.this.getParent();
 
                 PedidoCompra pedido = _pedidos.get(position);
-                Intent intent = new Intent(tab, DetalheActivity.class);
+                Intent intent = new Intent(tab, ActivityDetalhe.class);
                 intent.putExtra("pedidocompra", new Gson().toJson(pedido));
 
-                EmitidosActivity.this.startActivityForResult(intent, 101);
+                ActivityEmitidos.this.startActivityForResult(intent, 101);
             }
         });
 
@@ -122,13 +122,13 @@ public class EmitidosActivity extends MyBaseActivity {
 
         login = extras.getBoolean("login");
 
-        AcessoDAO acessoDAO = new AcessoDAO(this);
-        acessoDAO.open();
-        List<Acesso> lst = acessoDAO.getAllAcesso();
+        DAOAcesso DAOAcesso = new DAOAcesso(this);
+        DAOAcesso.open();
+        List<Acesso> lst = DAOAcesso.getAllAcesso();
         if (lst.size() > 0) {
             acesso = lst.get(0);
         }
-        acessoDAO.close();
+        DAOAcesso.close();
 
         if (login) {
             if (downloadTask == null) {
@@ -248,7 +248,7 @@ public class EmitidosActivity extends MyBaseActivity {
                 } else {
                     // mensagem
                     // logout
-                    acesso.logoff(EmitidosActivity.this);
+                    acesso.logoff(ActivityEmitidos.this);
                 }
 
 

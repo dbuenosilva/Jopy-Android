@@ -13,7 +13,7 @@ import br.com.gwaya.jopy.interfaces.QueryExecutor;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 
-public class AcessoDAO {
+public class DAOAcesso {
     // Database fields
     //private SQLiteDatabase database;
 
@@ -26,11 +26,11 @@ public class AcessoDAO {
             MySQLiteHelper.TOKEN_TYPE
     };
 
-    public AcessoDAO(Context context) {
+    public DAOAcesso(Context context) {
 
     }
 
-    public AcessoDAO() {
+    public DAOAcesso() {
 
     }
 

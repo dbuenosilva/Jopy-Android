@@ -12,16 +12,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.AcessoDAO;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
+import br.com.gwaya.jopy.dao.DAOAcesso;
+import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 
 /**
  * Created by marcelorosa on 11/01/15.
  */
-public class OpcoesActivity extends ActionBarActivity {
+public class ActivityOpcoes extends ActionBarActivity {
 
-    AcessoDAO acessoDAO;
-    PedidoCompraDAO dataSource;
+    DAOAcesso DAOAcesso;
+    DAOPedidoCompra dataSource;
     private RelativeLayout layoutLogoff;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -54,26 +54,26 @@ public class OpcoesActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        dataSource = new PedidoCompraDAO(this);
+        dataSource = new DAOPedidoCompra(this);
 
-        acessoDAO = new AcessoDAO(this);
+        DAOAcesso = new DAOAcesso(this);
 
         layoutLogoff = (RelativeLayout) findViewById(R.id.layoutLogoff);
         layoutLogoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    acessoDAO.open();
-                    acessoDAO.deleteAcesso(null);
-                    acessoDAO.close();
+                    DAOAcesso.open();
+                    DAOAcesso.deleteAcesso(null);
+                    DAOAcesso.close();
 
                     dataSource.open();
                     dataSource.deleteAll();
                     dataSource.close();
 
-                    Intent intent = new Intent(OpcoesActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(ActivityOpcoes.this, ActivityLogin.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    OpcoesActivity.this.startActivity(intent);
+                    ActivityOpcoes.this.startActivity(intent);
 
                 } catch (Exception e) {
                     e.printStackTrace();

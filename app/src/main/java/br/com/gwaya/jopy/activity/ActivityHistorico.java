@@ -22,21 +22,21 @@ import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterHistorico;
+import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 /**
  * Created by marcelorosa on 10/01/15.
  */
-public class HistoricoActivity extends ActionBarActivity {
+public class ActivityHistorico extends ActionBarActivity {
 
     private View mProgressView;
 
     private String codForn;
     private List<PedidoCompra> _pedidos;
     private PopulateTask mTask;
-    private PedidoCompraDAO dataSource;
+    private DAOPedidoCompra dataSource;
 
     @Override
     public void onBackPressed() {
@@ -62,7 +62,7 @@ public class HistoricoActivity extends ActionBarActivity {
             codForn = extras.getString("codForn");
         }
 
-        dataSource = new PedidoCompraDAO(this);
+        dataSource = new DAOPedidoCompra(this);
 
         showProgress(true);
         mTask = new PopulateTask(codForn);
@@ -139,14 +139,14 @@ public class HistoricoActivity extends ActionBarActivity {
             if (pedidos == null) {
 
             } else if (pedidos != null && pedidos.size() == 0) {
-                Toast toast = Toast.makeText(HistoricoActivity.this, "Nenhum histórico deste fornecedor.", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(ActivityHistorico.this, "Nenhum histórico deste fornecedor.", Toast.LENGTH_SHORT);
                 toast.show();
             } else {
                 _pedidos = pedidos;
 
-                ListView pedidoList = (ListView) HistoricoActivity.this.findViewById(R.id.listViewHistorico);
+                ListView pedidoList = (ListView) ActivityHistorico.this.findViewById(R.id.listViewHistorico);
 
-                AdapterHistorico adapter = new AdapterHistorico(HistoricoActivity.this,
+                AdapterHistorico adapter = new AdapterHistorico(ActivityHistorico.this,
                         R.layout.rowitem_historico, _pedidos);
 
                 pedidoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -154,10 +154,10 @@ public class HistoricoActivity extends ActionBarActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
-                        Intent intent = new Intent(HistoricoActivity.this, DetalheHistoricoActivity.class);
+                        Intent intent = new Intent(ActivityHistorico.this, ActivityDetalheHistorico.class);
                         intent.putExtra("indice", position);
                         intent.putExtra("pedidos", new Gson().toJson(_pedidos));
-                        HistoricoActivity.this.startActivity(intent);
+                        ActivityHistorico.this.startActivity(intent);
                     }
                 });
                 pedidoList.setAdapter(adapter);

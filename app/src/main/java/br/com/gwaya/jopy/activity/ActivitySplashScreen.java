@@ -9,7 +9,7 @@ import br.com.gwaya.jopy.R;
 /**
  * Created by marcelorosa on 20/01/15.
  */
-public class MainSplashScreen extends Activity {
+public class ActivitySplashScreen extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,8 @@ public class MainSplashScreen extends Activity {
 
                     // After 5 seconds redirect to another intent
 
-                    Intent intent = new Intent(MainSplashScreen.this, LoginActivity.class);
-                    MainSplashScreen.this.startActivity(intent);
+                    Intent intent = new Intent(ActivitySplashScreen.this, ActivityLogin.class);
+                    ActivitySplashScreen.this.startActivity(intent);
 
                     //Remove activity
                     finish();

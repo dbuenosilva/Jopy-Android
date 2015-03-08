@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.communication.PedidoCompraService;
+import br.com.gwaya.jopy.dao.DAOPedidoCompra;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class RejeitadosActivity extends MyBaseActivity {
+public class ActivityRejeitados extends ActivityMyBase {
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -76,9 +76,9 @@ public class RejeitadosActivity extends MyBaseActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 PedidoCompra pedido = _pedidos.get(position);
-                Intent intent = new Intent(RejeitadosActivity.this, DetalheActivity.class);
+                Intent intent = new Intent(ActivityRejeitados.this, ActivityDetalhe.class);
                 intent.putExtra("pedidocompra", new Gson().toJson(pedido));
-                RejeitadosActivity.this.startActivity(intent);
+                ActivityRejeitados.this.startActivity(intent);
             }
         });
 
@@ -95,14 +95,14 @@ public class RejeitadosActivity extends MyBaseActivity {
         (new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(RejeitadosActivity.this, PedidoCompraService.class);
+                Intent intent = new Intent(ActivityRejeitados.this, PedidoCompraService.class);
                 startService(intent);
             }
         }).run();
 
         registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
 
-        PedidoCompraDAO dataSource = new PedidoCompraDAO(getApplicationContext());
+        DAOPedidoCompra dataSource = new DAOPedidoCompra(getApplicationContext());
 
         List<PedidoCompra> rejeitados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
 

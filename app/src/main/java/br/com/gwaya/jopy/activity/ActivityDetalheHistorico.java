@@ -35,7 +35,7 @@ import br.com.gwaya.jopy.model.PedidoCompraItem;
 
 //import android.support.v7.app.ActionBarActivity;
 
-public class DetalheHistoricoActivity extends ActionBarActivity {
+public class ActivityDetalheHistorico extends ActionBarActivity {
 
     Button buttonPrev;
     Button buttonNext;

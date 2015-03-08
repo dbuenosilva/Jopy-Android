@@ -24,7 +24,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,7 +34,7 @@ import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class ActivityEmitidos extends ActivityMyBase {
+public class ActivityPendentes extends ActivityMyBase {
 
     private Acesso acesso;
 
@@ -93,13 +92,13 @@ public class ActivityEmitidos extends ActivityMyBase {
 
                 currentPosition = position;
 
-                Activity tab = (Activity) ActivityEmitidos.this.getParent();
+                Activity tab = ActivityPendentes.this.getParent();
 
                 PedidoCompra pedido = _pedidos.get(position);
                 Intent intent = new Intent(tab, ActivityDetalhe.class);
                 intent.putExtra("pedidocompra", new Gson().toJson(pedido));
 
-                ActivityEmitidos.this.startActivityForResult(intent, 101);
+                ActivityPendentes.this.startActivityForResult(intent, 101);
             }
         });
 
@@ -115,6 +114,12 @@ public class ActivityEmitidos extends ActivityMyBase {
     }
 
     @Override
+    public void atualizarListView() {
+        super.atualizarListView();
+        new DownloadTask().execute();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -122,7 +127,7 @@ public class ActivityEmitidos extends ActivityMyBase {
 
         login = extras.getBoolean("login");
 
-        DAOAcesso DAOAcesso = new DAOAcesso(this);
+        DAOAcesso DAOAcesso = new DAOAcesso();
         DAOAcesso.open();
         List<Acesso> lst = DAOAcesso.getAllAcesso();
         if (lst.size() > 0) {
@@ -174,14 +179,14 @@ public class ActivityEmitidos extends ActivityMyBase {
         protected Boolean doInBackground(Void... params) {
             Boolean retorno = true;
             try {
-                dataSource.open();
-                dataSource.createUpdatePedidoCompra(mPedidos.toArray(new PedidoCompra[mPedidos.size()]), false);
-                dataSource.close();
+                dao.open();
+                dao.createUpdatePedidoCompra(mPedidos.toArray(new PedidoCompra[mPedidos.size()]));
+                dao.close();
             } catch (Exception e) {
                 retorno = false;
                 e.printStackTrace();
             } finally {
-                dataSource.close();
+                dao.close();
             }
 
             return retorno;
@@ -190,9 +195,9 @@ public class ActivityEmitidos extends ActivityMyBase {
         @Override
         protected void onPostExecute(final Boolean success) {
             saveAllTask = null;
-            dataSource.open();
-            setPedidos(dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null));
-            dataSource.close();
+            dao.open();
+            setPedidos(dao.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null));
+            dao.close();
         }
 
         @Override
@@ -208,14 +213,14 @@ public class ActivityEmitidos extends ActivityMyBase {
 
             List<PedidoCompra> pedidos = null;
 
-            dataSource.open();
+            dao.open();
 
             HttpClient httpclient = new DefaultHttpClient();
 
             String url = getResources().getString(R.string.protocolo)
                     + getResources().getString(R.string.rest_api_url)
                     + getResources().getString(R.string.pedidocompra_path),
-                    dtMod = dataSource.ultimoSync();
+                    dtMod = dao.ultimoSync();
 
             if (dtMod != null) {
                 url += "?gte=" + dtMod;
@@ -248,14 +253,14 @@ public class ActivityEmitidos extends ActivityMyBase {
                 } else {
                     // mensagem
                     // logout
-                    acesso.logoff(ActivityEmitidos.this);
+                    acesso.logoff(ActivityPendentes.this);
                 }
 
 
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                dataSource.close();
+                dao.close();
             }
 
             return pedidos;

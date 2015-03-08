@@ -14,8 +14,6 @@ import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 
 public class DAOAcesso {
-    // Database fields
-    //private SQLiteDatabase database;
 
     private String[] allColumns = {
             MySQLiteHelper.COLUMN_ID,
@@ -26,20 +24,7 @@ public class DAOAcesso {
             MySQLiteHelper.TOKEN_TYPE
     };
 
-    public DAOAcesso(Context context) {
-
-    }
-
     public DAOAcesso() {
-
-    }
-
-    public void open() throws SQLException {
-
-        //database = DatabaseManager.getInstance().openDatabase();
-    }
-
-    public void close() {
 
     }
 

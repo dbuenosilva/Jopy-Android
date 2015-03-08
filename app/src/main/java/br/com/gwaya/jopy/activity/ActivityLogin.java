@@ -125,7 +125,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
         mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        acessoDatasource = new DAOAcesso(this.getApplicationContext());
+        acessoDatasource = new DAOAcesso();
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);

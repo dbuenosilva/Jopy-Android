@@ -90,8 +90,8 @@ public class ActivityDetalhe extends ActionBarActivity {
                         builder.setMessage("Deseja confirmar aprovação ?")
                                 .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        DAOFilaPedidoCompra filaDataSource = new DAOFilaPedidoCompra(ActivityDetalhe.this);
-                                        DAOPedidoCompra dataSource = new DAOPedidoCompra(ActivityDetalhe.this);
+                                        DAOFilaPedidoCompra filaDataSource = new DAOFilaPedidoCompra();
+                                        DAOPedidoCompra dataSource = new DAOPedidoCompra();
 
                                         pedido.setStatusPedido(STATUS_APROVADO);
                                         pedido.setEnviado(0);
@@ -147,9 +147,9 @@ public class ActivityDetalhe extends ActionBarActivity {
 
                                         Intent data = new Intent();
                                         DAOFilaPedidoCompra filaDataSource =
-                                                new DAOFilaPedidoCompra(ActivityDetalhe.this);
+                                                new DAOFilaPedidoCompra();
                                         DAOPedidoCompra dataSource =
-                                                new DAOPedidoCompra(ActivityDetalhe.this);
+                                                new DAOPedidoCompra();
 
                                         pedido.setStatusPedido("rejeitado");
                                         pedido.setEnviado(0);

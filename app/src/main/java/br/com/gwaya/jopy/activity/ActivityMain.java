@@ -49,7 +49,7 @@ public class ActivityMain extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dataSource = new DAOPedidoCompra(this.getApplicationContext());
+        dataSource = new DAOPedidoCompra();
 
         String jsonMyObject = "";
 
@@ -106,7 +106,7 @@ public class ActivityMain extends TabActivity {
     }
 
     private void setTabs() {
-        addTab("Pendentes", R.drawable.tab_pendentes, ActivityEmitidos.class);
+        addTab("Pendentes", R.drawable.tab_pendentes, ActivityPendentes.class);
         addTab("Aprovados", R.drawable.tab_aprovados, ActivityAprovados.class);
         addTab("Rejeitados", R.drawable.tab_rejeitados, ActivityRejeitados.class);
         addTab("Sobre", R.drawable.tab_opcoes, ActivityOpcoes.class);
@@ -162,7 +162,7 @@ public class ActivityMain extends TabActivity {
                 pedidos = gson.fromJson(responseData, PedidoCompra[].class);
 
                 dataSource.deleteAll();
-                dataSource.createUpdatePedidoCompra(pedidos, false);
+                dataSource.createUpdatePedidoCompra(pedidos);
 
                 List<PedidoCompra> emitidos = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null);
                 List<PedidoCompra> aprovados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
@@ -193,12 +193,12 @@ public class ActivityMain extends TabActivity {
             downloadTask = null;
 
             try {
-                //dataSource.openRead();
+                //dao.openRead();
 
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                //dataSource.close();
+                //dao.close();
             }
         }
 

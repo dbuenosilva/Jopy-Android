@@ -93,7 +93,7 @@ public class ActivityAprovados extends ActivityMyBase {
 
                 currentPosition = position;
 
-                Activity tab = (Activity) ActivityAprovados.this.getParent();
+                Activity tab = ActivityAprovados.this.getParent();
 
                 PedidoCompra pedido = _pedidos.get(position);
                 Intent intent = new Intent(tab, ActivityDetalhe.class);
@@ -133,7 +133,7 @@ public class ActivityAprovados extends ActivityMyBase {
             @Override
             public void run() {
 
-                DAOPedidoCompra dataSource = new DAOPedidoCompra(getApplicationContext());
+                DAOPedidoCompra dataSource = new DAOPedidoCompra();
 
                 List<PedidoCompra> aprovados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
 

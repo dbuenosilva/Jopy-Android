@@ -50,34 +50,6 @@ public class DAOFilaPedidoCompra {
             MySQLiteHelper.TOTAL
     };
 
-    public DAOFilaPedidoCompra(Context context) {
-
-    }
-
-    public void open() throws SQLException {
-        try {
-            //database = DatabaseManager.getInstance().openDatabase();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void close() {
-
-        //DatabaseManager.getInstance().closeDatabase();
-    }
-
-    public void beginTransaction() {
-        //database.beginTransaction();
-        //endTransaction = false;
-    }
-
-    public void commit() {
-        //database.setTransactionSuccessful();
-        //database.endTransaction();
-        //endTransaction = true;
-    }
-
     public PedidoCompra createFilaPedidoCompra(PedidoCompra pedido) {
         final String id = pedido.get_id() == null ? "" : pedido.get_id();
         final PedidoCompra _pedido = pedido;

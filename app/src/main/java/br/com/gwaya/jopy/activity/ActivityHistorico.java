@@ -62,7 +62,7 @@ public class ActivityHistorico extends ActionBarActivity {
             codForn = extras.getString("codForn");
         }
 
-        dataSource = new DAOPedidoCompra(this);
+        dataSource = new DAOPedidoCompra();
 
         showProgress(true);
         mTask = new PopulateTask(codForn);

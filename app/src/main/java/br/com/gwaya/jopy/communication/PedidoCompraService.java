@@ -84,14 +84,14 @@ public class PedidoCompraService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         if (acessoDatasource == null) {
-            acessoDatasource = new DAOAcesso(this.getApplicationContext());
+            acessoDatasource = new DAOAcesso();
         }
         try {
             acessoDatasource.open();
             List<Acesso> lstAcesso = acessoDatasource.getAllAcesso();
             acessoDatasource.close();
 
-            pedidoCompraDatasource = new DAOPedidoCompra(this.getApplicationContext());
+            pedidoCompraDatasource = new DAOPedidoCompra();
             pedidoCompraDatasource.open();
 
             if (lstAcesso.size() > 0) {
@@ -128,7 +128,7 @@ public class PedidoCompraService extends IntentService {
                             pedidoCompraDatasource.deletePedidoCompra(pedidos[i]);
                             pedidoCompraDatasource.createUpdatePedidoCompra(pedidos[i], false);
                         } else {
-                            pedidoCompraDatasource.createUpdatePedidoCompra(pedidos, false);
+                            pedidoCompraDatasource.createUpdatePedidoCompra(pedidos);
                         }
 
                     }
@@ -167,14 +167,14 @@ public class PedidoCompraService extends IntentService {
                     + getResources().getString(R.string.rest_api_url)
                     + getResources().getString(R.string.pedidocompra_path);
 
-            filaDataSource = new DAOFilaPedidoCompra(this.getApplicationContext());
+            filaDataSource = new DAOFilaPedidoCompra();
             filaDataSource.open();
 
             List<PedidoCompra> pedidos = filaDataSource.getAllPedidoCompra();
 
             if (pedidos != null && pedidos.size() > 0) {
 
-                List<PedidoCompra> tmpPedidos = new ArrayList<PedidoCompra>();
+                List<PedidoCompra> tmpPedidos = new ArrayList<>();
 
                 for (PedidoCompra pedidoCompra : pedidos) {
                     PedidoCompra tmp = new PedidoCompra();
@@ -215,7 +215,7 @@ public class PedidoCompraService extends IntentService {
                         filaDataSource.commit();
 
                         if (pedidoCompraDatasource == null) {
-                            pedidoCompraDatasource = new DAOPedidoCompra(this);
+                            pedidoCompraDatasource = new DAOPedidoCompra();
                         }
                         pedidoCompra.setEnviado(1);
                         pedidoCompraDatasource.updatePedidoCompra(pedidoCompra);

@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "br.com.gwaya.jopy"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -25,4 +25,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.5.+'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'de.akquinet.android.archetypes:android-gcm-quickstart:1.1.0'
+    compile 'com.github.orangegangsters:swipy:1.2.0@aar'
 }

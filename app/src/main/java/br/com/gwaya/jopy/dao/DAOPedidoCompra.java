@@ -1,9 +1,7 @@
 package br.com.gwaya.jopy.dao;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -14,10 +12,7 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
 public class DAOPedidoCompra {
-    // Database fields
-    private boolean endTransaction = true;
-    //private SQLiteDatabase database;
-    private Context context;
+
     private String[] allColumns = {
             MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.ID_SISTEMA,
@@ -50,42 +45,16 @@ public class DAOPedidoCompra {
             MySQLiteHelper.TOTAL
     };
 
-    public DAOPedidoCompra(Context context) {
-
-    }
-
     public DAOPedidoCompra() {
 
     }
 
-    public void open() throws SQLException {
-        //database = DatabaseManager.getInstance().openDatabase();
-    }
-
-    public void close() {
-
-        //DatabaseManager.getInstance().closeDatabase();
-    }
-
-    public void beginTransaction() {
-        open();
-        //database.beginTransaction();
-        endTransaction = false;
-    }
-
-    public void commit() {
-        //database.setTransactionSuccessful();
-        //database.endTransaction();
-        endTransaction = true;
-    }
-
-    public PedidoCompra[] createUpdatePedidoCompra(PedidoCompra[] pedidos, boolean update) {
-        final PedidoCompra[] _pedidos = pedidos;
+    public PedidoCompra[] createUpdatePedidoCompra(final PedidoCompra[] pedidos) {
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
                 database.beginTransaction();
-                for (PedidoCompra pedidoCompra : _pedidos) {
+                for (PedidoCompra pedidoCompra : pedidos) {
                     createUpdatePedidoCompra(pedidoCompra, true);
                 }
                 database.setTransactionSuccessful();
@@ -116,9 +85,7 @@ public class DAOPedidoCompra {
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
-                if (endTransaction) {
-                    database.beginTransaction();
-                }
+                database.beginTransaction();
 
                 ContentValues values = new ContentValues();
 
@@ -166,15 +133,8 @@ public class DAOPedidoCompra {
 
                 database.insert(MySQLiteHelper.TABLE_PEDIDO_COMPRA, null, values);
 
-                  /*
-                  database.update(MySQLiteHelper.TABLE_PEDIDO_COMPRA, values,
-                          MySQLiteHelper.COLUMN_ID + " = '" + _pedido.get_id() + "'", null);
-                          */
-
-                if (endTransaction) {
-                    database.setTransactionSuccessful();
-                    database.endTransaction();
-                }
+                database.setTransactionSuccessful();
+                database.endTransaction();
             }
         });
         return _pedido;
@@ -201,16 +161,15 @@ public class DAOPedidoCompra {
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
-                if (endTransaction) {
-                    database.beginTransaction();
-                }
+
+                database.beginTransaction();
+
                 database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA_FILA, " 1 = 1 ", null);
                 database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA_ITEM, " 1 = 1 ", null);
                 database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA, " 1 = 1 ", null);
-                if (endTransaction) {
-                    database.setTransactionSuccessful();
-                    database.endTransaction();
-                }
+
+                database.setTransactionSuccessful();
+                database.endTransaction();
             }
         });
     }
@@ -220,23 +179,21 @@ public class DAOPedidoCompra {
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
-                if (endTransaction) {
-                    database.beginTransaction();
-                }
+                database.beginTransaction();
+
                 database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA_ITEM, MySQLiteHelper.ID_PAI
                         + " = '" + id + "'", null);
                 database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA, MySQLiteHelper.COLUMN_ID
                         + " = '" + id + "'", null);
-                if (endTransaction) {
-                    database.setTransactionSuccessful();
-                    database.endTransaction();
-                }
+
+                database.setTransactionSuccessful();
+                database.endTransaction();
             }
         });
     }
 
     public List<PedidoCompra> getAllPedidoCompra(String strQuery, String limit) {
-        final List<PedidoCompra> pedidos = new ArrayList<PedidoCompra>();
+        final List<PedidoCompra> pedidos = new ArrayList<>();
         final String str = strQuery,
                 strLimit = limit;
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {

@@ -54,9 +54,9 @@ public class ActivityOpcoes extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        dataSource = new DAOPedidoCompra(this);
+        dataSource = new DAOPedidoCompra();
 
-        DAOAcesso = new DAOAcesso(this);
+        DAOAcesso = new DAOAcesso();
 
         layoutLogoff = (RelativeLayout) findViewById(R.id.layoutLogoff);
         layoutLogoff.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +77,6 @@ public class ActivityOpcoes extends ActionBarActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ;
                 }
             }
         });

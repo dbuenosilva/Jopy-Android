@@ -19,6 +19,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
+
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
@@ -29,7 +32,7 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class ActivityMyBase extends ActionBarActivity {
 
-    protected DAOPedidoCompra dataSource;
+    protected DAOPedidoCompra dao;
 
     protected UpdateTask updateTask;
     protected List<PedidoCompra> _pedidos;
@@ -39,6 +42,12 @@ public class ActivityMyBase extends ActionBarActivity {
     DAOPedidoCompra pedidoDataSource;
     CarregaPedidos carregaPedidos;
     private View mProgressView;
+
+    private SwipyRefreshLayout mSwipyRefreshLayout;
+
+    public SwipyRefreshLayout getSwipyRefreshLayout() {
+        return mSwipyRefreshLayout;
+    }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
@@ -80,22 +89,28 @@ public class ActivityMyBase extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
 
-        dataSource = new DAOPedidoCompra(this);
+        dao = new DAOPedidoCompra();
 
         setContentView(getResourceLayout());
 
         mProgressView = findViewById(R.id.baseProgress);
+        frmTipo = (FrameLayout) findViewById(R.id.frmTipo);
+        listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
+
+        mSwipyRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.swipyrefreshlayout);
+        mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(SwipyRefreshLayoutDirection swipyRefreshLayoutDirection) {
+                atualizarListView();
+            }
+        });
 
         if (pedidoDataSource == null) {
-            pedidoDataSource = new DAOPedidoCompra(this);
+            pedidoDataSource = new DAOPedidoCompra();
         }
         if (carregaPedidos == null) {
             carregaPedidos = new CarregaPedidos();
         }
-
-        frmTipo = (FrameLayout) findViewById(R.id.frmTipo);
-
-        listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
 
         if (_statusPedido().equals("emitido")) {
             frmTipo.setBackgroundResource(R.color.header);
@@ -140,6 +155,10 @@ public class ActivityMyBase extends ActionBarActivity {
 
         //Intent service = new Intent(this, PedidoCompraService.class);
         //this.startService(service);
+    }
+
+    public void atualizarListView() {
+
     }
 
     protected ListView setPedidos(List<PedidoCompra> pedidos) {
@@ -253,13 +272,13 @@ public class ActivityMyBase extends ActionBarActivity {
         protected List<PedidoCompra> doInBackground(Void... params) {
             List<PedidoCompra> pedidos = null;
             try {
-                dataSource.open();
-                pedidos = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _status + "'", null);
-                dataSource.close();
+                dao.open();
+                pedidos = dao.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _status + "'", null);
+                dao.close();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                dataSource.close();
+                dao.close();
             }
 
             return pedidos;

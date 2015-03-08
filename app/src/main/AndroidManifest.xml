@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ActivityEmitidos"
+            android:name=".activity.ActivityPendentes"
             android:label="@string/title_activity_main_tab"
             android:launchMode="singleTop"></activity>
         <activity

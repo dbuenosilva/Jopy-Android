@@ -59,13 +59,6 @@ public class ActivityRejeitados extends ActivityMyBase {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
-
-    @Override
     protected ListView setPedidos(List<PedidoCompra> pedidos) {
 
         ListView pedidoList = super.setPedidos(pedidos);
@@ -102,7 +95,7 @@ public class ActivityRejeitados extends ActivityMyBase {
 
         registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
 
-        DAOPedidoCompra dataSource = new DAOPedidoCompra(getApplicationContext());
+        DAOPedidoCompra dataSource = new DAOPedidoCompra();
 
         List<PedidoCompra> rejeitados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
 

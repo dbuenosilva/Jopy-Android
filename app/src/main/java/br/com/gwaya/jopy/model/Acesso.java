@@ -3,9 +3,9 @@ package br.com.gwaya.jopy.model;
 import android.content.Context;
 import android.content.Intent;
 
+import br.com.gwaya.jopy.activity.LoginActivity;
 import br.com.gwaya.jopy.dao.AcessoDataSource;
 import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
-import br.com.gwaya.jopy.activity.LoginActivity;
 
 
 @SuppressWarnings("ResourceType")
@@ -18,6 +18,42 @@ public class Acesso {
     private String Senha;
     private String Token_Type;
     private String dtMod;
+
+    public static final void logoff(Context context) {
+
+        try {
+            AcessoDataSource acessoDataSource = new AcessoDataSource();
+            PedidoCompraDataSource pedidoCompraDatasource = new PedidoCompraDataSource();
+
+            acessoDataSource.open();
+            acessoDataSource.deleteAcesso(null);
+            acessoDataSource.close();
+
+            pedidoCompraDatasource.open();
+            pedidoCompraDatasource.deleteAll();
+            pedidoCompraDatasource.close();
+/*
+            AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
+            builder.setMessage("Por favor faça login novamente.")
+                    .setTitle("Autenticação")
+                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+
+            Dialog dialog = builder.create();
+            dialog.show();
+*/
+
+            Intent intent = new Intent(context, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public long getId() {
         return id;
@@ -73,42 +109,6 @@ public class Acesso {
 
     public void setDtMod(String dtMod) {
         this.dtMod = dtMod;
-    }
-
-    public static final void logoff(Context context) {
-
-        try {
-            AcessoDataSource acessoDataSource = new AcessoDataSource();
-            PedidoCompraDataSource pedidoCompraDatasource = new PedidoCompraDataSource();
-
-            acessoDataSource.open();
-            acessoDataSource.deleteAcesso(null);
-            acessoDataSource.close();
-
-            pedidoCompraDatasource.open();
-            pedidoCompraDatasource.deleteAll();
-            pedidoCompraDatasource.close();
-/*
-            AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
-            builder.setMessage("Por favor faça login novamente.")
-                    .setTitle("Autenticação")
-                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    });
-
-            Dialog dialog = builder.create();
-            dialog.show();
-*/
-
-            Intent intent = new Intent(context, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(intent);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
 /*

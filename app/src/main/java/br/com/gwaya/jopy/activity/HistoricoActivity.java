@@ -20,11 +20,11 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.HistoricoAdapterItem;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
-import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.model.PedidoCompra;
 
 /**
  * Created by marcelorosa on 10/01/15.

@@ -11,9 +11,9 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.AcessoDataSource;
 import br.com.gwaya.jopy.dao.PedidoCompraDataSource;
-import br.com.gwaya.jopy.R;
 
 /**
  * Created by marcelorosa on 11/01/15.

@@ -109,17 +109,6 @@ public class ActivityPendentes extends ActivityMyBase {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void atualizarListView() {
-        super.atualizarListView();
-        new DownloadTask().execute();
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -135,12 +124,10 @@ public class ActivityPendentes extends ActivityMyBase {
 
         if (login) {
             if (downloadTask == null) {
-                showProgress(true);
                 downloadTask = new DownloadTask();
                 downloadTask.execute((Void) null);
             }
         } else if (updateTask == null) {
-            showProgress(true);
             updateTask = new UpdateTask(_statusPedido());
             updateTask.execute((Void) null);
         }
@@ -158,11 +145,6 @@ public class ActivityPendentes extends ActivityMyBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     public class SaveAllTask extends AsyncTask<Void, Void, Boolean> {
@@ -271,7 +253,6 @@ public class ActivityPendentes extends ActivityMyBase {
                 saveAllTask = new SaveAllTask(pedidos);
                 saveAllTask.execute((Void) null);
             }
-            showProgress(false);
 
             getSwipyRefreshLayout().setRefreshing(false);
         }
@@ -279,7 +260,6 @@ public class ActivityPendentes extends ActivityMyBase {
         @Override
         protected void onCancelled() {
             downloadTask = null;
-            showProgress(false);
 
             getSwipyRefreshLayout().setRefreshing(false);
         }

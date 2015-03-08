@@ -155,10 +155,4 @@ public class ActivityAprovados extends ActivityMyBase {
         unregisterReceiver(receiverNovaAprov);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
 }

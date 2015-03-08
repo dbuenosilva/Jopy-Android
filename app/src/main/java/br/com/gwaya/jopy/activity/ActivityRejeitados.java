@@ -95,9 +95,7 @@ public class ActivityRejeitados extends ActivityMyBase {
 
         registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
 
-        PedidoCompraDAO dataSource = new PedidoCompraDAO();
-
-        List<PedidoCompra> rejeitados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
+        List<PedidoCompra> rejeitados = new PedidoCompraDAO().getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
 
         setPedidos(rejeitados);
     }

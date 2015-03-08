@@ -5,14 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/baseProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:focusableInTouchMode="false"
-        android:visibility="gone" />
-
     <FrameLayout
         android:id="@+id/frmTipo"
         android:layout_width="fill_parent"

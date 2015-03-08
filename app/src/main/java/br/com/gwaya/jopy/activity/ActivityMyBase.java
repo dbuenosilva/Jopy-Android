@@ -1,13 +1,9 @@
 package br.com.gwaya.jopy.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -41,35 +37,11 @@ public class ActivityMyBase extends ActionBarActivity {
     protected int currentPosition;
     PedidoCompraDAO pedidoDataSource;
     CarregaPedidos carregaPedidos;
-    private View mProgressView;
 
     private SwipyRefreshLayout mSwipyRefreshLayout;
 
     public SwipyRefreshLayout getSwipyRefreshLayout() {
         return mSwipyRefreshLayout;
-    }
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
     }
 
     protected String _statusPedido() {
@@ -93,7 +65,6 @@ public class ActivityMyBase extends ActionBarActivity {
 
         setContentView(getResourceLayout());
 
-        mProgressView = findViewById(R.id.baseProgress);
         frmTipo = (FrameLayout) findViewById(R.id.frmTipo);
         listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
 
@@ -139,7 +110,6 @@ public class ActivityMyBase extends ActionBarActivity {
             public void onClick(View view) {
 
                 if (updateTask == null) {
-                    showProgress(true);
                     updateTask = new UpdateTask(_statusPedido());
                     updateTask.execute((Void) null);
                 }
@@ -151,10 +121,6 @@ public class ActivityMyBase extends ActionBarActivity {
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
-        //CUSTOM VIEW ACTIONBAR
-
-        //Intent service = new Intent(this, PedidoCompraService.class);
-        //this.startService(service);
     }
 
     public void atualizarListView() {
@@ -199,22 +165,6 @@ public class ActivityMyBase extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        /*
-        try {
-	    	if (carregaPedidos != null) {
-	    		if (carregaPedidos.getStatus() == Status.RUNNING) {
-	    			carregaPedidos.cancel(true);
-	    		}
-		    	carregaPedidos.execute();
-		    }
-	    } catch(Exception e) {
-	    	String str = e.getMessage();
-	    }*/
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         try {
@@ -224,7 +174,7 @@ public class ActivityMyBase extends ActionBarActivity {
                 }
             }
         } catch (Exception e) {
-            String str = e.getMessage();
+            e.printStackTrace();
         }
     }
 
@@ -278,13 +228,11 @@ public class ActivityMyBase extends ActionBarActivity {
             _pedidos = pedidos;
             setPedidos(pedidos);
             updateTask = null;
-            showProgress(false);
         }
 
         @Override
         protected void onCancelled() {
             updateTask = null;
-            showProgress(false);
         }
     }
 }

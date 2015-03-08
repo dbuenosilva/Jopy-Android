@@ -19,15 +19,15 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class AdapterPedidoCompra extends ArrayAdapter<PedidoCompra> {
 
+    final Context mContext;
+    final int layoutResourceId;
     protected View lnTipo;
-    Context mContext;
-    int layoutResourceId;
     List<PedidoCompra> data = null;
 
-    public AdapterPedidoCompra(Context mContext, int layoutResourceId, List<PedidoCompra> data) {
-        super(mContext, layoutResourceId, data);
+    public AdapterPedidoCompra(Context mContext, List<PedidoCompra> data) {
+        super(mContext, R.layout.adapter_pedidocompra, data);
 
-        this.layoutResourceId = layoutResourceId;
+        this.layoutResourceId = R.layout.adapter_pedidocompra;
         this.mContext = mContext;
         this.data = data;
     }
@@ -44,7 +44,7 @@ public class AdapterPedidoCompra extends ArrayAdapter<PedidoCompra> {
         PedidoCompra pedido = data.get(position);
 
 
-        lnTipo = (View) convertView.findViewById(R.id.lnTipo);
+        lnTipo = convertView.findViewById(R.id.lnTipo);
 
         if (pedido.getStatusPedido().equals("emitido")) {
             lnTipo.setBackgroundResource(R.color.emitido2);
@@ -75,7 +75,7 @@ public class AdapterPedidoCompra extends ArrayAdapter<PedidoCompra> {
             textViewItem = (TextView) convertView.findViewById(R.id.textViewDtPedido);
             textViewItem.setText(dtEmi);
             textViewItem.setTag(pedido.get_id());
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 

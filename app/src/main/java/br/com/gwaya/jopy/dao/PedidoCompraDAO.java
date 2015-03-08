@@ -13,7 +13,7 @@ import br.com.gwaya.jopy.model.PedidoCompraItem;
 
 public class PedidoCompraDAO {
 
-    private String[] allColumns = {
+    private final String[] allColumns = {
             MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.ID_SISTEMA,
             MySQLiteHelper.APROVADORES,
@@ -35,7 +35,7 @@ public class PedidoCompraDAO {
             MySQLiteHelper.OBS,
             MySQLiteHelper.DT_MOD
     };
-    private String[] allColumnsItems = {
+    private final String[] allColumnsItems = {
             MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.ID_PAI,
             MySQLiteHelper.PRODUTO,
@@ -49,22 +49,21 @@ public class PedidoCompraDAO {
 
     }
 
-    public PedidoCompra[] createUpdatePedidoCompra(final PedidoCompra[] pedidos) {
+    public void createUpdatePedidoCompra(final PedidoCompra[] pedidos) {
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
                 database.beginTransaction();
                 for (PedidoCompra pedidoCompra : pedidos) {
-                    createUpdatePedidoCompra(pedidoCompra, true);
+                    createUpdatePedidoCompra(pedidoCompra);
                 }
                 database.setTransactionSuccessful();
                 database.endTransaction();
             }
         });
-        return pedidos;
     }
 
-    public PedidoCompra updatePedidoCompra(final PedidoCompra pedidoCompra) {
+    public void updatePedidoCompra(final PedidoCompra pedidoCompra) {
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
@@ -76,12 +75,9 @@ public class PedidoCompraDAO {
                         MySQLiteHelper.COLUMN_ID + " = '" + pedidoCompra.get_id() + "'", null);
             }
         });
-
-        return pedidoCompra;
     }
 
-    public PedidoCompra createUpdatePedidoCompra(final PedidoCompra _pedido, boolean update) {
-        //final PedidoCompra _pedido = pedido;
+    public void createUpdatePedidoCompra(final PedidoCompra _pedido) {
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
@@ -137,7 +133,6 @@ public class PedidoCompraDAO {
                 database.endTransaction();
             }
         });
-        return _pedido;
     }
 
     public String ultimoSync() {

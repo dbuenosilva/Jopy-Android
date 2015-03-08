@@ -19,7 +19,7 @@ public class Acesso {
     private String Token_Type;
     private String dtMod;
 
-    public static final void logoff(Context context) {
+    public static void logoff(Context context) {
 
         try {
             AcessoDAO AcessoDAO = new AcessoDAO();

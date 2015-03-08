@@ -7,10 +7,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
-import com.google.android.gcm.GCMRegistrar;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.ActivityMain;
@@ -18,13 +16,7 @@ import br.com.gwaya.jopy.activity.ActivityMain;
 import static br.com.gwaya.jopy.utils.CommonUtilities.SENDER_ID;
 import static br.com.gwaya.jopy.utils.CommonUtilities.displayMessage;
 
-/**
- * IntentService responsible for handling GCM messages.
- */
 public class GCMIntentService extends GCMBaseIntentService {
-
-    @SuppressWarnings("hiding")
-    private static final String TAG = "GCMIntentService";
 
     public GCMIntentService() {
         super(SENDER_ID);
@@ -67,8 +59,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify(0, notification);
 
-        return;
-/*
+        /*
         notification = new Notification(icon, message, when);
         String title = context.getString(R.string.app_name);
         notificationIntent = new Intent(context, MainActivity.class);
@@ -83,40 +74,25 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Override
     protected void onRegistered(Context context, String registrationId) {
-        Log.i(TAG, "Device registered: regId = " + registrationId);
-        //displayMessage(context, getString(R.string.gcm_registered));
-        //ServerUtilities.register(context, registrationId, ((MainTab)context).acesso);
+
     }
 
     @Override
-    protected void onUnregistered(Context context, String registrationId) {
-        Log.i(TAG, "Device unregistered");
-        //displayMessage(context, getString(R.string.gcm_unregistered));
-        if (GCMRegistrar.isRegisteredOnServer(context)) {
-            //ServerUtilities.unregister(context, registrationId, ((MainTab)context).acesso);
-        } else {
-            // This callback results from the call to unregister made on
-            // ServerUtilities when the registration to the server failed.
-            Log.i(TAG, "Ignoring unregister callback");
-        }
+    protected void onUnregistered(Context context, String s) {
+
     }
 
     @Override
     protected void onMessage(Context context, Intent intent) {
-        Log.i(TAG, "Received message");
-        //String message = getString(R.string.gcm_message);
-        String message = intent.getExtras().getString("message").toString();
+        String message = intent.getExtras().getString("message");
         displayMessage(context, message);
-        // notifies user
         generateNotification(context, message);
     }
 
     @Override
     protected void onDeletedMessages(Context context, int total) {
-        Log.i(TAG, "Received deleted messages notification");
         String message = getString(R.string.gcm_deleted, total);
         displayMessage(context, message);
-        // notifies user
         generateNotification(context, message);
 
         Intent intent = new Intent(context, PedidoCompraService.class);
@@ -125,14 +101,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Override
     public void onError(Context context, String errorId) {
-        Log.i(TAG, "Received error: " + errorId);
         displayMessage(context, getString(R.string.gcm_error, errorId));
     }
 
     @Override
     protected boolean onRecoverableError(Context context, String errorId) {
-        // log message
-        Log.i(TAG, "Received recoverable error: " + errorId);
         displayMessage(context, getString(R.string.gcm_recoverable_error,
                 errorId));
         return super.onRecoverableError(context, errorId);

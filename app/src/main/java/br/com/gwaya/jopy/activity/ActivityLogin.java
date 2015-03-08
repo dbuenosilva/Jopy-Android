@@ -65,27 +65,15 @@ import static br.com.gwaya.jopy.utils.CommonUtilities.SENDER_ID;
  */
 public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "contato@gwaya.com", "contato@gwaya.com:jopy"
-    };
     public Acesso acesso;
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
+
     private UserLoginTask mAuthTask = null;
-    // UI references.
+
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    //
-    private String regId;
     private AcessoDAO acessoDatasource;
-    private BroadcastReceiver mHandleMessageReceiver;
 
     private void hideKeyboard() {
         // Check if no view has focus:
@@ -100,13 +88,12 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mHandleMessageReceiver =
-                new BroadcastReceiver() {
-                    @Override
-                    public void onReceive(Context context, Intent intent) {
-                        String newMessage = intent.getExtras().getString(CommonUtilities.EXTRA_MESSAGE);
-                    }
-                };
+        BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String newMessage = intent.getExtras().getString(CommonUtilities.EXTRA_MESSAGE);
+            }
+        };
 
         setContentView(R.layout.activity_login);
 
@@ -247,12 +234,10 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 0;
     }
 
@@ -311,7 +296,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
+        List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
@@ -329,7 +314,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(ActivityLogin.this,
+                new ArrayAdapter<>(ActivityLogin.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -368,15 +353,13 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
             Boolean retorno = false;
 
-            if (usuario != "" && senha != "") {
+            if (!usuario.equals("") && !senha.equals("")) {
 
                 GCMRegistrar.checkDevice(ActivityLogin.this);
                 GCMRegistrar.checkManifest(ActivityLogin.this);
 
-                regId = GCMRegistrar.getRegistrationId(ActivityLogin.this.getApplicationContext());
-                if (true || regId.equals("")) {
-                    GCMRegistrar.register(ActivityLogin.this.getApplicationContext(), SENDER_ID);
-                }
+                String regId = GCMRegistrar.getRegistrationId(ActivityLogin.this.getApplicationContext());
+                GCMRegistrar.register(ActivityLogin.this.getApplicationContext(), SENDER_ID);
 
                 HttpClient httpclient = new DefaultHttpClient();
                 String url = getResources().getString(R.string.protocolo)
@@ -386,7 +369,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
                 try {
 
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+                    List<NameValuePair> nameValuePairs = new ArrayList<>(4);
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.grant_type_key),
                             getResources().getString(R.string.grant_type)));
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.client_id_key),
@@ -518,7 +501,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
             Boolean retorno = false;
 
-            if (usuario != "") {
+            if (!usuario.equals("")) {
 
                 HttpClient httpclient = new DefaultHttpClient();
                 String url = getResources().getString(R.string.protocolo)
@@ -526,7 +509,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
                         + getResources().getString(R.string.esqueceu_path);
                 HttpPost httpPost = new HttpPost(url);
                 try {
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                    List<NameValuePair> nameValuePairs = new ArrayList<>(1);
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.username_key),
                             mEmail));
 
@@ -552,9 +535,6 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
                         retorno = resp.getStatus();
                         mensagem = resp.getMensagem();
-                    } else {
-                        // mensagem
-
                     }
 
                 } catch (UnsupportedEncodingException e) {

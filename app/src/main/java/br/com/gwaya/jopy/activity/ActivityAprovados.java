@@ -29,23 +29,21 @@ import br.com.gwaya.jopy.model.PedidoCompra;
  */
 public class ActivityAprovados extends ActivityAba {
 
-    public static String NOVA_APROV = "NOVA_APROV";
-    private BroadcastReceiver receiverNovaAprov = new BroadcastReceiver() {
+    public static final String NOVA_APROV = "NOVA_APROV";
+    private final BroadcastReceiver receiverNovaAprov = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 String strPedidos = bundle.getString(NOVA_APROV);
-                if (strPedidos != null && strPedidos != "") {
+                if (strPedidos != null && !strPedidos.equals("")) {
                     GsonBuilder gsonb = new GsonBuilder();
                     Gson gson = gsonb.create();
                     JSONArray jsonArray;
-                    List<PedidoCompra> pedidos = null;
                     try {
                         jsonArray = new JSONArray(strPedidos);
-                        pedidos = Arrays.asList(gson.fromJson(jsonArray.toString(), PedidoCompra[].class));
-                        setPedidos(pedidos);
+                        setPedidos(Arrays.asList(gson.fromJson(jsonArray.toString(), PedidoCompra[].class)));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -54,14 +52,14 @@ public class ActivityAprovados extends ActivityAba {
         }
 
     };
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 String strPedidos = bundle.getString(PedidoCompraService.PEDIDOS_APROVADOS);
-                if (strPedidos != null && strPedidos != "") {
+                if (strPedidos != null && !strPedidos.equals("")) {
                     GsonBuilder gsonb = new GsonBuilder();
                     Gson gson = gsonb.create();
                     JSONArray jsonArray;
@@ -117,7 +115,6 @@ public class ActivityAprovados extends ActivityAba {
 
     @Override
     public ListView setPedidos(List<PedidoCompra> pedidos) {
-
         ListView pedidoList = super.setPedidos(pedidos);
 
         pedidoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

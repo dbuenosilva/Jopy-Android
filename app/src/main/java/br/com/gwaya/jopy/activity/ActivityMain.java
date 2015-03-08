@@ -79,18 +79,23 @@ public class ActivityMain extends TabActivity {
                 View indicator = tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab());
                 TextView title = (TextView) indicator.findViewById(R.id.title);
 
-                if (tabId.equals("tabPendentes")) {
-                    title.setTextColor(getResources().getColor(R.color.emitido));
-                    App.ABA_ATUAL = 0;
-                } else if (tabId.equals("tabAprovados")) {
-                    title.setTextColor(getResources().getColor(R.color.aprovado));
-                    App.ABA_ATUAL = 1;
-                } else if (tabId.equals("tabRejeitados")) {
-                    title.setTextColor(getResources().getColor(R.color.rejeitado));
-                    App.ABA_ATUAL = 2;
-                } else if (tabId.equals("tabOpções")) {
-                    title.setTextColor(getResources().getColor(R.color.emitido));
-                    App.ABA_ATUAL = 3;
+                switch (tabId) {
+                    case "tabPendentes":
+                        title.setTextColor(getResources().getColor(R.color.emitido));
+                        App.ABA_ATUAL = 0;
+                        break;
+                    case "tabAprovados":
+                        title.setTextColor(getResources().getColor(R.color.aprovado));
+                        App.ABA_ATUAL = 1;
+                        break;
+                    case "tabRejeitados":
+                        title.setTextColor(getResources().getColor(R.color.rejeitado));
+                        App.ABA_ATUAL = 2;
+                        break;
+                    case "tabOpções":
+                        title.setTextColor(getResources().getColor(R.color.emitido));
+                        App.ABA_ATUAL = 3;
+                        break;
                 }
             }
         });

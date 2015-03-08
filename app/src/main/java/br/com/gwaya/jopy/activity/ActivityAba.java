@@ -28,7 +28,6 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class ActivityAba extends ActionBarActivity {
 
-    private FrameLayout frmTipo;
     private ListView listView;
 
     private PedidoCompraDAO pedidoCompraDAO;
@@ -77,7 +76,7 @@ public class ActivityAba extends ActionBarActivity {
 
         setContentView(R.layout.activity_aba_pedido);
 
-        frmTipo = (FrameLayout) findViewById(R.id.frmTipo);
+        FrameLayout frmTipo = (FrameLayout) findViewById(R.id.frmTipo);
         listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
 
         mSwipyRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.swipyrefreshlayout);
@@ -140,13 +139,11 @@ public class ActivityAba extends ActionBarActivity {
     }
 
     public ListView setPedidos(List<PedidoCompra> pedidos) {
-
         pedidoCompraList = pedidos;
 
         if (pedidos != null) {
 
-            AdapterPedidoCompra adapter = new AdapterPedidoCompra(this,
-                    R.layout.adapter_pedidocompra, pedidos);
+            AdapterPedidoCompra adapter = new AdapterPedidoCompra(this, pedidos);
 
             listView.setAdapter(adapter);
         }

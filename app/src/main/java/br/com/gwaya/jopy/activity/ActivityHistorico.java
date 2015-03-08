@@ -45,11 +45,6 @@ public class ActivityHistorico extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -103,7 +98,7 @@ public class ActivityHistorico extends ActionBarActivity {
 
     public class PopulateTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
 
-        private String codForn;
+        private final String codForn;
 
         public PopulateTask(String cod) {
             this.codForn = cod;
@@ -114,15 +109,12 @@ public class ActivityHistorico extends ActionBarActivity {
             List<PedidoCompra> pedidos = null;
 
             try {
-
-                List<PedidoCompra> list = dataSource.getAllPedidoCompra(MySQLiteHelper.COD_FORN + " = '" + codForn
+                pedidos = dataSource.getAllPedidoCompra(MySQLiteHelper.COD_FORN + " = '" + codForn
                         + "' AND " + MySQLiteHelper.STATUS_PEDIDO + " IN ('aprovado', 'rejeitado')", " 3 ");
-
-                pedidos = list;
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (pedidos == null || (pedidos != null && pedidos.size() == 0)) {
+                if (pedidos != null && pedidos.size() == 0) {
                     //Toast toast = Toast.makeText(HistoricoActivity.this, "Não foram encontrados pedidos com este fornecedor.", Toast.LENGTH_LONG);
                     //toast.show();
                 }
@@ -136,18 +128,12 @@ public class ActivityHistorico extends ActionBarActivity {
             mTask = null;
             showProgress(false);
 
-            if (pedidos == null) {
-
-            } else if (pedidos != null && pedidos.size() == 0) {
-                Toast toast = Toast.makeText(ActivityHistorico.this, "Nenhum histórico deste fornecedor.", Toast.LENGTH_SHORT);
-                toast.show();
-            } else {
+            if (pedidos != null && pedidos.size() > 0) {
                 _pedidos = pedidos;
 
                 ListView pedidoList = (ListView) ActivityHistorico.this.findViewById(R.id.listViewHistorico);
 
-                AdapterHistorico adapter = new AdapterHistorico(ActivityHistorico.this,
-                        R.layout.rowitem_historico, _pedidos);
+                AdapterHistorico adapter = new AdapterHistorico(ActivityHistorico.this, _pedidos);
 
                 pedidoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -161,6 +147,9 @@ public class ActivityHistorico extends ActionBarActivity {
                     }
                 });
                 pedidoList.setAdapter(adapter);
+            } else {
+                Toast toast = Toast.makeText(ActivityHistorico.this, "Nenhum histórico deste fornecedor.", Toast.LENGTH_SHORT);
+                toast.show();
             }
         }
 

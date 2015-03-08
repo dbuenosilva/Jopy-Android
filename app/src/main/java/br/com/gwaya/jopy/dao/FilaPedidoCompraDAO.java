@@ -13,10 +13,10 @@ import br.com.gwaya.jopy.model.PedidoCompraItem;
 
 public class FilaPedidoCompraDAO {
 
-    private String[] allColumns = {
+    private final String[] allColumns = {
             MySQLiteHelper.COLUMN_ID
     };
-    private String[] allColumnsPedidoCompra = {
+    private final String[] allColumnsPedidoCompra = {
             MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.ID_SISTEMA,
             MySQLiteHelper.APROVADORES,
@@ -37,7 +37,7 @@ public class FilaPedidoCompraDAO {
             MySQLiteHelper.OBS,
             MySQLiteHelper.DT_MOD
     };
-    private String[] allColumnsItems = {
+    private final String[] allColumnsItems = {
             MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.ID_PAI,
             MySQLiteHelper.PRODUTO,
@@ -46,7 +46,7 @@ public class FilaPedidoCompraDAO {
             MySQLiteHelper.TOTAL
     };
 
-    public PedidoCompra createFilaPedidoCompra(PedidoCompra pedido) {
+    public void createFilaPedidoCompra(PedidoCompra pedido) {
         final String id = pedido.get_id() == null ? "" : pedido.get_id();
         final PedidoCompra _pedido = pedido;
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
@@ -58,7 +58,7 @@ public class FilaPedidoCompraDAO {
                 database.beginTransaction();
 
                 values.put(MySQLiteHelper.STATUS_PEDIDO, _pedido.getStatusPedido());
-                if (_pedido.getMotivoRejeicao() != null && _pedido.getMotivoRejeicao().trim() != "") {
+                if (_pedido.getMotivoRejeicao() != null && !_pedido.getMotivoRejeicao().trim().equals("")) {
                     values.put(MySQLiteHelper.MOTIVO_REJEICAO, _pedido.getMotivoRejeicao());
                     values.put(MySQLiteHelper.ENVIADO, 0);
                 }
@@ -86,7 +86,6 @@ public class FilaPedidoCompraDAO {
                 database.endTransaction();
             }
         });
-        return pedido;
     }
 
     public void deleteAll() {
@@ -115,7 +114,7 @@ public class FilaPedidoCompraDAO {
     }
 
     public List<PedidoCompra> getAllPedidoCompra() {
-        final List<PedidoCompra> pedidos = new ArrayList<PedidoCompra>();
+        final List<PedidoCompra> pedidos = new ArrayList<>();
 
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override

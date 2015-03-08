@@ -14,8 +14,8 @@ import br.com.gwaya.jopy.interfaces.QueryExecutor;
 public class DatabaseManager {
 
     private static DatabaseManager instance;
-    private AtomicInteger mOpenCounter = new AtomicInteger();
-    private SQLiteOpenHelper mDatabaseHelper;
+    private final AtomicInteger mOpenCounter = new AtomicInteger();
+    private final SQLiteOpenHelper mDatabaseHelper;
     private SQLiteDatabase mDatabase;
 
     private DatabaseManager(SQLiteOpenHelper helper) {

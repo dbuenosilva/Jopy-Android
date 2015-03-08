@@ -21,7 +21,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class PedidoCompraService extends IntentService {
     public static final String PEDIDOS_REJEITADOS = "PEDIDOS_REJEITADOS";
     public static final String PEDIDOS_APROVADOS = "PEDIDOS_APROVADOS";
     private final IBinder mBinder = new MyBinder();
-    private List<PedidoCompra> list = new ArrayList<PedidoCompra>();
+    private final List<PedidoCompra> list = new ArrayList<>();
     private AcessoDAO acessoDatasource;
     private PedidoCompraDAO pedidoCompraDatasource;
 
@@ -48,7 +47,7 @@ public class PedidoCompraService extends IntentService {
         super("PedidoCompraService");
     }
 
-    public static String loadFromNetwork(String urlString, Acesso acesso, Context context) throws IOException {
+    public static String loadFromNetwork(String urlString, Acesso acesso, Context context) {
         String responseBody = "";
         try {
             HttpClient httpclient = new DefaultHttpClient();
@@ -69,14 +68,13 @@ public class PedidoCompraService extends IntentService {
                 responseBody = responseHandler.handleResponse(response);
             } else {
                 // mensagem
-                acesso.logoff(context); // logout
+                Acesso.logoff(context); // logout
             }
 
         } catch (Exception e) {
             Log.e("", "");
-        } finally {
-
         }
+
         return responseBody;
     }
 
@@ -105,7 +103,7 @@ public class PedidoCompraService extends IntentService {
                     url += "?gte=" + dtMod;
                 }
 
-                descarregaFila(url, acesso);
+                descarregaFila(acesso);
 
                 String responseData = "";
 
@@ -120,15 +118,13 @@ public class PedidoCompraService extends IntentService {
                 if (pedidos != null && pedidos.length > 0) {
 
                     // Diego Bueno - 10/02/2015 - verifica se pedido já existe, caso sim, deleta e inclui com nova alteração
-                    for (int i = 0; i < pedidos.length; i++) {
-
-                        if (pedidoCompraDatasource.ExistePedidoCompra(pedidos[i].get_id())) {
-                            pedidoCompraDatasource.deletePedidoCompra(pedidos[i]);
-                            pedidoCompraDatasource.createUpdatePedidoCompra(pedidos[i], false);
+                    for (PedidoCompra pedido : pedidos) {
+                        if (pedidoCompraDatasource.ExistePedidoCompra(pedido.get_id())) {
+                            pedidoCompraDatasource.deletePedidoCompra(pedido);
+                            pedidoCompraDatasource.createUpdatePedidoCompra(pedido);
                         } else {
                             pedidoCompraDatasource.createUpdatePedidoCompra(pedidos);
                         }
-
                     }
 
                     List<PedidoCompra> emitidos = pedidoCompraDatasource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null);
@@ -153,7 +149,7 @@ public class PedidoCompraService extends IntentService {
         }
     }
 
-    private void descarregaFila(String urlString, Acesso acesso) {
+    private void descarregaFila(Acesso acesso) {
         FilaPedidoCompraDAO filaDataSource = null;
         try {
 
@@ -228,11 +224,7 @@ public class PedidoCompraService extends IntentService {
             }
             e.printStackTrace();
         } catch (Exception e) {
-            Log.e("", "");
-        } finally {
-            if (filaDataSource != null) {
-
-            }
+            e.printStackTrace();
         }
     }
 

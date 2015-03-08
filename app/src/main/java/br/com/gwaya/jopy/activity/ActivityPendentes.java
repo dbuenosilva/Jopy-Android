@@ -1,6 +1,5 @@
 package br.com.gwaya.jopy.activity;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -37,15 +36,7 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class ActivityPendentes extends ActivityAba {
 
-    private Acesso acesso;
-
-    private DownloadTask downloadTask;
-
-    private SaveAllTask saveAllTask;
-
-    private Boolean login;
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -69,6 +60,9 @@ public class ActivityPendentes extends ActivityAba {
         }
 
     };
+    private Acesso acesso;
+    private DownloadTask downloadTask;
+    private SaveAllTask saveAllTask;
 
     @Override
     public void atualizarListView() {
@@ -82,7 +76,7 @@ public class ActivityPendentes extends ActivityAba {
 
         Bundle extras = getIntent().getExtras();
 
-        login = extras.getBoolean("login");
+        Boolean login = extras.getBoolean("login");
 
         AcessoDAO AcessoDAO = new AcessoDAO();
         List<Acesso> lst = AcessoDAO.getAllAcesso();
@@ -113,6 +107,39 @@ public class ActivityPendentes extends ActivityAba {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public ListView setPedidos(List<PedidoCompra> pedidos) {
+
+        ListView pedidoList = super.setPedidos(pedidos);
+
+        pedidoList.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                PedidoCompra pedido = getPedidoCompraList().get(position);
+                Intent intent = new Intent(ActivityPendentes.this, ActivityDetalhe.class);
+                intent.putExtra("pedidocompra", new Gson().toJson(pedido));
+                ActivityPendentes.this.startActivityForResult(intent, 101);
+            }
+        });
+
+        pedidoList.setDivider(new ColorDrawable(this.getResources().getColor(R.color.emitido)));
+        pedidoList.setDividerHeight(1);
+
+        return pedidoList;
+    }
+
+    @Override
+    public String _statusPedido() {
+        return "emitido";
+    }
+
+    @Override
+    public String getTheTitle() {
+        return "Pedidos Pendentes";
     }
 
     public class SaveAllTask extends AsyncTask<Void, Void, Boolean> {
@@ -195,7 +222,7 @@ public class ActivityPendentes extends ActivityAba {
                 } else {
                     // mensagem
                     // logout
-                    acesso.logoff(ActivityPendentes.this);
+                    Acesso.logoff(ActivityPendentes.this);
                 }
 
 
@@ -230,38 +257,5 @@ public class ActivityPendentes extends ActivityAba {
 
             getSwipyRefreshLayout().setRefreshing(false);
         }
-    }
-
-    @Override
-    public ListView setPedidos(List<PedidoCompra> pedidos) {
-
-        ListView pedidoList = super.setPedidos(pedidos);
-
-        pedidoList.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                PedidoCompra pedido = getPedidoCompraList().get(position);
-                Intent intent = new Intent(ActivityPendentes.this, ActivityDetalhe.class);
-                intent.putExtra("pedidocompra", new Gson().toJson(pedido));
-                ActivityPendentes.this.startActivityForResult(intent, 101);
-            }
-        });
-
-        pedidoList.setDivider(new ColorDrawable(this.getResources().getColor(R.color.emitido)));
-        pedidoList.setDividerHeight(1);
-
-        return pedidoList;
-    }
-
-    @Override
-    public String _statusPedido() {
-        return "emitido";
-    }
-
-    @Override
-    public String getTheTitle() {
-        return "Pedidos Pendentes";
     }
 }

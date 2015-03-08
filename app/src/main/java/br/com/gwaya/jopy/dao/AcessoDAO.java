@@ -13,7 +13,7 @@ import br.com.gwaya.jopy.model.RespostaLogin;
 
 public class AcessoDAO {
 
-    private String[] allColumns = {
+    private final String[] allColumns = {
             MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.ACCESS_TOKEN,
             MySQLiteHelper.REFRESH_TOKEN,
@@ -106,7 +106,7 @@ public class AcessoDAO {
 
     public List<Acesso> getAllAcesso() {
 
-        final List<Acesso> acessos = new ArrayList<Acesso>();
+        final List<Acesso> acessos = new ArrayList<>();
         DatabaseManager.getInstance().executeQuery(
                 new QueryExecutor() {
                     @Override

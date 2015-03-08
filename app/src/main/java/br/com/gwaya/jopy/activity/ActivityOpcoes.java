@@ -22,7 +22,6 @@ public class ActivityOpcoes extends ActionBarActivity {
 
     AcessoDAO AcessoDAO;
     PedidoCompraDAO dataSource;
-    private RelativeLayout layoutLogoff;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +57,7 @@ public class ActivityOpcoes extends ActionBarActivity {
 
         AcessoDAO = new AcessoDAO();
 
-        layoutLogoff = (RelativeLayout) findViewById(R.id.layoutLogoff);
+        RelativeLayout layoutLogoff = (RelativeLayout) findViewById(R.id.layoutLogoff);
         layoutLogoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

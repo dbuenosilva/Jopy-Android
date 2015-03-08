@@ -46,11 +46,6 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
     private String codForn;
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onBackPressed() {
         setResult(RESULT_OK, new Intent());
         finish();
@@ -77,8 +72,7 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
 
         ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 
-        AdapterDetalhePedidoCompra adapter = new AdapterDetalhePedidoCompra(this,
-                R.layout.list_view_row_item_detalhe, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
+        AdapterDetalhePedidoCompra adapter = new AdapterDetalhePedidoCompra(this, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
 
         pedidoList.setAdapter(adapter);
 
@@ -110,13 +104,13 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
 
         try {
             //data = gson.fromJson(dtEmi, Date.class);
-            data = (Date) isoFormat.parse(dtEmi);
+            data = isoFormat.parse(dtEmi);
             dtEmi = dateFormat.format(data);
 
-            data = (Date) isoFormat.parse(dtNeces);
+            data = isoFormat.parse(dtNeces);
             dtNeces = dateFormat.format(data);
 
-            data = (Date) isoFormat.parse(dtMod);
+            data = isoFormat.parse(dtMod);
             dtMod = dateFormat.format(data);
 
             totalPedido = String.format("%.2f", pedido.getTotalPedido());
@@ -240,7 +234,7 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
                         indice++;
                     }
                     setPedido(_pedidos[indice]);
-                } catch (Exception e) {
+                } catch (Exception ignored) {
 
                 }
             }

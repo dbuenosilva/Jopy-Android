@@ -26,7 +26,4 @@ public class App extends Application {
         DatabaseManager.initializeInstance(new MySQLiteHelper(getApplicationContext()));
     }
 
-    public void customAppMethod() {
-        // Custom application method
-    }
 }

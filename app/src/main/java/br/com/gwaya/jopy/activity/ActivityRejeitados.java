@@ -28,18 +28,18 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class ActivityRejeitados extends ActivityAba {
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 String strPedidos = bundle.getString(PedidoCompraService.PEDIDOS_REJEITADOS);
-                if (strPedidos != null && strPedidos != "") {
+                if (strPedidos != null && !strPedidos.equals("")) {
                     GsonBuilder gsonb = new GsonBuilder();
                     Gson gson = gsonb.create();
                     JSONArray j;
-                    List<PedidoCompra> pedidos = new ArrayList<PedidoCompra>();
+                    List<PedidoCompra> pedidos = new ArrayList<>();
                     try {
                         j = new JSONArray(strPedidos);
                         pedidos = Arrays.asList(gson.fromJson(j.toString(), PedidoCompra[].class));

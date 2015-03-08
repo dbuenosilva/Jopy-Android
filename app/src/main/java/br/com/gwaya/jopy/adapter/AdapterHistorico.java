@@ -20,14 +20,14 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class AdapterHistorico extends ArrayAdapter<PedidoCompra> {
 
-    Context mContext;
-    int layoutResourceId;
+    final Context mContext;
+    final int layoutResourceId;
     List<PedidoCompra> data = null;
 
-    public AdapterHistorico(Context mContext, int layoutResourceId, List<PedidoCompra> data) {
-        super(mContext, layoutResourceId, data);
+    public AdapterHistorico(Context mContext, List<PedidoCompra> data) {
+        super(mContext, R.layout.rowitem_historico, data);
 
-        this.layoutResourceId = layoutResourceId;
+        this.layoutResourceId = R.layout.rowitem_historico;
         this.mContext = mContext;
         this.data = data;
     }
@@ -81,7 +81,7 @@ public class AdapterHistorico extends ArrayAdapter<PedidoCompra> {
             textViewItem.setText(dtEmi);
             textViewItem.setTag(pedido.get_id());
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 

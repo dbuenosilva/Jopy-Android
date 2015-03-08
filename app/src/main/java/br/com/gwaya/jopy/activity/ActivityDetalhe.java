@@ -129,7 +129,7 @@ public class ActivityDetalhe extends ActionBarActivity {
 
                         // Inflate and set the layout for the dialogdxc
                         // Pass null as the parent view because its going in the dialog layout
-                        final View view = (View) inflater.inflate(R.layout.dialog_rejeicao, null);
+                        final View view = inflater.inflate(R.layout.dialog_rejeicao, null);
                         final EditText textRej = (EditText) view.findViewById(R.id.txtPutRej);
 
                         builder.setView(view)
@@ -196,7 +196,7 @@ public class ActivityDetalhe extends ActionBarActivity {
                         DetalheActivity.this.startActivity(intent);*/
                     }
 
-                } catch (Exception e) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -272,7 +272,7 @@ public class ActivityDetalhe extends ActionBarActivity {
                 ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 
                 AdapterDetalhePedidoCompra adapter = new AdapterDetalhePedidoCompra(ActivityDetalhe.this,
-                        R.layout.list_view_row_item_detalhe, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
+                        pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
 
                 pedidoList.setAdapter(adapter);
 
@@ -306,17 +306,17 @@ public class ActivityDetalhe extends ActionBarActivity {
 
                 try {
                     //data = gson.fromJson(dtEmi, Date.class);
-                    data = (Date) isoFormat.parse(dtEmi);
+                    data = isoFormat.parse(dtEmi);
                     dtEmi = dateFormat.format(data);
 
-                    data = (Date) isoFormat.parse(dtNeces);
+                    data = isoFormat.parse(dtNeces);
                     dtNeces = dateFormat.format(data);
 
-                    data = (Date) isoFormat.parse(dtMod);
+                    data = isoFormat.parse(dtMod);
                     dtMod = dateFormat.format(data);
 
                     if (dtAprovRej != null && !dtAprovRej.equals("")) {
-                        data = (Date) isoFormat.parse(dtAprovRej);
+                        data = isoFormat.parse(dtAprovRej);
                         dtAprovRej = dateFormat.format(data);
                     }
 

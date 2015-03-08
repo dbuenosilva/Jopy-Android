@@ -134,7 +134,7 @@ public class ActivityPendentes extends ActivityAba {
             }
         } else if (getUpdateAsyncTask() == null) {
             setUpdateAsyncTask(new UpdateAsyncTask(_statusPedido()));
-            getUpdateAsyncTask().execute((Void) null);
+            getUpdateAsyncTask().execute();
         }
 
         registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));

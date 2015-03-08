@@ -272,12 +272,16 @@ public class ActivityPendentes extends ActivityMyBase {
                 saveAllTask.execute((Void) null);
             }
             showProgress(false);
+
+            getSwipyRefreshLayout().setRefreshing(false);
         }
 
         @Override
         protected void onCancelled() {
             downloadTask = null;
             showProgress(false);
+
+            getSwipyRefreshLayout().setRefreshing(false);
         }
     }
 }

@@ -117,7 +117,7 @@ public class PedidoCompraService extends IntentService {
                     // Diego Bueno - 10/02/2015 - verifica se pedido já existe, caso sim, deleta e inclui com nova alteração
                     for (int i = 0; i < pedidos.length; i++) {
 
-                        if (pedidoCompraDatasource.ExistePedidoCompra(pedidos[i]._id)) {
+                        if (pedidoCompraDatasource.ExistePedidoCompra(pedidos[i].get_id())) {
                             pedidoCompraDatasource.deletePedidoCompra(pedidos[i]);
                             pedidoCompraDatasource.createUpdatePedidoCompra(pedidos[i], false);
                         } else {
@@ -171,16 +171,16 @@ public class PedidoCompraService extends IntentService {
 
                 for (PedidoCompra pedidoCompra : pedidos) {
                     PedidoCompra tmp = new PedidoCompra();
-                    tmp._id = pedidoCompra._id;
-                    tmp.statusPedido = pedidoCompra.statusPedido;
-                    tmp.motivoRejeicao = pedidoCompra.motivoRejeicao;
+                    tmp.set_id(pedidoCompra.get_id());
+                    tmp.setStatusPedido(pedidoCompra.getStatusPedido());
+                    tmp.setMotivoRejeicao(pedidoCompra.getMotivoRejeicao());
                     tmpPedidos.add(tmp);
                 }
 
                 for (PedidoCompra pedidoCompra : tmpPedidos) {
 
                     HttpClient httpclient = new DefaultHttpClient();
-                    HttpPut httpPut = new HttpPut(url + "/" + pedidoCompra._id);
+                    HttpPut httpPut = new HttpPut(url + "/" + pedidoCompra.get_id());
                     httpPut.setHeader("Authorization", acesso.Token_Type + " " + acesso.Access_Token);
 
                     filaDataSource.beginTransaction();
@@ -210,7 +210,7 @@ public class PedidoCompraService extends IntentService {
                         if (pedidoCompraDatasource == null) {
                             pedidoCompraDatasource = new PedidoCompraDataSource(this);
                         }
-                        pedidoCompra.enviado = 1;
+                        pedidoCompra.setEnviado(1);
                         pedidoCompraDatasource.updatePedidoCompra(pedidoCompra);
                     } else {
                         // mensagem

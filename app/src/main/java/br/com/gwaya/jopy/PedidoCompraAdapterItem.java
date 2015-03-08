@@ -45,9 +45,9 @@ public class PedidoCompraAdapterItem extends ArrayAdapter<PedidoCompra> {
 
         lnTipo = (View) convertView.findViewById(R.id.lnTipo);
 
-        if (pedido.statusPedido.equals("emitido")) {
+        if (pedido.getStatusPedido().equals("emitido")) {
             lnTipo.setBackgroundResource(R.color.emitido2);
-        } else if (pedido.statusPedido.equals("aprovado")) {
+        } else if (pedido.getStatusPedido().equals("aprovado")) {
             lnTipo.setBackgroundResource(R.color.aprovado2);
         } else {
             lnTipo.setBackgroundResource(R.color.rejeitado2);
@@ -57,23 +57,23 @@ public class PedidoCompraAdapterItem extends ArrayAdapter<PedidoCompra> {
         final String ISOFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         Date date;
         try {
-            date = (new SimpleDateFormat(ISOFormat)).parse(pedido.dtNeces);
+            date = (new SimpleDateFormat(ISOFormat)).parse(pedido.getDtNeces());
 
             String dtEmi = format.format(date);
-            String totalPedido = String.format("%.2f", pedido.totalPedido);
-            totalPedido = NumberFormat.getCurrencyInstance().format(pedido.totalPedido);
+            String totalPedido = String.format("%.2f", pedido.getTotalPedido());
+            totalPedido = NumberFormat.getCurrencyInstance().format(pedido.getTotalPedido());
 
             TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewNomeForn);
-            textViewItem.setText(pedido.nomeForn);
-            textViewItem.setTag(pedido._id);
+            textViewItem.setText(pedido.getNomeForn());
+            textViewItem.setTag(pedido.get_id());
 
             textViewItem = (TextView) convertView.findViewById(R.id.textViewTotalPedido);
             textViewItem.setText(totalPedido);
-            textViewItem.setTag(pedido._id);
+            textViewItem.setTag(pedido.get_id());
 
             textViewItem = (TextView) convertView.findViewById(R.id.textViewDtPedido);
             textViewItem.setText(dtEmi);
-            textViewItem.setTag(pedido._id);
+            textViewItem.setTag(pedido.get_id());
         } catch (Exception e) {
 
         }

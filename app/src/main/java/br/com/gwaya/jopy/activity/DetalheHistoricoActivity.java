@@ -78,7 +78,7 @@ public class DetalheHistoricoActivity extends ActionBarActivity {
         ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 
         DetalhePedidoCompraAdapterItem adapter = new DetalhePedidoCompraAdapterItem(this,
-                R.layout.list_view_row_item_detalhe, pedido.itens.toArray(new PedidoCompraItem[pedido.itens.size()]));
+                R.layout.list_view_row_item_detalhe, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
 
         pedidoList.setAdapter(adapter);
 
@@ -96,9 +96,9 @@ public class DetalheHistoricoActivity extends ActionBarActivity {
         pedidoList.setLayoutParams(_params);
         pedidoList.requestLayout();
 
-        String dtEmi = pedido.dtEmi;
-        String dtNeces = pedido.dtNeces;
-        String dtMod = pedido.dtMod;
+        String dtEmi = pedido.getDtEmi();
+        String dtNeces = pedido.getDtNeces();
+        String dtMod = pedido.getDtMod();
         String totalPedido = "";
 
         Date data = null;
@@ -119,7 +119,7 @@ public class DetalheHistoricoActivity extends ActionBarActivity {
             data = (Date) isoFormat.parse(dtMod);
             dtMod = dateFormat.format(data);
 
-            totalPedido = String.format("%.2f", pedido.totalPedido);
+            totalPedido = String.format("%.2f", pedido.getTotalPedido());
 
         } catch (Exception ex) {
             String str = ex.getMessage();
@@ -129,47 +129,47 @@ public class DetalheHistoricoActivity extends ActionBarActivity {
         TextView txtPedido;
 
         txtPedido = (TextView) findViewById(R.id.txtPedido);
-        txtPedido.setText(pedido.idSistema);
-        txtPedido.setTag(pedido._id);
+        txtPedido.setText(pedido.getIdSistema());
+        txtPedido.setTag(pedido.get_id());
 
         TextView textViewItem = (TextView) findViewById(R.id.txtForn);
-        textViewItem.setText(pedido.nomeForn);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setText(pedido.getNomeForn());
+        textViewItem.setTag(pedido.get_id());
 
         textViewItem = (TextView) findViewById(R.id.txtDtEmi);
         textViewItem.setText(dtEmi);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setTag(pedido.get_id());
 
         textViewItem = (TextView) findViewById(R.id.txtNec);
         textViewItem.setText(dtNeces);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setTag(pedido.get_id());
 
         textViewItem = (TextView) findViewById(R.id.txtSolic);
-        textViewItem.setText(pedido.solicitante);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setText(pedido.getSolicitante());
+        textViewItem.setTag(pedido.get_id());
 
         textViewItem = (TextView) findViewById(R.id.txtCentroCusto);
-        textViewItem.setText(pedido.centroCusto);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setText(pedido.getCentroCusto());
+        textViewItem.setTag(pedido.get_id());
 
         textViewItem = (TextView) findViewById(R.id.txtTotal);
         textViewItem.setText(totalPedido);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setTag(pedido.get_id());
 
         textViewItem = (TextView) findViewById(R.id.txtDtMod);
         textViewItem.setText("Data da última modificação: " + dtMod);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setTag(pedido.get_id());
 
         textViewItem = (TextView) findViewById(R.id.txtMotivoPedido);
-        textViewItem.setText(pedido.motivo);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setText(pedido.getMotivo());
+        textViewItem.setTag(pedido.get_id());
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.layoutStatus);
         relativeLayout.setVisibility(RelativeLayout.VISIBLE);
 
-        String strStatus = pedido.statusPedido.equals("aprovado") ? "Aprovado" : "Motivo da Rejeição: " + pedido.motivoRejeicao;
+        String strStatus = pedido.getStatusPedido().equals("aprovado") ? "Aprovado" : "Motivo da Rejeição: " + pedido.getMotivoRejeicao();
 
-        if (pedido.statusPedido.equals("aprovado")) {
+        if (pedido.getStatusPedido().equals("aprovado")) {
             relativeLayout.setBackgroundResource(R.color.aprovado);
         } else {
             relativeLayout.setBackgroundResource(R.color.rejeitado);
@@ -177,7 +177,7 @@ public class DetalheHistoricoActivity extends ActionBarActivity {
 
         txtPedido = (TextView) findViewById(R.id.txtStatus);
         txtPedido.setText(strStatus);
-        txtPedido.setTag(pedido._id);
+        txtPedido.setTag(pedido.get_id());
 
         if (indice == 0) {
             buttonPrev.setVisibility(Button.INVISIBLE);

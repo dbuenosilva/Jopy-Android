@@ -100,10 +100,10 @@ public class PedidoCompraDataSource {
             public void run(SQLiteDatabase database) {
                 ContentValues values = new ContentValues();
 
-                values.put(MySQLiteHelper.ENVIADO, pedidoCompra.enviado);
+                values.put(MySQLiteHelper.ENVIADO, pedidoCompra.getEnviado());
 
                 database.update(MySQLiteHelper.TABLE_PEDIDO_COMPRA, values,
-                        MySQLiteHelper.COLUMN_ID + " = '" + pedidoCompra._id + "'", null);
+                        MySQLiteHelper.COLUMN_ID + " = '" + pedidoCompra.get_id() + "'", null);
             }
         });
 
@@ -121,42 +121,42 @@ public class PedidoCompraDataSource {
 
                 ContentValues values = new ContentValues();
 
-                values.put(MySQLiteHelper.COLUMN_ID, _pedido._id);
-                values.put(MySQLiteHelper.ID_SISTEMA, _pedido.idSistema);
-                values.put(MySQLiteHelper.APROVADORES, _pedido.aprovadores);
-                values.put(MySQLiteHelper.ENVIADO, _pedido.enviado);
-                values.put(MySQLiteHelper.STATUS_PEDIDO, _pedido.statusPedido);
-                values.put(MySQLiteHelper.NOME_FORN, _pedido.nomeForn);
-                values.put(MySQLiteHelper.CPF_CNPJ_FORN, _pedido.cpfCnpjForn);
-                values.put(MySQLiteHelper.COD_FORN, _pedido.codForn);
-                values.put(MySQLiteHelper.DT_EMI, _pedido.dtEmi);
-                values.put(MySQLiteHelper.DT_NECES, _pedido.dtNeces);
-                values.put(MySQLiteHelper.DT_REJ, _pedido.dtRej);
-                values.put(MySQLiteHelper.CENTRO_CUSTO, _pedido.centroCusto);
-                values.put(MySQLiteHelper.COND_PAGTO, _pedido.condPagto);
-                values.put(MySQLiteHelper.ID_SOLICITANTE, _pedido.idSolicitante);
-                values.put(MySQLiteHelper.SOLICITANTE, _pedido.solicitante);
-                values.put(MySQLiteHelper.MOTIVO, _pedido.motivo);
-                values.put(MySQLiteHelper.MOTIVO_REJEICAO, _pedido.motivoRejeicao);
-                values.put(MySQLiteHelper.TOTAL_PEDIDO, _pedido.totalPedido);
-                values.put(MySQLiteHelper.OBS, _pedido.obs);
-                values.put(MySQLiteHelper.DT_MOD, _pedido.dtMod);
+                values.put(MySQLiteHelper.COLUMN_ID, _pedido.get_id());
+                values.put(MySQLiteHelper.ID_SISTEMA, _pedido.getIdSistema());
+                values.put(MySQLiteHelper.APROVADORES, _pedido.getAprovadores());
+                values.put(MySQLiteHelper.ENVIADO, _pedido.getEnviado());
+                values.put(MySQLiteHelper.STATUS_PEDIDO, _pedido.getStatusPedido());
+                values.put(MySQLiteHelper.NOME_FORN, _pedido.getNomeForn());
+                values.put(MySQLiteHelper.CPF_CNPJ_FORN, _pedido.getCpfCnpjForn());
+                values.put(MySQLiteHelper.COD_FORN, _pedido.getCodForn());
+                values.put(MySQLiteHelper.DT_EMI, _pedido.getDtEmi());
+                values.put(MySQLiteHelper.DT_NECES, _pedido.getDtNeces());
+                values.put(MySQLiteHelper.DT_REJ, _pedido.getDtRej());
+                values.put(MySQLiteHelper.CENTRO_CUSTO, _pedido.getCentroCusto());
+                values.put(MySQLiteHelper.COND_PAGTO, _pedido.getCondPagto());
+                values.put(MySQLiteHelper.ID_SOLICITANTE, _pedido.getIdSolicitante());
+                values.put(MySQLiteHelper.SOLICITANTE, _pedido.getSolicitante());
+                values.put(MySQLiteHelper.MOTIVO, _pedido.getMotivo());
+                values.put(MySQLiteHelper.MOTIVO_REJEICAO, _pedido.getMotivoRejeicao());
+                values.put(MySQLiteHelper.TOTAL_PEDIDO, _pedido.getTotalPedido());
+                values.put(MySQLiteHelper.OBS, _pedido.getObs());
+                values.put(MySQLiteHelper.DT_MOD, _pedido.getDtMod());
 
-                database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA_ITEM, MySQLiteHelper.ID_PAI + " = '" + _pedido._id + "'", null);
-                database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA, MySQLiteHelper.COLUMN_ID + " = '" + _pedido._id + "'", null);
+                database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA_ITEM, MySQLiteHelper.ID_PAI + " = '" + _pedido.get_id() + "'", null);
+                database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA, MySQLiteHelper.COLUMN_ID + " = '" + _pedido.get_id() + "'", null);
 
-                if (_pedido.itens != null) {
+                if (_pedido.getItens() != null) {
 
-                    for (int i = 0; i < _pedido.itens.size(); i++) {
+                    for (int i = 0; i < _pedido.getItens().size(); i++) {
                         ContentValues itemValues = new ContentValues();
 
-                        itemValues.put(MySQLiteHelper.ID_PAI, _pedido._id);
-                        itemValues.put(MySQLiteHelper.COLUMN_ID, _pedido.itens.get(i)._id);
-                        itemValues.put(MySQLiteHelper.PRODUTO, _pedido.itens.get(i).produto);
-                        itemValues.put(MySQLiteHelper.QTDE, _pedido.itens.get(i).qtde);
-                        itemValues.put(MySQLiteHelper.VALOR, _pedido.itens.get(i).valor);
-                        itemValues.put(MySQLiteHelper.TOTAL, _pedido.itens.get(i).total);
-                        itemValues.put(MySQLiteHelper.OBS, _pedido.itens.get(i).obs);
+                        itemValues.put(MySQLiteHelper.ID_PAI, _pedido.get_id());
+                        itemValues.put(MySQLiteHelper.COLUMN_ID, _pedido.getItens().get(i).get_id());
+                        itemValues.put(MySQLiteHelper.PRODUTO, _pedido.getItens().get(i).getProduto());
+                        itemValues.put(MySQLiteHelper.QTDE, _pedido.getItens().get(i).getQtde());
+                        itemValues.put(MySQLiteHelper.VALOR, _pedido.getItens().get(i).getValor());
+                        itemValues.put(MySQLiteHelper.TOTAL, _pedido.getItens().get(i).getTotal());
+                        itemValues.put(MySQLiteHelper.OBS, _pedido.getItens().get(i).getObs());
 
                         database.insert(MySQLiteHelper.TABLE_PEDIDO_COMPRA_ITEM, null,
                                 itemValues);
@@ -167,7 +167,7 @@ public class PedidoCompraDataSource {
 
                   /*
                   database.update(MySQLiteHelper.TABLE_PEDIDO_COMPRA, values,
-                          MySQLiteHelper.COLUMN_ID + " = '" + _pedido._id + "'", null);
+                          MySQLiteHelper.COLUMN_ID + " = '" + _pedido.get_id() + "'", null);
                           */
 
                 if (endTransaction) {
@@ -215,7 +215,7 @@ public class PedidoCompraDataSource {
     }
 
     public void deletePedidoCompra(PedidoCompra pedido) {
-        final String id = pedido._id;
+        final String id = pedido.get_id();
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
@@ -248,15 +248,15 @@ public class PedidoCompraDataSource {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
                     PedidoCompra pedido = cursorToPedidoCompra(cursor);
-                    pedido.itens = new ArrayList<PedidoCompraItem>();
+                    pedido.setItens(new ArrayList<PedidoCompraItem>());
 
                     Cursor cursorItem = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA_ITEM,
-                            allColumnsItems, MySQLiteHelper.ID_PAI + " = '" + pedido._id + "'", null, null, null, null);
+                            allColumnsItems, MySQLiteHelper.ID_PAI + " = '" + pedido.get_id() + "'", null, null, null, null);
 
                     cursorItem.moveToFirst();
                     while (!cursorItem.isAfterLast()) {
                         PedidoCompraItem item = cursosToPedidoCompraItem(cursorItem);
-                        pedido.itens.add(item);
+                        pedido.getItens().add(item);
                         cursorItem.moveToNext();
                     }
                     cursorItem.close();
@@ -273,36 +273,36 @@ public class PedidoCompraDataSource {
 
     private PedidoCompraItem cursosToPedidoCompraItem(Cursor cursor) {
         PedidoCompraItem item = new PedidoCompraItem();
-        item.produto = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.PRODUTO));
-        item.qtde = cursor.getFloat(cursor.getColumnIndex(MySQLiteHelper.QTDE));
-        item.valor = cursor.getFloat(cursor.getColumnIndex(MySQLiteHelper.VALOR));
-        item.total = cursor.getFloat(cursor.getColumnIndex(MySQLiteHelper.TOTAL));
-        item.obs = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.OBS));
+        item.setProduto(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.PRODUTO)));
+        item.setQtde(cursor.getFloat(cursor.getColumnIndex(MySQLiteHelper.QTDE)));
+        item.setValor(cursor.getFloat(cursor.getColumnIndex(MySQLiteHelper.VALOR)));
+        item.setTotal(cursor.getFloat(cursor.getColumnIndex(MySQLiteHelper.TOTAL)));
+        item.setObs(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.OBS)));
         return item;
     }
 
     private PedidoCompra cursorToPedidoCompra(Cursor cursor) {
         PedidoCompra pedido = new PedidoCompra();
 
-        pedido._id = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_ID));
-        pedido.idSistema = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.ID_SISTEMA));
-        pedido.aprovadores = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.APROVADORES));
-        pedido.enviado = cursor.getInt(cursor.getColumnIndex(MySQLiteHelper.ENVIADO));
-        pedido.statusPedido = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.STATUS_PEDIDO));
-        pedido.nomeForn = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.NOME_FORN));
-        pedido.cpfCnpjForn = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.CPF_CNPJ_FORN));
-        pedido.codForn = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COD_FORN));
-        pedido.idSolicitante = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.ID_SOLICITANTE));
-        pedido.solicitante = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.SOLICITANTE));
-        pedido.totalPedido = cursor.getFloat(cursor.getColumnIndex(MySQLiteHelper.TOTAL_PEDIDO));
-        pedido.condPagto = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COND_PAGTO));
-        pedido.centroCusto = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.CENTRO_CUSTO));
-        pedido.dtMod = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_MOD));
-        pedido.dtNeces = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_NECES));
-        pedido.dtEmi = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_EMI));
-        pedido.motivo = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO));
-        pedido.motivoRejeicao = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO_REJEICAO));
-        pedido.obs = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.OBS));
+        pedido.set_id(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_ID)));
+        pedido.setIdSistema(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.ID_SISTEMA)));
+        pedido.setAprovadores(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.APROVADORES)));
+        pedido.setEnviado(cursor.getInt(cursor.getColumnIndex(MySQLiteHelper.ENVIADO)));
+        pedido.setStatusPedido(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.STATUS_PEDIDO)));
+        pedido.setNomeForn(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.NOME_FORN)));
+        pedido.setCpfCnpjForn(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.CPF_CNPJ_FORN)));
+        pedido.setCodForn(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COD_FORN)));
+        pedido.setIdSolicitante(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.ID_SOLICITANTE)));
+        pedido.setSolicitante(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.SOLICITANTE)));
+        pedido.setTotalPedido(cursor.getFloat(cursor.getColumnIndex(MySQLiteHelper.TOTAL_PEDIDO)));
+        pedido.setCondPagto(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COND_PAGTO)));
+        pedido.setCentroCusto(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.CENTRO_CUSTO)));
+        pedido.setDtMod(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_MOD)));
+        pedido.setDtNeces(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_NECES)));
+        pedido.setDtEmi(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_EMI)));
+        pedido.setMotivo(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO)));
+        pedido.setMotivoRejeicao(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO_REJEICAO)));
+        pedido.setObs(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.OBS)));
 
         return pedido;
     }

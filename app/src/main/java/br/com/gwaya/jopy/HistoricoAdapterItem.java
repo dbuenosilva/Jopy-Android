@@ -49,9 +49,9 @@ public class HistoricoAdapterItem extends ArrayAdapter<PedidoCompra> {
         try {
             FrameLayout frameLayout = (FrameLayout) convertView.findViewById(R.id.frmStatus);
             int resourceColor = R.color.emitido;
-            if (pedido.statusPedido.equals("aprovado")) {
+            if (pedido.getStatusPedido().equals("aprovado")) {
                 resourceColor = R.color.aprovado;
-            } else if (pedido.statusPedido.equals("rejeitado")) {
+            } else if (pedido.getStatusPedido().equals("rejeitado")) {
                 resourceColor = R.color.rejeitado;
             } else {
                 resourceColor = R.color.emitido;
@@ -60,25 +60,25 @@ public class HistoricoAdapterItem extends ArrayAdapter<PedidoCompra> {
             //convertView.setBackgroundResource(resourceColor);
             frameLayout.setBackgroundResource(resourceColor);
 
-            date = (new SimpleDateFormat(ISOFormat)).parse(pedido.dtEmi);
+            date = (new SimpleDateFormat(ISOFormat)).parse(pedido.getDtEmi());
 
             String dtEmi = format.format(date);
-            String totalPedido = String.format("%.2f", pedido.totalPedido);
+            String totalPedido = String.format("%.2f", pedido.getTotalPedido());
 
-            totalPedido = NumberFormat.getCurrencyInstance().format(pedido.totalPedido);
+            totalPedido = NumberFormat.getCurrencyInstance().format(pedido.getTotalPedido());
 
             // get the TextView and then set the text (item name) and tag (item ID) values
             TextView textViewItem = (TextView) convertView.findViewById(R.id.txtHNomeFor);
-            textViewItem.setText(pedido.nomeForn);
-            textViewItem.setTag(pedido._id);
+            textViewItem.setText(pedido.getNomeForn());
+            textViewItem.setTag(pedido.get_id());
 
             textViewItem = (TextView) convertView.findViewById(R.id.txtHTotal);
             textViewItem.setText(totalPedido);
-            textViewItem.setTag(pedido._id);
+            textViewItem.setTag(pedido.get_id());
 
             textViewItem = (TextView) convertView.findViewById(R.id.txtDtEmi);
             textViewItem.setText(dtEmi);
-            textViewItem.setTag(pedido._id);
+            textViewItem.setTag(pedido.get_id());
 
         } catch (Exception e) {
 

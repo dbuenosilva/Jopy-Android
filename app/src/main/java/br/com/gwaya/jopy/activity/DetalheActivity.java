@@ -93,9 +93,9 @@ public class DetalheActivity extends ActionBarActivity {
                                         FilaPedidoCompraDataSource filaDataSource = new FilaPedidoCompraDataSource(DetalheActivity.this);
                                         PedidoCompraDataSource dataSource = new PedidoCompraDataSource(DetalheActivity.this);
 
-                                        pedido.statusPedido = STATUS_APROVADO;
-                                        pedido.enviado = 0;
-                                        pedido.motivoRejeicao = "";
+                                        pedido.setStatusPedido(STATUS_APROVADO);
+                                        pedido.setEnviado(0);
+                                        pedido.setMotivoRejeicao("");
 
                                         filaDataSource.open();
                                         filaDataSource.createFilaPedidoCompra(pedido);
@@ -151,9 +151,9 @@ public class DetalheActivity extends ActionBarActivity {
                                         PedidoCompraDataSource dataSource =
                                                 new PedidoCompraDataSource(DetalheActivity.this);
 
-                                        pedido.statusPedido = "rejeitado";
-                                        pedido.enviado = 0;
-                                        pedido.motivoRejeicao = textRej.getText().toString().replace("\n", "").replace("\r", "");
+                                        pedido.setStatusPedido("rejeitado");
+                                        pedido.setEnviado(0);
+                                        pedido.setMotivoRejeicao(textRej.getText().toString().replace("\n", "").replace("\r", ""));
 
                                         filaDataSource.open();
                                         filaDataSource.createFilaPedidoCompra(pedido);
@@ -237,7 +237,7 @@ public class DetalheActivity extends ActionBarActivity {
 
                 pedido = gson.fromJson(jsonMyObject, PedidoCompra.class);
 
-                if (pedido.statusPedido.equals("emitido")) {
+                if (pedido.getStatusPedido().equals("emitido")) {
                     setContentView(R.layout.detalhe_main);
                 } else {
                     setContentView(R.layout.detalhe_aprov_rej);
@@ -254,7 +254,7 @@ public class DetalheActivity extends ActionBarActivity {
 
                 View mCustomView = mInflater.inflate(R.layout.actionbar_custom_title_view_centered, null);
                 TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
-                String title = pedido.nomeForn;
+                String title = pedido.getNomeForn();
 
                 if (title.length() > 25) {
                     title = title.substring(0, 24) + "...";
@@ -269,7 +269,7 @@ public class DetalheActivity extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(DetalheActivity.this, HistoricoActivity.class);
-                        intent.putExtra("codForn", pedido.codForn);
+                        intent.putExtra("codForn", pedido.getCodForn());
                         DetalheActivity.this.startActivityForResult(intent, RESULT_OK);
                     }
                 });
@@ -283,7 +283,7 @@ public class DetalheActivity extends ActionBarActivity {
                 ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 
                 DetalhePedidoCompraAdapterItem adapter = new DetalhePedidoCompraAdapterItem(DetalheActivity.this,
-                        R.layout.list_view_row_item_detalhe, pedido.itens.toArray(new PedidoCompraItem[pedido.itens.size()]));
+                        R.layout.list_view_row_item_detalhe, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
 
                 pedidoList.setAdapter(adapter);
 
@@ -301,10 +301,11 @@ public class DetalheActivity extends ActionBarActivity {
                 pedidoList.setLayoutParams(_params);
                 pedidoList.requestLayout();
 
-                String dtEmi = pedido.dtEmi;
-                String dtNeces = pedido.dtNeces;
-                String dtMod = pedido.dtMod;
-                String dtAprovRej = pedido.dtMod;
+                // TODO - A variável dtMod e dtAprovRej, já estavam recebendo o mesmo valor (dtMod). Não sei se realmente deveria acontecer isto, checar regra de negócios.
+                String dtEmi = pedido.getDtEmi();
+                String dtNeces = pedido.getDtNeces();
+                String dtMod = pedido.getDtMod();
+                String dtAprovRej = pedido.getDtMod();
                 String totalPedido = "";
 
                 Date data = null;
@@ -330,7 +331,7 @@ public class DetalheActivity extends ActionBarActivity {
                         dtAprovRej = dateFormat.format(data);
                     }
 
-                    totalPedido = NumberFormat.getCurrencyInstance().format(pedido.totalPedido);
+                    totalPedido = NumberFormat.getCurrencyInstance().format(pedido.getTotalPedido());
 
                 } catch (Exception ex) {
                     String str = ex.getMessage();
@@ -339,49 +340,49 @@ public class DetalheActivity extends ActionBarActivity {
 
                 TextView textViewItem;
 
-                String strStatus = pedido.statusPedido.equals("aprovado") ? "Aprovado" : "Motivo da Rejeição: " + pedido.motivo;
+                String strStatus = pedido.getStatusPedido().equals("aprovado") ? "Aprovado" : "Motivo da Rejeição: " + pedido.getMotivo();
 
                 textViewItem = (TextView) findViewById(R.id.txtStatus1);
                 if (textViewItem != null) {
                     textViewItem.setText(strStatus);
-                    textViewItem.setTag(pedido._id);
+                    textViewItem.setTag(pedido.get_id());
                 }
 
                 TextView txtPedido = (TextView) findViewById(R.id.txtPedido);
-                txtPedido.setText(pedido.idSistema);
-                txtPedido.setTag(pedido._id);
+                txtPedido.setText(pedido.getIdSistema());
+                txtPedido.setTag(pedido.get_id());
 
                 textViewItem = (TextView) findViewById(R.id.txtForn);
-                textViewItem.setText(pedido.nomeForn);
-                textViewItem.setTag(pedido._id);
+                textViewItem.setText(pedido.getNomeForn());
+                textViewItem.setTag(pedido.get_id());
 
                 textViewItem = (TextView) findViewById(R.id.txtPagto);
-                textViewItem.setText(pedido.condPagto);
-                textViewItem.setTag(pedido._id);
+                textViewItem.setText(pedido.getCondPagto());
+                textViewItem.setTag(pedido.get_id());
 
                 textViewItem = (TextView) findViewById(R.id.txtDtEmi);
                 textViewItem.setText(dtEmi);
-                textViewItem.setTag(pedido._id);
+                textViewItem.setTag(pedido.get_id());
 
                 textViewItem = (TextView) findViewById(R.id.txtNec);
                 textViewItem.setText(dtNeces);
-                textViewItem.setTag(pedido._id);
+                textViewItem.setTag(pedido.get_id());
 
                 textViewItem = (TextView) findViewById(R.id.txtSolic);
-                textViewItem.setText(pedido.solicitante);
-                textViewItem.setTag(pedido._id);
+                textViewItem.setText(pedido.getSolicitante());
+                textViewItem.setTag(pedido.get_id());
 
                 textViewItem = (TextView) findViewById(R.id.txtCentroCusto);
-                textViewItem.setText(pedido.centroCusto);
-                textViewItem.setTag(pedido._id);
+                textViewItem.setText(pedido.getCentroCusto());
+                textViewItem.setTag(pedido.get_id());
 
                 textViewItem = (TextView) findViewById(R.id.txtTotal);
                 textViewItem.setText(totalPedido);
-                textViewItem.setTag(pedido._id);
+                textViewItem.setTag(pedido.get_id());
 
                 textViewItem = (TextView) findViewById(R.id.txtDtMod);
                 textViewItem.setText("Data da última modificação: " + dtMod);
-                textViewItem.setTag(pedido._id);
+                textViewItem.setTag(pedido.get_id());
 
                 RelativeLayout relativeLayout;
 
@@ -389,27 +390,27 @@ public class DetalheActivity extends ActionBarActivity {
 
                 relativeLayout.setVisibility(RelativeLayout.VISIBLE);
                 textViewItem = (TextView) findViewById(R.id.txtMotivoPedido);
-                textViewItem.setText(pedido.motivo);
-                textViewItem.setTag(pedido._id);
+                textViewItem.setText(pedido.getMotivo());
+                textViewItem.setTag(pedido.get_id());
 
                 relStatusRdp = findViewById(R.id.relStatusRdp);
                 txtStatusRdp = (TextView) findViewById(R.id.txtStatusRdp);
 
 
-                if (pedido.statusPedido.equals("emitido")) {
+                if (pedido.getStatusPedido().equals("emitido")) {
                     setRodapeEmitido();
                 } else {
 
                     imgView = findViewById(R.id.imgUpload);
 
-                    if (pedido.enviado == 1) {
+                    if (pedido.getEnviado() == 1) {
                         imgView.setVisibility(View.INVISIBLE);
                     } else {
                         imgView.setVisibility(View.VISIBLE);
                     }
 
                     relativeLayout = (RelativeLayout) findViewById(R.id.layoutStatus1);
-                    if (pedido.statusPedido.equals("aprovado")) {
+                    if (pedido.getStatusPedido().equals("aprovado")) {
                         //relativeLayout.setBackgroundResource(R.color.aprovado);
                         relativeLayout.setVisibility(View.GONE);
                         relStatusRdp.setBackgroundResource(R.color.aprovado);
@@ -421,8 +422,8 @@ public class DetalheActivity extends ActionBarActivity {
                         txtStatusRdp.setText("Pedido rejeitado" + (dtAprovRej == null ? "" : " em " + dtAprovRej));
 
                         textViewItem = (TextView) findViewById(R.id.txtStatus2);
-                        textViewItem.setText(pedido.motivoRejeicao == null ? "" : pedido.motivoRejeicao);
-                        textViewItem.setTag(pedido._id);
+                        textViewItem.setText(pedido.getMotivoRejeicao() == null ? "" : pedido.getMotivoRejeicao());
+                        textViewItem.setTag(pedido.get_id());
                     }
                 }
 

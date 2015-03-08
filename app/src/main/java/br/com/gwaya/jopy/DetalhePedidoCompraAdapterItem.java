@@ -41,39 +41,39 @@ public class DetalhePedidoCompraAdapterItem extends ArrayAdapter<PedidoCompraIte
 
         final PedidoCompraItem pedido = data[position];
 
-        String qtde = String.format("%.2f", pedido.qtde);
-        String valor = String.format("%.2f", pedido.valor);
-        String subTotal = String.format("%.2f", pedido.total);
+        String qtde = String.format("%.2f", pedido.getQtde());
+        String valor = String.format("%.2f", pedido.getValor());
+        String subTotal = String.format("%.2f", pedido.getTotal());
 
-        valor = NumberFormat.getCurrencyInstance().format(pedido.valor);
-        subTotal = NumberFormat.getCurrencyInstance().format(pedido.total);
+        valor = NumberFormat.getCurrencyInstance().format(pedido.getValor());
+        subTotal = NumberFormat.getCurrencyInstance().format(pedido.getTotal());
 
-        valor = NumberFormat.getCurrencyInstance().format(pedido.valor);
-        subTotal = NumberFormat.getCurrencyInstance().format(pedido.total);
+        valor = NumberFormat.getCurrencyInstance().format(pedido.getValor());
+        subTotal = NumberFormat.getCurrencyInstance().format(pedido.getTotal());
 
         TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewProduto);
-        textViewItem.setText(pedido.produto);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setText(pedido.getProduto());
+        textViewItem.setTag(pedido.get_id());
 
         textViewItem = (TextView) convertView.findViewById(R.id.textViewQtde);
         textViewItem.setText(qtde);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setTag(pedido.get_id());
 
         textViewItem = (TextView) convertView.findViewById(R.id.textViewSubTotal);
         textViewItem.setText(valor);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setTag(pedido.get_id());
 
         textViewItem = (TextView) convertView.findViewById(R.id.txtSubTotal);
         textViewItem.setText(subTotal);
-        textViewItem.setTag(pedido._id);
+        textViewItem.setTag(pedido.get_id());
 
         ImageButton imageButton = (ImageButton) convertView.findViewById(R.id.imgBtnObs);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String msg = "Não há nenhuma observação.";
-                if (pedido.obs != null && !pedido.obs.equals("")) {
-                    msg = pedido.obs;
+                if (pedido.getObs() != null && !pedido.getObs().equals("")) {
+                    msg = pedido.getObs();
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setMessage(msg)

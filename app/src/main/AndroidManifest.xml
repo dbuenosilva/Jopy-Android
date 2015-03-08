@@ -39,7 +39,7 @@
             android:name=".activity.ActivityOpcoes"
             android:label="@string/title_activity_opcoes"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ActivitySplashScreen"
             android:launchMode="singleTask"
@@ -54,15 +54,15 @@
         <activity
             android:name=".activity.ActivityPendentes"
             android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop" />
         <activity
             android:name=".activity.ActivityAprovados"
             android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop" />
         <activity
             android:name=".activity.ActivityRejeitados"
             android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop" />
         <activity
             android:name=".activity.ActivityDetalhe"
             android:label="@string/title_activity_main_tab"
@@ -98,18 +98,18 @@
         </activity>
         <activity
             android:name=".activity.ActivityMain"
-            android:label="@string/title_activity_main"></activity>
+            android:label="@string/title_activity_main" />
 
-        <receiver android:name=".communication.PedidoCompraReceiver"></receiver>
+        <receiver android:name=".communication.PedidoCompraReceiver" />
 
-        <service android:name=".communication.PedidoCompraService"></service>
+        <service android:name=".communication.PedidoCompraService" />
         <receiver android:name=".communication.BootReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".communication.GCMIntentService"></service>
+        <service android:name=".communication.GCMIntentService" />
 
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"

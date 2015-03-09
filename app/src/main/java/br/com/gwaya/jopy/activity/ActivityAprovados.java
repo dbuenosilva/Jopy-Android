@@ -20,8 +20,6 @@ import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
-import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 /**
@@ -30,6 +28,7 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 public class ActivityAprovados extends AbaPedidoCompra {
 
     public static final String NOVA_APROV = "NOVA_APROV";
+
     private final BroadcastReceiver receiverNovaAprov = new BroadcastReceiver() {
 
         @Override
@@ -91,19 +90,6 @@ public class ActivityAprovados extends AbaPedidoCompra {
 
         registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
         registerReceiver(receiverNovaAprov, new IntentFilter(NOVA_APROV));
-
-        (new Runnable() {
-            @Override
-            public void run() {
-
-                PedidoCompraDAO dataSource = new PedidoCompraDAO();
-
-                List<PedidoCompra> aprovados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
-
-                setPedidos(aprovados);
-            }
-
-        }).run();
     }
 
     @Override
@@ -114,25 +100,16 @@ public class ActivityAprovados extends AbaPedidoCompra {
     }
 
     @Override
-    public ListView setPedidos(List<PedidoCompra> pedidos) {
-        ListView pedidoList = super.setPedidos(pedidos);
+    public void clickOnItemListView(AdapterView<?> parent, View view, int position, long id, PedidoCompra pedidoCompra) {
+        Intent intent = new Intent(ActivityAprovados.this, ActivityDetalhe.class);
+        intent.putExtra("pedidocompra", new Gson().toJson(pedidoCompra));
+        startActivityForResult(intent, 101);
+    }
 
-        pedidoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                PedidoCompra pedido = getPedidoCompraList().get(position);
-                Intent intent = new Intent(ActivityAprovados.this, ActivityDetalhe.class);
-                intent.putExtra("pedidocompra", new Gson().toJson(pedido));
-                ActivityAprovados.this.startActivityForResult(intent, 101);
-            }
-        });
-
-        pedidoList.setDivider(new ColorDrawable(this.getResources().getColor(R.color.aprovado)));
-        pedidoList.setDividerHeight(1);
-
-        return pedidoList;
+    @Override
+    public void configureListViewDivider(ListView listView) {
+        listView.setDivider(new ColorDrawable(this.getResources().getColor(R.color.aprovado)));
+        listView.setDividerHeight(1);
     }
 
     @Override
@@ -144,5 +121,4 @@ public class ActivityAprovados extends AbaPedidoCompra {
     public String getTheTitle() {
         return "Pedidos Aprovados";
     }
-
 }

@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -88,10 +87,6 @@ public class ActivityOpcoes extends ActionBarActivity {
         View mCustomView = mInflater.inflate(R.layout.actionbar_main, null);
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_main);
         mTitleTextView.setText("Sobre");
-
-        ImageButton imageButton = (ImageButton) mCustomView
-                .findViewById(R.id.refreshButton);
-        imageButton.setVisibility(ImageButton.INVISIBLE);
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);

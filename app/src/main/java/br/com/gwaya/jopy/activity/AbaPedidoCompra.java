@@ -2,14 +2,13 @@ package br.com.gwaya.jopy.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,60 +16,49 @@ import android.widget.Toast;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
-import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
+import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.interfaces.ICarregarPedidosDoBancoAsyncTask;
+import br.com.gwaya.jopy.interfaces.IDownloadPedidos;
+import br.com.gwaya.jopy.interfaces.ISalvarPedidosCompraAsyncTask;
+import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
+import br.com.gwaya.jopy.tasks.CarregarPedidosDoBancoAsyncTask;
+import br.com.gwaya.jopy.tasks.DownloadPedidos;
 
-public class AbaPedidoCompra extends MasterActivity {
+public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarregarPedidosDoBancoAsyncTask, ISalvarPedidosCompraAsyncTask, IDownloadPedidos, AdapterView.OnItemClickListener {
 
     private ListView listView;
-
-    private PedidoCompraDAO pedidoCompraDAO;
-
-    private List<PedidoCompra> pedidoCompraList;
-
-    private CarregaPedidosAsyncTask carregaPedidosAsyncTask;
-    private UpdateAsyncTask updateAsyncTask;
-
     private SwipyRefreshLayout mSwipyRefreshLayout;
 
-    public UpdateAsyncTask getUpdateAsyncTask() {
-        return updateAsyncTask;
-    }
+    private AdapterPedidoCompra adapter;
 
-    public void setUpdateAsyncTask(UpdateAsyncTask updateAsyncTask) {
-        this.updateAsyncTask = updateAsyncTask;
-    }
+    private CarregarPedidosDoBancoAsyncTask carregarPedidosDoBancoAsyncTask;
+    private Acesso acesso;
 
-    public PedidoCompraDAO getPedidoCompraDAO() {
-        return pedidoCompraDAO;
-    }
+    private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
 
-    public List<PedidoCompra> getPedidoCompraList() {
-        return pedidoCompraList;
-    }
-
-    public SwipyRefreshLayout getSwipyRefreshLayout() {
-        return mSwipyRefreshLayout;
-    }
-
-
-    public String getTheTitle() {
-        return "";
-    }
+    private DownloadPedidos asyncTask;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
-        pedidoCompraDAO = new PedidoCompraDAO();
-
         setContentView(R.layout.aba_pedidocompra);
+
+        Bundle extras = getIntent().getExtras();
+
+        boolean login = extras.getBoolean("login");
+
+        AcessoDAO AcessoDAO = new AcessoDAO();
+        List<Acesso> lst = AcessoDAO.getAllAcesso();
+        if (lst.size() > 0) {
+            acesso = lst.get(0);
+        }
 
         FrameLayout frameLayoutCorPedido = (FrameLayout) findViewById(R.id.frameLayoutCorPedido);
         listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
@@ -79,21 +67,39 @@ public class AbaPedidoCompra extends MasterActivity {
         mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(SwipyRefreshLayoutDirection swipyRefreshLayoutDirection) {
-                atualizarListView();
+                pullToRefresh();
             }
         });
-
-        carregaPedidosAsyncTask = new CarregaPedidosAsyncTask();
 
         setCorBackgroundComBaseNoPedido(frameLayoutCorPedido);
 
         configurarActionBar();
+
+        if (carregarPedidosDoBancoAsyncTask == null) {
+            carregarPedidosDoBancoAsyncTask = new CarregarPedidosDoBancoAsyncTask(AbaPedidoCompra.this, getStatusPedido());
+            carregarPedidosDoBancoAsyncTask.execute();
+        } else {
+            if (!carregarPedidosDoBancoAsyncTask.isRunning()) {
+                carregarPedidosDoBancoAsyncTask.execute();
+            }
+        }
+
+        listView.setOnItemClickListener(this);
+        configureListViewDivider(listView);
+    }
+
+    public List<PedidoCompra> getListaPedidosCompra() {
+        return listaPedidosCompra;
+    }
+
+    public void setListaPedidosCompra(List<PedidoCompra> listaPedidosCompra) {
+        this.listaPedidosCompra = listaPedidosCompra;
     }
 
     private void setCorBackgroundComBaseNoPedido(FrameLayout frameLayoutCorPedido) {
-        if (getStatusPedido().equals("emitido")) {
+        if ("emitido".equals(getStatusPedido())) {
             frameLayoutCorPedido.setBackgroundResource(R.color.header);
-        } else if (getStatusPedido().equals("aprovado")) {
+        } else if ("aprovado".equals(getStatusPedido())) {
             frameLayoutCorPedido.setBackgroundResource(R.color.aprovado);
         } else {
             frameLayoutCorPedido.setBackgroundResource(R.color.rejeitado);
@@ -111,50 +117,40 @@ public class AbaPedidoCompra extends MasterActivity {
         TextView mTitleTextView = (TextView) customView.findViewById(R.id.title_main);
         mTitleTextView.setText(getTheTitle());
 
-        ImageButton imageButton = (ImageButton) customView.findViewById(R.id.refreshButton);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                if (updateAsyncTask == null) {
-                    updateAsyncTask = new UpdateAsyncTask(getStatusPedido());
-                    updateAsyncTask.execute((Void) null);
-                }
-
-                Toast.makeText(getApplicationContext(), "Pedidos atualizados!",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
         mActionBar.setCustomView(customView);
         mActionBar.setDisplayShowCustomEnabled(true);
     }
 
-    public void atualizarListView() {
-        getSwipyRefreshLayout().setRefreshing(false);
+    private void pullToRefresh() {
+        if (asyncTask != null) {
+            asyncTask = null;
+        }
+        asyncTask = new DownloadPedidos(this, acesso);
+        asyncTask.execute();
     }
 
     public ListView setPedidos(List<PedidoCompra> pedidos) {
-        pedidoCompraList = pedidos;
-
         if (pedidos != null) {
-            AdapterPedidoCompra adapter = new AdapterPedidoCompra(this, pedidos);
+            setListaPedidosCompra(pedidos);
+            adapter = new AdapterPedidoCompra(this, pedidos);
             listView.setAdapter(adapter);
         }
 
         setDividerListView();
 
+        mSwipyRefreshLayout.setRefreshing(false);
         return listView;
     }
 
     private void setDividerListView() {
-        if (getStatusPedido().equals("aprovado")) {
-            listView.setDivider(new ColorDrawable(getResources().getColor(R.color.aprovado)));
-        } else if (getStatusPedido().equals("rejeitado")) {
-            listView.setDivider(new ColorDrawable(getResources().getColor(R.color.rejeitado)));
-        } else {
-            listView.setDivider(new ColorDrawable(getResources().getColor(R.color.header)));
+        if (listView != null) {
+            if ("aprovado".equals(getStatusPedido())) {
+                listView.setDivider(new ColorDrawable(getResources().getColor(R.color.aprovado)));
+            } else if ("rejeitado".equals(getStatusPedido())) {
+                listView.setDivider(new ColorDrawable(getResources().getColor(R.color.rejeitado)));
+            } else {
+                listView.setDivider(new ColorDrawable(getResources().getColor(R.color.header)));
+            }
         }
     }
 
@@ -171,79 +167,57 @@ public class AbaPedidoCompra extends MasterActivity {
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
         super.onPause();
-        try {
-            if (carregaPedidosAsyncTask != null) {
-                if (carregaPedidosAsyncTask.getStatus() == Status.RUNNING) {
-                    carregaPedidosAsyncTask.cancel(true);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        asyncTask = null;
+        mSwipyRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void setListaPedidoCompraDoBanco(List<PedidoCompra> pedidos) {
+        if (pedidos != null) {
+            listView.setAdapter(adapter = new AdapterPedidoCompra(this, pedidos));
+            setListaPedidosCompra(pedidos);
         }
     }
 
     @Override
-    public String getStatusPedido() {
-        return "";
-    }
-
-    public class CarregaPedidosAsyncTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
-
-        @Override
-        public void onPostExecute(List<PedidoCompra> result) {
-            super.onPostExecute(result);
-
-            pedidoCompraList = result;
-
-            if (pedidoCompraList != null) {
-                setPedidos(pedidoCompraList);
-            }
-        }
-
-        @Override
-        public List<PedidoCompra> doInBackground(Void... params) {
-            List<PedidoCompra> pedidos = null;
-
-            try {
-                pedidos = pedidoCompraDAO.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + getStatusPedido() + "'", null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return pedidos;
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        PedidoCompra pedidoCompra = getListaPedidosCompra().get(position);
+        if (pedidoCompra != null) {
+            clickOnItemListView(parent, view, position, id, pedidoCompra);
         }
     }
 
-    public class UpdateAsyncTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
-        private final String _status;
-
-        public UpdateAsyncTask(String status) {
-            _status = status;
-        }
-
-        @Override
-        public List<PedidoCompra> doInBackground(Void... params) {
-            List<PedidoCompra> pedidos = null;
-            try {
-                pedidos = pedidoCompraDAO.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + _status + "'", null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return pedidos;
-        }
-
-        @Override
-        public void onPostExecute(final List<PedidoCompra> pedidos) {
-            pedidoCompraList = pedidos;
-            setPedidos(pedidos);
-            updateAsyncTask = null;
-        }
-
-        @Override
-        public void onCancelled() {
-            updateAsyncTask = null;
-        }
+    @Override
+    public void showFalhaAoCarregarPedidosDoBanco() {
+        Toast.makeText(this, getString(R.string.nao_existe_pedidos), Toast.LENGTH_SHORT).show();
+        mSwipyRefreshLayout.setRefreshing(false);
     }
+
+    @Override
+    public void showFalhaAoBaixar() {
+        Toast.makeText(this, getString(R.string.falha_ao_baixar_pedidos_de_compra), Toast.LENGTH_SHORT).show();
+        mSwipyRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showFalhaAoSetarPedidosRecemBaixados() {
+        Toast.makeText(this, getString(R.string.falha_ao_exibir_pedidos_de_compra_recem_baixados), Toast.LENGTH_SHORT).show();
+        mSwipyRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showSemNovosProdutos() {
+        Toast.makeText(this, getString(R.string.nao_existem_novos_pedidos), Toast.LENGTH_SHORT).show();
+        mSwipyRefreshLayout.setRefreshing(false);
+    }
+
+    public abstract void clickOnItemListView(AdapterView<?> parent, View view, int position, long id, PedidoCompra pedidoCompra);
+
+    public abstract void configureListViewDivider(ListView listView);
+
+    public abstract String getStatusPedido();
+
+    public abstract String getTheTitle();
 }

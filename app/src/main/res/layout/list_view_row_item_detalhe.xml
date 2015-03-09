@@ -14,19 +14,19 @@
             android:id="@+id/textViewProduto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
             android:layout_alignParentLeft="true"
-            android:textColor="#000000"
-            android:textSize="17sp"
+            android:layout_marginRight="5dp"
             android:layout_toLeftOf="@+id/imgBtnObs"
-            android:layout_toStartOf="@+id/imgBtnObs" />
+            android:layout_toStartOf="@+id/imgBtnObs"
+            android:textColor="#000000"
+            android:textSize="17sp" />
 
         <ImageView
-            android:layout_alignParentRight="true"
             android:id="@+id/imgBtnObs"
-            android:layout_marginLeft="5dp"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
             android:clickable="true"
             android:src="@android:drawable/ic_menu_info_details" />
     </RelativeLayout>
@@ -49,16 +49,16 @@
                 android:textSize="17sp" />
 
             <View
-                android:layout_marginTop="17dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:id="@+id/separador"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/black"
-                android:layout_toRightOf="@+id/textViewQtde"
                 android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/textViewSubTotal" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="17dp"
+                android:layout_toLeftOf="@+id/textViewSubTotal"
+                android:layout_toRightOf="@+id/textViewQtde"
+                android:background="@android:color/black" />
 
             <TextView
                 android:id="@+id/textViewSubTotal"

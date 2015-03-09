@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -22,8 +21,6 @@ import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
-import br.com.gwaya.jopy.dao.MySQLiteHelper;
-import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class ActivityRejeitados extends AbaPedidoCompra {
@@ -66,10 +63,6 @@ public class ActivityRejeitados extends AbaPedidoCompra {
         }).run();
 
         registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
-
-        List<PedidoCompra> rejeitados = new PedidoCompraDAO().getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
-
-        setPedidos(rejeitados);
     }
 
     @Override
@@ -79,26 +72,16 @@ public class ActivityRejeitados extends AbaPedidoCompra {
     }
 
     @Override
-    public ListView setPedidos(List<PedidoCompra> pedidos) {
+    public void clickOnItemListView(AdapterView<?> parent, View view, int position, long id, PedidoCompra pedidoCompra) {
+        Intent intent = new Intent(ActivityRejeitados.this, ActivityDetalhe.class);
+        intent.putExtra("pedidocompra", new Gson().toJson(pedidoCompra));
+        ActivityRejeitados.this.startActivity(intent);
+    }
 
-        ListView pedidoList = super.setPedidos(pedidos);
-
-        pedidoList.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                PedidoCompra pedido = getPedidoCompraList().get(position);
-                Intent intent = new Intent(ActivityRejeitados.this, ActivityDetalhe.class);
-                intent.putExtra("pedidocompra", new Gson().toJson(pedido));
-                ActivityRejeitados.this.startActivity(intent);
-            }
-        });
-
-        pedidoList.setDivider(new ColorDrawable(this.getResources().getColor(R.color.rejeitado)));
-        pedidoList.setDividerHeight(1);
-
-        return pedidoList;
+    @Override
+    public void configureListViewDivider(ListView listView) {
+        listView.setDivider(new ColorDrawable(this.getResources().getColor(R.color.rejeitado)));
+        listView.setDividerHeight(1);
     }
 
     @Override

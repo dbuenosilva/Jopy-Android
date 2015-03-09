@@ -34,7 +34,6 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
     private IDownloadPedidos callback;
     private SalvarPedidosCompraAsyncTask asyncTask;
     private ISalvarPedidosCompraAsyncTask callbackNovosPedidos;
-    private boolean running;
 
     public DownloadPedidos(Context context, Acesso acesso) {
         this.callbackNovosPedidos = (ISalvarPedidosCompraAsyncTask) context;
@@ -42,16 +41,6 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
         this.dao = new PedidoCompraDAO();
         this.context = context;
         this.acesso = acesso;
-
-        if (callbackNovosPedidos == null && callback == null) {
-            throw new RuntimeException("IMPLEMENTAR AS INTERFACES");
-        }
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        running = true;
     }
 
     @Override
@@ -100,7 +89,9 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
 
         } catch (Exception e) {
             e.printStackTrace();
-            callback.showFalhaAoBaixar();
+            if (callback != null) {
+                callback.showFalhaAoBaixar();
+            }
         }
 
         return pedidos;
@@ -119,19 +110,17 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
                 }
             }
         } else {
-            callback.showSemNovosProdutos();
+            if (callback != null) {
+                callback.showSemNovosProdutos();
+            }
         }
-        running = false;
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        callback.showFalhaAoBaixar();
-        running = false;
-    }
-
-    public boolean isRunning() {
-        return running;
+        if (callback != null) {
+            callback.showFalhaAoBaixar();
+        }
     }
 }

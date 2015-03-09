@@ -40,12 +40,14 @@ public class SalvarPedidosCompraAsyncTask extends AsyncTask<Void, Void, Boolean>
 
     @Override
     public void onPostExecute(final Boolean success) {
-        if (success) {
-            callback.setListaPedidoCompraDoBanco(dao.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null));
-        } else {
-            callback.showFalhaAoSetarPedidosRecemBaixados();
+        if (callback != null) {
+            if (success) {
+                callback.setListaPedidoCompraDoBanco(dao.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null));
+            } else {
+                callback.showFalhaAoSetarPedidosRecemBaixados();
+            }
+            running = false;
         }
-        running = false;
     }
 
     @Override

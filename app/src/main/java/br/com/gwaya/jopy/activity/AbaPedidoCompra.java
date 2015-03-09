@@ -43,11 +43,11 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
     private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
 
     private DownloadPedidos asyncTask;
+    private boolean alertarUsuario = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.aba_pedidocompra);
 
         Bundle extras = getIntent().getExtras();
@@ -67,7 +67,7 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
         mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(SwipyRefreshLayoutDirection swipyRefreshLayoutDirection) {
-                pullToRefresh();
+                pullToRefresh(true);
             }
         });
 
@@ -86,6 +86,12 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
 
         listView.setOnItemClickListener(this);
         configureListViewDivider(listView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pullToRefresh(false);
     }
 
     public List<PedidoCompra> getListaPedidosCompra() {
@@ -121,12 +127,13 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
         mActionBar.setDisplayShowCustomEnabled(true);
     }
 
-    private void pullToRefresh() {
+    private void pullToRefresh(boolean alertarUsuario) {
         if (asyncTask != null) {
             asyncTask = null;
         }
         asyncTask = new DownloadPedidos(this, acesso);
         asyncTask.execute();
+        this.alertarUsuario = alertarUsuario;
     }
 
     public ListView setPedidos(List<PedidoCompra> pedidos) {
@@ -209,7 +216,9 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
 
     @Override
     public void showSemNovosProdutos() {
-        Toast.makeText(this, getString(R.string.nao_existem_novos_pedidos), Toast.LENGTH_SHORT).show();
+        if (alertarUsuario) {
+            Toast.makeText(this, getString(R.string.nao_existem_novos_pedidos), Toast.LENGTH_SHORT).show();
+        }
         mSwipyRefreshLayout.setRefreshing(false);
     }
 

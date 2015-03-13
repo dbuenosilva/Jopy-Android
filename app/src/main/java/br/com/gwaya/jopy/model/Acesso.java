@@ -1,14 +1,16 @@
 package br.com.gwaya.jopy.model;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
+import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.ActivityLogin;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 
-
-@SuppressWarnings("ResourceType")
 public class Acesso {
 
     private long id;
@@ -27,19 +29,8 @@ public class Acesso {
 
             AcessoDAO.deleteAcesso(null);
             pedidoCompraDatasource.deleteAll();
-/*
-            AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
-            builder.setMessage("Por favor faça login novamente.")
-                    .setTitle("Autenticação")
-                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
 
-                        }
-                    });
-
-            Dialog dialog = builder.create();
-            dialog.show();
-*/
+            alertaUsuarioLogoff(context);
 
             Intent intent = new Intent(context, ActivityLogin.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -48,6 +39,20 @@ public class Acesso {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void alertaUsuarioLogoff(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
+        builder.setMessage(context.getString(R.string.por_favor_faca_login_novamente))
+                .setTitle(context.getString(R.string.autenticacao))
+                .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
     public long getId() {

@@ -187,16 +187,18 @@ public class PedidoCompraDAO {
         });
     }
 
-    public List<PedidoCompra> getAllPedidoCompra(String strQuery, String limit) {
+    public List<PedidoCompra> getAllPedidoCompra(final String strQuery, final String limit) {
+
         final List<PedidoCompra> pedidos = new ArrayList<>();
-        final String str = strQuery,
-                strLimit = limit;
+
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
+
                 String orderBy = MySQLiteHelper.DT_NECES + " ASC";
+
                 Cursor cursor = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA,
-                        allColumns, str, null, null, null, orderBy, strLimit);
+                        allColumns, strQuery, null, null, null, orderBy, limit);
 
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {

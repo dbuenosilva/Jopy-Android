@@ -21,40 +21,6 @@ public class Acesso {
     private String Token_Type;
     private String dtMod;
 
-    public static void logoff(Context context) {
-
-        try {
-            AcessoDAO AcessoDAO = new AcessoDAO();
-            PedidoCompraDAO pedidoCompraDatasource = new PedidoCompraDAO();
-
-            AcessoDAO.deleteAcesso(null);
-            pedidoCompraDatasource.deleteAll();
-
-            alertaUsuarioLogoff(context);
-
-            Intent intent = new Intent(context, ActivityLogin.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(intent);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void alertaUsuarioLogoff(Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
-        builder.setMessage(context.getString(R.string.por_favor_faca_login_novamente))
-                .setTitle(context.getString(R.string.autenticacao))
-                .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                    }
-                });
-
-        Dialog dialog = builder.create();
-        dialog.show();
-    }
-
     public long getId() {
         return id;
     }
@@ -110,9 +76,43 @@ public class Acesso {
     public void setDtMod(String dtMod) {
         this.dtMod = dtMod;
     }
-}
-/*
 
+    public static void logoff(Context context) {
+
+        try {
+            AcessoDAO AcessoDAO = new AcessoDAO();
+            PedidoCompraDAO pedidoCompraDatasource = new PedidoCompraDAO();
+
+            AcessoDAO.deleteAcesso(null);
+            pedidoCompraDatasource.deleteAll();
+
+            alertaUsuarioLogoff(context);
+
+            Intent intent = new Intent(context, ActivityLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void alertaUsuarioLogoff(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
+        builder.setMessage(context.getString(R.string.por_favor_faca_login_novamente))
+                .setTitle(context.getString(R.string.autenticacao))
+                .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+}
+
+/*
 1 Lista de códigos de status HTTP
 2 1xx Informativa
 2.1 100 Continuar
@@ -169,6 +169,4 @@ public class Acesso {
 6.4 503 Serviço indisponível (Service Unavailable)
 6.5 504 Gateway Time-Out
 6.6 505 HTTP Version not supported
-
-
- */
+*/

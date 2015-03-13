@@ -22,15 +22,9 @@ public class AcessoDAO {
             MySQLiteHelper.TOKEN_TYPE
     };
 
-    public AcessoDAO() {
-
-    }
-
-    public Acesso createAcesso(RespostaLogin respLogin, String usuario, String senha) {
+    public Acesso createAcesso(final RespostaLogin respostaLogin, final String usuario, final String senha) {
         final List<Acesso> newAcesso = new ArrayList<>();
-        final RespostaLogin respostaLogin = respLogin;
-        final String user = usuario;
-        final String pass = senha;
+
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
@@ -39,8 +33,8 @@ public class AcessoDAO {
 
                 values.put(MySQLiteHelper.ACCESS_TOKEN, respostaLogin.getAccess_token());
                 values.put(MySQLiteHelper.REFRESH_TOKEN, respostaLogin.getRefresh_token());
-                values.put(MySQLiteHelper.USUARIO, user);
-                values.put(MySQLiteHelper.SENHA, pass);
+                values.put(MySQLiteHelper.USUARIO, usuario);
+                values.put(MySQLiteHelper.SENHA, senha);
                 values.put(MySQLiteHelper.TOKEN_TYPE, respostaLogin.getToken_type());
 
                 deleteAll();
@@ -60,9 +54,6 @@ public class AcessoDAO {
     }
 
     private void deleteAll() {
-        System.out.println("Comment deleted with id: ");
-
-
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
@@ -71,35 +62,31 @@ public class AcessoDAO {
         });
     }
 
-    public void updateAcesso(Acesso acesso) {
-        final long id = acesso.getId();
-        final Acesso tmpAcesso = acesso;
+    public void updateAcesso(final Acesso acesso) {
         DatabaseManager.getInstance().executeQuery(
                 new QueryExecutor() {
                     @Override
                     public void run(SQLiteDatabase database) {
                         ContentValues values = new ContentValues();
-                        values.put(MySQLiteHelper.DT_MOD, tmpAcesso.getDtMod());
+                        values.put(MySQLiteHelper.DT_MOD, acesso.getDtMod());
                         database.update(MySQLiteHelper.TABLE_ACESSO, values, MySQLiteHelper.COLUMN_ID
-                                + " = " + id, null);
+                                + " = " + acesso.getId(), null);
                     }
                 });
     }
 
-    public void deleteAcesso(Acesso acesso) {
-        final Acesso tmp = acesso;
+    public void deleteAcesso(final Acesso acesso) {
         DatabaseManager.getInstance().executeQuery(
                 new QueryExecutor() {
                     @Override
                     public void run(SQLiteDatabase database) {
-                        if (tmp == null) {
+                        if (acesso == null) {
                             database.delete(MySQLiteHelper.TABLE_ACESSO, " 1 = 1 ", null);
                             return;
                         }
-                        long id = tmp.getId();
-                        System.out.println("Comment deleted with id: " + id);
+
                         database.delete(MySQLiteHelper.TABLE_ACESSO, MySQLiteHelper.COLUMN_ID
-                                + " = " + id, null);
+                                + " = " + acesso.getId(), null);
                     }
                 });
     }
@@ -120,7 +107,7 @@ public class AcessoDAO {
                             acessos.add(acesso);
                             cursor.moveToNext();
                         }
-                        // make sure to close the cursor
+
                         cursor.close();
                     }
                 });

@@ -80,13 +80,13 @@ public class ActivityAprovados extends AbaPedidoCompra {
     public void onResume() {
         super.onResume();
 
-        (new Runnable() {
+        new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(ActivityAprovados.this, PedidoCompraService.class);
                 startService(intent);
             }
-        }).run();
+        }.run();
 
         registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
         registerReceiver(receiverNovaAprov, new IntentFilter(NOVA_APROV));

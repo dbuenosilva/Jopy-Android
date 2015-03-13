@@ -81,10 +81,10 @@ public class Acesso {
     public static void logoff(Context context) {
 
         try {
-            AcessoDAO AcessoDAO = new AcessoDAO();
+            AcessoDAO acessoDAO = new AcessoDAO();
             PedidoCompraDAO pedidoCompraDatasource = new PedidoCompraDAO();
 
-            AcessoDAO.deleteAcesso(null);
+            acessoDAO.deleteAcesso(null);
             pedidoCompraDatasource.deleteAll();
 
             alertaUsuarioLogoff(context);

@@ -146,7 +146,7 @@ public class ActivityMain extends TabActivity {
             List<PedidoCompra> lst = null;
             try {
                 String url = getResources().getString(R.string.protocolo)
-                        + getResources().getString(R.string.rest_api_url)
+                        + App.API_REST
                         + getResources().getString(R.string.pedidocompra_path);
 
                 String responseData = "";

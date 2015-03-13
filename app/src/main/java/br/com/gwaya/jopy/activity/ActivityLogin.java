@@ -51,6 +51,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.model.Acesso;
@@ -363,7 +364,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
                 HttpClient httpclient = new DefaultHttpClient();
                 String url = getResources().getString(R.string.protocolo)
-                        + getResources().getString(R.string.rest_api_url)
+                        + App.API_REST
                         + getResources().getString(R.string.oauth_path);
                 HttpPost httpPost = new HttpPost(url);
 
@@ -505,7 +506,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
                 HttpClient httpclient = new DefaultHttpClient();
                 String url = getResources().getString(R.string.protocolo)
-                        + getResources().getString(R.string.rest_api_url)
+                        + App.API_REST
                         + getResources().getString(R.string.esqueceu_path);
                 HttpPost httpPost = new HttpPost(url);
                 try {

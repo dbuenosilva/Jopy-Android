@@ -2,10 +2,10 @@ package br.com.gwaya.jopy.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.utils.Utils;
 
 /**
  * Created by marcelorosa on 20/01/15.
@@ -17,14 +17,14 @@ public class ActivitySplashScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_splash_screen);
+        setContentView(R.layout.activity_splashscreen);
 
         Thread background = new Thread() {
             public void run() {
 
                 try {
 
-                    if (!isDebuggable()) {
+                    if (!new Utils().isDebuggable(ActivitySplashScreen.this)) {
                         sleep(SEGUNDOS * 1000);
                     }
 
@@ -40,9 +40,5 @@ public class ActivitySplashScreen extends Activity {
         };
 
         background.start();
-    }
-
-    private boolean isDebuggable() {
-        return (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
     }
 }

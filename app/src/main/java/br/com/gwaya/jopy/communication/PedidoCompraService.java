@@ -24,6 +24,7 @@ import org.apache.http.protocol.HTTP;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
@@ -94,7 +95,7 @@ public class PedidoCompraService extends IntentService {
                 Acesso acesso = lstAcesso.get(0);
 
                 String url = getResources().getString(R.string.protocolo)
-                        + getResources().getString(R.string.rest_api_url)
+                        + App.API_REST
                         + getResources().getString(R.string.pedidocompra_path),
                         dtMod = pedidoCompraDatasource.ultimoSync();
 
@@ -153,7 +154,7 @@ public class PedidoCompraService extends IntentService {
         try {
 
             String url = getResources().getString(R.string.protocolo)
-                    + getResources().getString(R.string.rest_api_url)
+                    + App.API_REST
                     + getResources().getString(R.string.pedidocompra_path);
 
             filaDataSource = new FilaPedidoCompraDAO();

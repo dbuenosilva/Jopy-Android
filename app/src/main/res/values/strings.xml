@@ -8,7 +8,6 @@
 
     <string name="title_activity_login">Concebra Pro</string>
     <string name="title_activity_opcoes">Opções</string>
-    <string name="rest_api_url">homologacao.api.jopy.gwaya.com.br</string>
     <string name="esqueceu_path">/api/v1/oauth/esqueceu</string>
     <string name="oauth_path">/oauth/token</string>
     <string name="pedidocompra_path">/api/v1/pedidocompra</string>

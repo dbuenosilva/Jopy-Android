@@ -16,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.util.Arrays;
 import java.util.List;
 
+import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.interfaces.IDownloadPedidos;
@@ -51,7 +52,7 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
         HttpClient httpclient = new DefaultHttpClient();
 
         String url = context.getResources().getString(R.string.protocolo)
-                + context.getResources().getString(R.string.rest_api_url)
+                + App.API_REST
                 + context.getResources().getString(R.string.pedidocompra_path),
                 dtMod = dao.ultimoSync();
 

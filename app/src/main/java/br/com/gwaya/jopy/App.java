@@ -4,6 +4,7 @@ import android.app.Application;
 
 import br.com.gwaya.jopy.dao.DatabaseManager;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
+import br.com.gwaya.jopy.utils.Utils;
 
 /**
  * Created by marcelorosa on 14/01/15.
@@ -12,9 +13,18 @@ public class App extends Application {
 
     public static int ABA_ATUAL = 0;
 
+    public static String API_REST;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (new Utils().isDebuggable(this)) {
+            API_REST = "homologacao.api.jopy.gwaya.com.br";
+        } else {
+            API_REST = "api.jopy.gwaya.com.br";
+        }
+
         initSingletons();
     }
 

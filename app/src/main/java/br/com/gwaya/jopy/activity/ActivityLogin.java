@@ -371,12 +371,13 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
                 try {
 
                     List<NameValuePair> nameValuePairs = new ArrayList<>(4);
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.grant_type_key),
+                    /*nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.grant_type_key),
                             getResources().getString(R.string.grant_type)));
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.client_id_key),
                             getResources().getString(R.string.client_id)));
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.client_secret_key),
                             getResources().getString(R.string.client_secret)));
+                    */
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.username_key),
                             usuario));
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.password_key),
@@ -496,13 +497,9 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
         @Override
         public Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            String usuario = mEmail;
-
             Boolean retorno = false;
 
-            if (!usuario.equals("")) {
+            if (mEmail != null && !mEmail.equals("")) {
 
                 HttpClient httpclient = new DefaultHttpClient();
                 String url = getResources().getString(R.string.protocolo)
@@ -516,8 +513,6 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
                     httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-//                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
-//                    String responseData = httpclient.execute(httpPost, responseHandler);
                     HttpResponse response = httpclient.execute(httpPost);
 
                     // Obtem codigo de retorno HTTP

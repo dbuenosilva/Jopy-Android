@@ -61,38 +61,36 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
         }
 
         HttpGet httpGet = new HttpGet(url);
+        if (acesso != null) {
+            httpGet.setHeader("Authorization", acesso.getToken_Type() + " " + acesso.getAccess_Token());
 
-        httpGet.setHeader("Authorization", acesso.getToken_Type() + " " + acesso.getAccess_Token());
+            try {
+                HttpResponse response = httpclient.execute(httpGet);
 
-//            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-        try {
-//                String str = httpclient.execute(httpGet, responseHandler);
-            HttpResponse response = httpclient.execute(httpGet);
+                // Obtem codigo de retorno HTTP
+                int statusCode = response.getStatusLine().getStatusCode();
 
-            // Obtem codigo de retorno HTTP
-            int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode >= 200 && statusCode <= 202) {
+                    // Obtem string do Body retorno HTTP
+                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                    String responseBody = responseHandler.handleResponse(response);
 
-            if (statusCode >= 200 && statusCode <= 202) {
-                // Obtem string do Body retorno HTTP
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                String responseBody = responseHandler.handleResponse(response);
+                    GsonBuilder gsonb = new GsonBuilder();
+                    Gson gson = gsonb.create();
 
-                GsonBuilder gsonb = new GsonBuilder();
-                Gson gson = gsonb.create();
-
-                pedidos = Arrays.asList(gson.fromJson(responseBody, PedidoCompra[].class));
-            } else {
-                Acesso.logoff(context);
-            }
+                    pedidos = Arrays.asList(gson.fromJson(responseBody, PedidoCompra[].class));
+                } else {
+                    Acesso.logoff(context);
+                }
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (callback != null) {
-                callback.showFalhaAoBaixar();
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (callback != null) {
+                    callback.showFalhaAoBaixar();
+                }
             }
         }
-
         return pedidos;
     }
 

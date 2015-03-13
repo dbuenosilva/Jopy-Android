@@ -1,12 +1,13 @@
 package br.com.gwaya.jopy.model;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.activity.AbaPedidoCompra;
 import br.com.gwaya.jopy.activity.ActivityLogin;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
@@ -87,17 +88,13 @@ public class Acesso {
             pedidoCompraDatasource.deleteAll();
 
             alertaUsuarioLogoff(context);
-
-            Intent intent = new Intent(context, ActivityLogin.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+/*
     private static void alertaUsuarioLogoff(Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(((AbaPedidoCompra) context));
         builder.setMessage(context.getString(R.string.por_favor_faca_login_novamente))
                 .setTitle(context.getString(R.string.autenticacao))
                 .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
@@ -106,8 +103,29 @@ public class Acesso {
                     }
                 });
 
-        Dialog dialog = builder.create();
-        dialog.show();
+        builder.create().show();
+    }
+*/
+    private static void alertaUsuarioLogoff(final Context context) {
+        Log.e("teste", "testetestset");
+
+        new AlertDialog.Builder(context)
+                .setTitle("Delete entry")
+                .setMessage("Are you sure you want to delete this entry?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        ((AbaPedidoCompra) context).finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        ((AbaPedidoCompra) context).finish();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 }

@@ -28,14 +28,12 @@
             android:alwaysRetainTaskState="false"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_login"
-            android:launchMode="singleTask"
             android:noHistory="true"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.ActivityOpcoes"
             android:label="@string/title_activity_opcoes"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
 
         <activity
@@ -53,22 +51,21 @@
         <activity
             android:name=".activity.ActivityPendentes"
             android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.ActivityAprovados"
             android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.ActivityRejeitados"
             android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.ActivityDetalhe"
             android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop"
             android:parentActivityName=".activity.ActivityMain">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -80,7 +77,6 @@
         <activity
             android:name=".activity.ActivityHistorico"
             android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTop"
             android:parentActivityName=".activity.ActivityDetalhe">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

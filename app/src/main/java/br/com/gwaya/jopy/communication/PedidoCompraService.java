@@ -69,7 +69,7 @@ public class PedidoCompraService extends IntentService {
                 ResponseHandler<String> responseHandler = new BasicResponseHandler();
                 responseBody = responseHandler.handleResponse(response);
             } else {
-                Acesso.logoff(context);
+                Acesso.logoff(context, statusCode);
             }
 
         } catch (Exception e) {

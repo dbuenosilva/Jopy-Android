@@ -1,5 +1,6 @@
 package br.com.gwaya.jopy.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -220,6 +221,11 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
             Toast.makeText(this, getString(R.string.nao_existem_novos_pedidos), Toast.LENGTH_SHORT).show();
         }
         mSwipyRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void logoff(Context context, Integer statusCode) {
+        acesso.logoff(context, statusCode);
     }
 
     public abstract void clickOnItemListView(AdapterView<?> parent, View view, int position, long id, PedidoCompra pedidoCompra);

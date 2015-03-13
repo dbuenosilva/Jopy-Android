@@ -61,7 +61,7 @@ public class ActivityOpcoes extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    AcessoDAO.deleteAcesso(null);
+                    AcessoDAO.deleteAcesso();
 
 
                     dataSource.deleteAll();

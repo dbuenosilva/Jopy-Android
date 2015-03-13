@@ -46,4 +46,5 @@
     <string name="falha_ao_exibir_pedidos_de_compra_recem_baixados">Falha ao exibir Pedidos de Compra recém baixados</string>
     <string name="por_favor_faca_login_novamente">Por favor faça login novamente</string>
     <string name="autenticacao">Autenticação</string>
+    <string name="mensagem_erro_com_codigo">Erro %d</string>
 </resources>

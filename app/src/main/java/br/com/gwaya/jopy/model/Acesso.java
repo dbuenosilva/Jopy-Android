@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.AbaPedidoCompra;
@@ -78,54 +77,35 @@ public class Acesso {
         this.dtMod = dtMod;
     }
 
-    public static void logoff(Context context) {
+    public static void logoff(final Context context, final Integer statusCode) {
+        ((AbaPedidoCompra) context).runOnUiThread(new Runnable() {
+            public void run() {
 
-        try {
-            AcessoDAO acessoDAO = new AcessoDAO();
-            PedidoCompraDAO pedidoCompraDatasource = new PedidoCompraDAO();
+                String mensagem = context.getString(R.string.por_favor_faca_login_novamente) + "\n\n" + String.format(context.getString(R.string.mensagem_erro_com_codigo), statusCode);
 
-            acessoDAO.deleteAcesso(null);
-            pedidoCompraDatasource.deleteAll();
+                new AlertDialog.Builder(context)
+                        .setTitle(context.getString(R.string.autenticacao))
+                        .setMessage(mensagem)
+                        .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AcessoDAO acessoDAO = new AcessoDAO();
+                                PedidoCompraDAO pedidoCompraDAO = new PedidoCompraDAO();
 
-            alertaUsuarioLogoff(context);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-/*
-    private static void alertaUsuarioLogoff(Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(((AbaPedidoCompra) context));
-        builder.setMessage(context.getString(R.string.por_favor_faca_login_novamente))
-                .setTitle(context.getString(R.string.autenticacao))
-                .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                                pedidoCompraDAO.deleteAll();
+                                acessoDAO.deleteAcesso();
 
-                    }
-                });
+                                Intent intent = new Intent(context, ActivityLogin.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                context.startActivity(intent);
 
-        builder.create().show();
-    }
-*/
-    private static void alertaUsuarioLogoff(final Context context) {
-        Log.e("teste", "testetestset");
-
-        new AlertDialog.Builder(context)
-                .setTitle("Delete entry")
-                .setMessage("Are you sure you want to delete this entry?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        ((AbaPedidoCompra) context).finish();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        ((AbaPedidoCompra) context).finish();
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+                                ((AbaPedidoCompra) context).finish();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
     }
 
 }

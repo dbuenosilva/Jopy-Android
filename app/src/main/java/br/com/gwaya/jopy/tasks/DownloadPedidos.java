@@ -80,7 +80,7 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
 
                     pedidos = Arrays.asList(gson.fromJson(responseBody, PedidoCompra[].class));
                 } else {
-                    Acesso.logoff(context);
+                    callback.logoff(context, statusCode);
                 }
 
 

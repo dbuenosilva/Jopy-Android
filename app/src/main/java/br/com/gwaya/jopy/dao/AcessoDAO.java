@@ -75,18 +75,16 @@ public class AcessoDAO {
                 });
     }
 
-    public void deleteAcesso(final Acesso acesso) {
+    public void deleteAcesso() {
         DatabaseManager.getInstance().executeQuery(
                 new QueryExecutor() {
                     @Override
                     public void run(SQLiteDatabase database) {
-                        if (acesso == null) {
-                            database.delete(MySQLiteHelper.TABLE_ACESSO, " 1 = 1 ", null);
-                            return;
-                        }
-
+                        database.delete(MySQLiteHelper.TABLE_ACESSO, " 1 = 1 ", null);
+                        return;
+/* CÓDIGO QUE NUNCA FOI UTILIZADO
                         database.delete(MySQLiteHelper.TABLE_ACESSO, MySQLiteHelper.COLUMN_ID
-                                + " = " + acesso.getId(), null);
+                                + " = " + acesso.getId(), null); */
                     }
                 });
     }

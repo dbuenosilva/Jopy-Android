@@ -34,7 +34,7 @@ public class ActivityHistorico extends ActionBarActivity {
     private View mProgressView;
 
     private String codForn;
-    private List<PedidoCompra> _pedidos;
+    private List<PedidoCompra> historicoPedidoCompra;
     private PopulateTask mTask;
     private PedidoCompraDAO dataSource;
 
@@ -106,21 +106,18 @@ public class ActivityHistorico extends ActionBarActivity {
 
         @Override
         protected List<PedidoCompra> doInBackground(Void... params) {
-            List<PedidoCompra> pedidos = null;
-
             try {
-                pedidos = dataSource.getAllPedidoCompra(MySQLiteHelper.COD_FORN + " = '" + codForn
-                        + "' AND " + MySQLiteHelper.STATUS_PEDIDO + " IN ('aprovado', 'rejeitado')", " 3 ");
+                return dataSource.getAllPedidoCompra(
+                        MySQLiteHelper.COD_FORN + " = '" + codForn + "' AND " + MySQLiteHelper.STATUS_PEDIDO + " IN ('aprovado', 'rejeitado')", " 3 ");
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
+                return null;
+            } /*finally {
                 if (pedidos != null && pedidos.size() == 0) {
                     //Toast toast = Toast.makeText(HistoricoActivity.this, "Não foram encontrados pedidos com este fornecedor.", Toast.LENGTH_LONG);
                     //toast.show();
                 }
-            }
-
-            return pedidos;
+            } */
         }
 
         @Override
@@ -129,11 +126,11 @@ public class ActivityHistorico extends ActionBarActivity {
             showProgress(false);
 
             if (pedidos != null && pedidos.size() > 0) {
-                _pedidos = pedidos;
+                historicoPedidoCompra = pedidos;
 
                 ListView pedidoList = (ListView) ActivityHistorico.this.findViewById(R.id.listViewHistorico);
 
-                AdapterHistorico adapter = new AdapterHistorico(ActivityHistorico.this, _pedidos);
+                AdapterHistorico adapter = new AdapterHistorico(ActivityHistorico.this, historicoPedidoCompra);
 
                 pedidoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -142,7 +139,7 @@ public class ActivityHistorico extends ActionBarActivity {
                                             int position, long id) {
                         Intent intent = new Intent(ActivityHistorico.this, ActivityDetalheHistorico.class);
                         intent.putExtra("indice", position);
-                        intent.putExtra("pedidos", new Gson().toJson(_pedidos));
+                        intent.putExtra("pedidos", new Gson().toJson(historicoPedidoCompra));
                         ActivityHistorico.this.startActivity(intent);
                     }
                 });

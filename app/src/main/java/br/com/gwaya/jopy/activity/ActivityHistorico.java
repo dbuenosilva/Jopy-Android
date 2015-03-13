@@ -107,8 +107,7 @@ public class ActivityHistorico extends ActionBarActivity {
         @Override
         protected List<PedidoCompra> doInBackground(Void... params) {
             try {
-                return dataSource.getAllPedidoCompra(
-                        MySQLiteHelper.COD_FORN + " = '" + codForn + "' AND " + MySQLiteHelper.STATUS_PEDIDO + " IN ('aprovado', 'rejeitado')", " 3 ");
+                return dataSource.getAllPedidoCompra(MySQLiteHelper.COD_FORN + " = '" + codForn + "' AND " + MySQLiteHelper.STATUS_PEDIDO + " IN ('aprovado', 'rejeitado')", " 3 ");
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

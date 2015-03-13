@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import java.util.List;
 
+import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.interfaces.ISalvarPedidosCompraAsyncTask;
@@ -42,7 +43,7 @@ public class SalvarPedidosCompraAsyncTask extends AsyncTask<Void, Void, Boolean>
     public void onPostExecute(final Boolean success) {
         if (callback != null) {
             if (success) {
-                callback.setListaPedidoCompraDoBanco(dao.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null));
+                callback.setListaPedidoCompraDoBanco(dao.getAllPedidoCompra(StatusPedido.EMITIDO));
             } else {
                 callback.showFalhaAoSetarPedidosRecemBaixados();
             }

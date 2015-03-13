@@ -28,7 +28,7 @@ public class CarregarPedidosDoBancoAsyncTask extends AsyncTask<Void, Void, List<
         running = true;
         List<PedidoCompra> pedidos = null;
         try {
-            pedidos = new PedidoCompraDAO().getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = '" + statusPedido + "'", null);
+            pedidos = new PedidoCompraDAO().getAllPedidoCompra(statusPedido, null);
         } catch (Exception e) {
             e.printStackTrace();
         }

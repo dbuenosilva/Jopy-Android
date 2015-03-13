@@ -21,6 +21,7 @@ import java.util.List;
 
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
@@ -161,9 +162,9 @@ public class ActivityMain extends TabActivity {
                 dataSource.deleteAll();
                 dataSource.createUpdatePedidoCompra(pedidos);
 
-                List<PedidoCompra> emitidos = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'emitido'", null);
-                List<PedidoCompra> aprovados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'aprovado'", null);
-                List<PedidoCompra> rejeitados = dataSource.getAllPedidoCompra(MySQLiteHelper.STATUS_PEDIDO + " = 'rejeitado'", null);
+                List<PedidoCompra> emitidos = dataSource.getAllPedidoCompra(StatusPedido.EMITIDO);
+                List<PedidoCompra> aprovados = dataSource.getAllPedidoCompra(StatusPedido.APROVADO);
+                List<PedidoCompra> rejeitados = dataSource.getAllPedidoCompra(StatusPedido.REJEITADO);
 
                 if (emitidos.size() > 0) {
                     publishResults(emitidos.toArray(new PedidoCompra[emitidos.size()]), PedidoCompraService.PEDIDOS_EMITIDOS);

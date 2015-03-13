@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.interfaces.QueryExecutor;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
@@ -185,6 +186,49 @@ public class PedidoCompraDAO {
                 database.endTransaction();
             }
         });
+    }
+
+    public List<PedidoCompra> getAllPedidoCompra(final StatusPedido statusPedido) {
+
+        final List<PedidoCompra> pedidos = new ArrayList<>();
+
+        DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
+            @Override
+            public void run(SQLiteDatabase database) {
+                Cursor cursor = null;
+
+                if (StatusPedido.APROVADO.getValor() == statusPedido.getValor()) {
+                    cursor = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA,
+                            allColumns, MySQLiteHelper.STATUS_PEDIDO + " = '" + statusPedido.getTexto() + "'", null, null, null, " ORDER BY " + MySQLiteHelper.DT_EMI + " ASC", null);
+                } else {
+                    cursor = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA,
+                            allColumns, MySQLiteHelper.STATUS_PEDIDO + " = '" + statusPedido.getTexto() + "'", null, null, null, MySQLiteHelper.DT_MOD + " ASC", null);
+                }
+
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    PedidoCompra pedido = cursorToPedidoCompra(cursor);
+                    pedido.setItens(new ArrayList<PedidoCompraItem>());
+
+                    Cursor cursorItem = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA_ITEM,
+                            allColumnsItems, MySQLiteHelper.ID_PAI + " = '" + pedido.get_id() + "'", null, null, null, null);
+
+                    cursorItem.moveToFirst();
+                    while (!cursorItem.isAfterLast()) {
+                        PedidoCompraItem item = cursosToPedidoCompraItem(cursorItem);
+                        pedido.getItens().add(item);
+                        cursorItem.moveToNext();
+                    }
+                    cursorItem.close();
+
+                    pedidos.add(pedido);
+                    cursor.moveToNext();
+                }
+                // make sure to close the cursor
+                cursor.close();
+            }
+        });
+        return pedidos;
     }
 
     public List<PedidoCompra> getAllPedidoCompra(final String strQuery, final String limit) {

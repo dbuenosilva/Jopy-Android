@@ -23,7 +23,6 @@ import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
-import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;

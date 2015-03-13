@@ -29,7 +29,6 @@ import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
-import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;

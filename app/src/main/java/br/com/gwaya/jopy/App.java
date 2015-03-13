@@ -13,8 +13,12 @@ import br.com.gwaya.jopy.utils.Utils;
 public class App extends Application {
 
     public static int ABA_ATUAL = 0;
-    private static Context context;
     public static String API_REST;
+    private static Context context;
+
+    public static Context getContext() {
+        return context;
+    }
 
     @Override
     public void onCreate() {
@@ -32,9 +36,5 @@ public class App extends Application {
 
     protected void initSingletons() {
         DatabaseManager.initializeInstance(new MySQLiteHelper(getApplicationContext()));
-    }
-
-    public static Context getContext() {
-        return context;
     }
 }

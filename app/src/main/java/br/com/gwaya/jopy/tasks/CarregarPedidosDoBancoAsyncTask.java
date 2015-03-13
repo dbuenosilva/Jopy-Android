@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 
 import java.util.List;
 
-import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.interfaces.ICarregarPedidosDoBancoAsyncTask;
 import br.com.gwaya.jopy.model.PedidoCompra;

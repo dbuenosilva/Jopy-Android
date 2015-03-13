@@ -21,6 +21,37 @@ public class Acesso {
     private String Token_Type;
     private String dtMod;
 
+    public static void logoff(final Context context, final Integer statusCode) {
+        ((AbaPedidoCompra) context).runOnUiThread(new Runnable() {
+            public void run() {
+
+                String mensagem = context.getString(R.string.por_favor_faca_login_novamente) + "\n\n" + String.format(context.getString(R.string.mensagem_erro_com_codigo), statusCode);
+
+                new AlertDialog.Builder(context)
+                        .setTitle(context.getString(R.string.autenticacao))
+                        .setMessage(mensagem)
+                        .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AcessoDAO acessoDAO = new AcessoDAO();
+                                PedidoCompraDAO pedidoCompraDAO = new PedidoCompraDAO();
+
+                                pedidoCompraDAO.deleteAll();
+                                acessoDAO.deleteAcesso();
+
+                                Intent intent = new Intent(context, ActivityLogin.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                context.startActivity(intent);
+
+                                ((AbaPedidoCompra) context).finish();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
+    }
+
     public long getId() {
         return id;
     }
@@ -75,37 +106,6 @@ public class Acesso {
 
     public void setDtMod(String dtMod) {
         this.dtMod = dtMod;
-    }
-
-    public static void logoff(final Context context, final Integer statusCode) {
-        ((AbaPedidoCompra) context).runOnUiThread(new Runnable() {
-            public void run() {
-
-                String mensagem = context.getString(R.string.por_favor_faca_login_novamente) + "\n\n" + String.format(context.getString(R.string.mensagem_erro_com_codigo), statusCode);
-
-                new AlertDialog.Builder(context)
-                        .setTitle(context.getString(R.string.autenticacao))
-                        .setMessage(mensagem)
-                        .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                AcessoDAO acessoDAO = new AcessoDAO();
-                                PedidoCompraDAO pedidoCompraDAO = new PedidoCompraDAO();
-
-                                pedidoCompraDAO.deleteAll();
-                                acessoDAO.deleteAcesso();
-
-                                Intent intent = new Intent(context, ActivityLogin.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                context.startActivity(intent);
-
-                                ((AbaPedidoCompra) context).finish();
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-        });
     }
 
 }

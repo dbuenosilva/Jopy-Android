@@ -75,6 +75,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
     private View mProgressView;
     private View mLoginFormView;
     private AcessoDAO acessoDatasource;
+    private int contadorExibicaoMenuSecreto = 0;
 
     private void hideKeyboard() {
         // Check if no view has focus:
@@ -159,10 +160,6 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
             }
         });
 
-        //(new Runnable() {
-        //@Override
-        //public void run() {
-
         List<Acesso> lst = acessoDatasource.getAllAcesso();
 
         if (lst.size() > 0) {
@@ -172,8 +169,32 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
             intent.putExtra("login", false);
             ActivityLogin.this.startActivity(intent);
         }
-        //}
-        //}).run();
+
+        findViewById(R.id.linearLayout).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ++contadorExibicaoMenuSecreto;
+                if (contadorExibicaoMenuSecreto >= 10) {
+                    exibirAlerta();
+                } else if (contadorExibicaoMenuSecreto == 5) {
+                    Toast.makeText(ActivityLogin.this, getString(R.string.quase_la), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void exibirAlerta() {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.app_name))
+                .setMessage(App.API_REST)
+                .setNeutralButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void populateAutoComplete() {

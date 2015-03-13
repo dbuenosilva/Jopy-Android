@@ -47,4 +47,6 @@
     <string name="por_favor_faca_login_novamente">Por favor faça login novamente</string>
     <string name="autenticacao">Autenticação</string>
     <string name="mensagem_erro_com_codigo">Erro %d</string>
+    <string name="dados_do_app">Dados do App</string>
+    <string name="quase_la">Quase lá, só falta mais 5 toques!</string>
 </resources>

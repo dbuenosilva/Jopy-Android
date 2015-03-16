@@ -35,6 +35,7 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
 
     private ListView listView;
     private SwipyRefreshLayout mSwipyRefreshLayout;
+    private TextView textViewSemPedidos;
 
     private AdapterPedidoCompra adapter;
 
@@ -64,6 +65,7 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
         FrameLayout frameLayoutCorPedido = (FrameLayout) findViewById(R.id.frameLayoutCorPedido);
         listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
         mSwipyRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.swipyrefreshlayout);
+        textViewSemPedidos = (TextView) findViewById(R.id.textViewSemPedidos);
 
         mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
@@ -87,6 +89,8 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
 
         listView.setOnItemClickListener(this);
         configureListViewDivider(listView);
+
+        textViewSemPedidos.setText(textViewSemPedidos.getText() + " " + getStatusPedido().toString() + "s");
     }
 
     @Override
@@ -139,9 +143,17 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
 
     public ListView setPedidos(List<PedidoCompra> pedidos) {
         if (pedidos != null) {
-            setListaPedidosCompra(pedidos);
-            adapter = new AdapterPedidoCompra(this, pedidos);
-            listView.setAdapter(adapter);
+            if (pedidos.size() > 0) {
+                setListaPedidosCompra(pedidos);
+                adapter = new AdapterPedidoCompra(this, pedidos);
+                listView.setAdapter(adapter);
+
+                textViewSemPedidos.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+            } else {
+                textViewSemPedidos.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+            }
         }
 
         setDividerListView();
@@ -184,8 +196,16 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
     @Override
     public void setListaPedidoCompraDoBanco(List<PedidoCompra> pedidos) {
         if (pedidos != null) {
-            listView.setAdapter(adapter = new AdapterPedidoCompra(this, pedidos));
-            setListaPedidosCompra(pedidos);
+            if (pedidos.size() > 0) {
+                listView.setAdapter(adapter = new AdapterPedidoCompra(this, pedidos));
+                setListaPedidosCompra(pedidos);
+
+                textViewSemPedidos.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+            } else {
+                textViewSemPedidos.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -202,7 +222,6 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(AbaPedidoCompra.this, getString(R.string.nao_existe_pedidos), Toast.LENGTH_SHORT).show();
                 mSwipyRefreshLayout.setRefreshing(false);
             }
         });
@@ -236,7 +255,6 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(AbaPedidoCompra.this, getString(R.string.nao_existem_novos_pedidos), Toast.LENGTH_SHORT).show();
                     mSwipyRefreshLayout.setRefreshing(false);
                 }
             });

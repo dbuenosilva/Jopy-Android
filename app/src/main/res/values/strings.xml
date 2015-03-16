@@ -41,7 +41,6 @@
     <string name="error_incorrect_password">Senha incorreta</string>
     <string name="error_field_required">Este campo é obrigatório</string>
     <string name="nao_existem_novos_pedidos">Não existem novos pedidos</string>
-    <string name="nao_existe_pedidos">Não existe pedidos</string>
     <string name="falha_ao_baixar_pedidos_de_compra">Falha ao baixar pedidos de compra</string>
     <string name="falha_ao_exibir_pedidos_de_compra_recem_baixados">Falha ao exibir Pedidos de Compra recém baixados</string>
     <string name="por_favor_faca_login_novamente">Por favor faça login novamente</string>

@@ -225,7 +225,7 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
 
     @Override
     public void logoff(Context context, Integer statusCode) {
-        acesso.logoff(context, statusCode);
+        Acesso.logoff(context, statusCode);
     }
 
     public abstract void clickOnItemListView(AdapterView<?> parent, View view, int position, long id, PedidoCompra pedidoCompra);

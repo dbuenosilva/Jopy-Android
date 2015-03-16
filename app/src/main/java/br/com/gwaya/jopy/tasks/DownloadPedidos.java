@@ -86,10 +86,10 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
 
 
             } catch (Exception e) {
-                e.printStackTrace();
                 if (callback != null) {
                     callback.showFalhaAoBaixar();
                 }
+                e.printStackTrace();
             }
         }
         return pedidos;

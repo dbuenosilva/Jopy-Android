@@ -199,28 +199,48 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
 
     @Override
     public void showFalhaAoCarregarPedidosDoBanco() {
-        Toast.makeText(this, getString(R.string.nao_existe_pedidos), Toast.LENGTH_SHORT).show();
-        mSwipyRefreshLayout.setRefreshing(false);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(AbaPedidoCompra.this, getString(R.string.nao_existe_pedidos), Toast.LENGTH_SHORT).show();
+                mSwipyRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     public void showFalhaAoBaixar() {
-        Toast.makeText(this, getString(R.string.falha_ao_baixar_pedidos_de_compra), Toast.LENGTH_SHORT).show();
-        mSwipyRefreshLayout.setRefreshing(false);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(AbaPedidoCompra.this, getString(R.string.falha_ao_baixar_pedidos_de_compra), Toast.LENGTH_SHORT).show();
+                mSwipyRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     public void showFalhaAoSetarPedidosRecemBaixados() {
-        Toast.makeText(this, getString(R.string.falha_ao_exibir_pedidos_de_compra_recem_baixados), Toast.LENGTH_SHORT).show();
-        mSwipyRefreshLayout.setRefreshing(false);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(AbaPedidoCompra.this, getString(R.string.falha_ao_exibir_pedidos_de_compra_recem_baixados), Toast.LENGTH_SHORT).show();
+                mSwipyRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     public void showSemNovosProdutos() {
         if (alertarUsuario) {
-            Toast.makeText(this, getString(R.string.nao_existem_novos_pedidos), Toast.LENGTH_SHORT).show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AbaPedidoCompra.this, getString(R.string.nao_existem_novos_pedidos), Toast.LENGTH_SHORT).show();
+                    mSwipyRefreshLayout.setRefreshing(false);
+                }
+            });
         }
-        mSwipyRefreshLayout.setRefreshing(false);
     }
 
     @Override

@@ -577,7 +577,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
         @Override
         public void onCancelled() {
             showProgress(false);
-            Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -78,7 +78,8 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
                     GsonBuilder gsonb = new GsonBuilder();
                     Gson gson = gsonb.create();
 
-                    pedidos = Arrays.asList(gson.fromJson(responseBody, PedidoCompra[].class));
+                    PedidoCompra[] array = gson.fromJson(responseBody, PedidoCompra[].class);
+                    pedidos = Arrays.asList(array);
                 } else {
                     callback.logoff(context, statusCode);
                 }

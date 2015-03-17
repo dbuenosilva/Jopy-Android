@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
@@ -76,8 +77,8 @@ public class ActivityPendentes extends AbaPedidoCompra {
 
 
     @Override
-    public String getStatusPedido() {
-        return "emitido";
+    public StatusPedido getStatusPedido() {
+        return StatusPedido.EMITIDO;
     }
 
     @Override

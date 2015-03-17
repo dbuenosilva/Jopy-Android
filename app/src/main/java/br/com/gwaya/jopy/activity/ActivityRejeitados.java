@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
@@ -85,8 +86,8 @@ public class ActivityRejeitados extends AbaPedidoCompra {
     }
 
     @Override
-    public String getStatusPedido() {
-        return "rejeitado";
+    public StatusPedido getStatusPedido() {
+        return StatusPedido.REJEITADO;
     }
 
     @Override

@@ -197,9 +197,9 @@ public class PedidoCompraDAO {
             public void run(SQLiteDatabase database) {
                 Cursor cursor = null;
 
-                if (StatusPedido.APROVADO.getValor() == statusPedido.getValor()) {
+                if (StatusPedido.EMITIDO.getValor() == statusPedido.getValor()) {
                     cursor = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA,
-                            allColumns, MySQLiteHelper.STATUS_PEDIDO + " = '" + statusPedido.getTexto() + "'", null, null, null, " ORDER BY " + MySQLiteHelper.DT_EMI + " ASC", null);
+                            allColumns, MySQLiteHelper.STATUS_PEDIDO + " = '" + statusPedido.getTexto() + "'", null, null, null, MySQLiteHelper.DT_EMI + " ASC", null);
                 } else {
                     cursor = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA,
                             allColumns, MySQLiteHelper.STATUS_PEDIDO + " = '" + statusPedido.getTexto() + "'", null, null, null, MySQLiteHelper.DT_MOD + " ASC", null);

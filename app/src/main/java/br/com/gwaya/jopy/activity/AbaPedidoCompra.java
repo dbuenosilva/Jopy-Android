@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.interfaces.ICarregarPedidosDoBancoAsyncTask;
@@ -54,7 +55,7 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
 
         Bundle extras = getIntent().getExtras();
 
-        boolean login = extras.getBoolean("login");
+        //boolean login = extras.getBoolean("login");
 
         AcessoDAO AcessoDAO = new AcessoDAO();
         List<Acesso> lst = AcessoDAO.getAllAcesso();
@@ -90,7 +91,7 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
         listView.setOnItemClickListener(this);
         configureListViewDivider(listView);
 
-        textViewSemPedidos.setText(textViewSemPedidos.getText() + " " + getStatusPedido().toString() + "s");
+        textViewSemPedidos.setText(textViewSemPedidos.getText() + " " + getStatusPedido().toString().toLowerCase() + "s");
     }
 
     @Override
@@ -108,9 +109,9 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
     }
 
     private void setCorBackgroundComBaseNoPedido(FrameLayout frameLayoutCorPedido) {
-        if ("emitido".equals(getStatusPedido())) {
+        if (StatusPedido.EMITIDO.getTexto().equals(getStatusPedido())) {
             frameLayoutCorPedido.setBackgroundResource(R.color.header);
-        } else if ("aprovado".equals(getStatusPedido())) {
+        } else if (StatusPedido.APROVADO.getTexto().equals(getStatusPedido())) {
             frameLayoutCorPedido.setBackgroundResource(R.color.aprovado);
         } else {
             frameLayoutCorPedido.setBackgroundResource(R.color.rejeitado);
@@ -270,7 +271,7 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
 
     public abstract void configureListViewDivider(ListView listView);
 
-    public abstract String getStatusPedido();
+    public abstract StatusPedido getStatusPedido();
 
     public abstract String getTheTitle();
 }

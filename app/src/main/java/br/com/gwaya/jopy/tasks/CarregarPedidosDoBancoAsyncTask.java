@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import java.util.List;
 
+import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.interfaces.ICarregarPedidosDoBancoAsyncTask;
 import br.com.gwaya.jopy.model.PedidoCompra;
@@ -13,11 +14,11 @@ import br.com.gwaya.jopy.model.PedidoCompra;
  */
 public class CarregarPedidosDoBancoAsyncTask extends AsyncTask<Void, Void, List<PedidoCompra>> {
 
-    private final String statusPedido;
+    private final StatusPedido statusPedido;
     private ICarregarPedidosDoBancoAsyncTask callback;
     private boolean running;
 
-    public CarregarPedidosDoBancoAsyncTask(ICarregarPedidosDoBancoAsyncTask callback, String statusPedido) {
+    public CarregarPedidosDoBancoAsyncTask(ICarregarPedidosDoBancoAsyncTask callback, StatusPedido statusPedido) {
         this.statusPedido = statusPedido;
         this.callback = callback;
     }
@@ -27,7 +28,7 @@ public class CarregarPedidosDoBancoAsyncTask extends AsyncTask<Void, Void, List<
         running = true;
         List<PedidoCompra> pedidos = null;
         try {
-            pedidos = new PedidoCompraDAO().getAllPedidoCompra(statusPedido, null);
+            pedidos = new PedidoCompraDAO().getAllPedidoCompra(statusPedido);
         } catch (Exception e) {
             e.printStackTrace();
         }

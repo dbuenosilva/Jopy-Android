@@ -16,14 +16,15 @@ import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
+import br.com.gwaya.jopy.enums.StatusPedido;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
@@ -36,6 +37,8 @@ public class ActivityMain extends TabActivity {
     private Boolean login;
 
     private TabHost tabHost;
+
+    private List<Aba> listaAbas = new ArrayList<>();
 
     private void publishResults(PedidoCompra[] pedidos, String tipo) {
         Intent intent = new Intent(PedidoCompraService.NOTIFICATION);
@@ -67,32 +70,34 @@ public class ActivityMain extends TabActivity {
 
         tabHost = getTabHost();
 
-        setTabs();
+        popularListaDeAbas();
 
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
+
                 for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
                     ((TextView) tabHost.getTabWidget().getChildAt(i).findViewById(R.id.title))
                             .setTextColor(Color.parseColor("#FFFFFF")); //unselected
                 }
+
                 View indicator = tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab());
                 TextView title = (TextView) indicator.findViewById(R.id.title);
 
                 switch (tabId) {
-                    case "tabPendentes":
+                    case "Pedidos Pendentes":
                         title.setTextColor(getResources().getColor(R.color.emitido));
                         App.ABA_ATUAL = 0;
                         break;
-                    case "tabAprovados":
+                    case "Pedidos Aprovados":
                         title.setTextColor(getResources().getColor(R.color.aprovado));
                         App.ABA_ATUAL = 1;
                         break;
-                    case "tabRejeitados":
+                    case "Pedidos Rejeitados":
                         title.setTextColor(getResources().getColor(R.color.rejeitado));
                         App.ABA_ATUAL = 2;
                         break;
-                    case "tabOpções":
+                    case "Sobre":
                         title.setTextColor(getResources().getColor(R.color.emitido));
                         App.ABA_ATUAL = 3;
                         break;
@@ -106,37 +111,40 @@ public class ActivityMain extends TabActivity {
         //new DownloadTask().execute();
     }
 
-    private void setTabs() {
-        addTab("Pendentes", R.drawable.tab_pendentes, ActivityPendentes.class);
-        addTab("Aprovados", R.drawable.tab_aprovados, ActivityAprovados.class);
-        addTab("Rejeitados", R.drawable.tab_rejeitados, ActivityRejeitados.class);
-        addTab("Sobre", R.drawable.tab_opcoes, ActivityOpcoes.class);
-    }
+    private void popularListaDeAbas() {
 
-    private void addTab(String labelId, int drawableId, Class<?> c) {
-        Intent intent = new Intent(this, c);
-        intent.putExtra("login", login);
+        if (listaAbas != null && listaAbas.size() == 0) {
+            listaAbas.add(new ActivityPendentes());
+            listaAbas.add(new ActivityAprovados());
+            listaAbas.add(new ActivityRejeitados());
+            listaAbas.add(new ActivityOpcoes());
 
-        TabHost.TabSpec spec = tabHost.newTabSpec("tab" + labelId);
+            for (Aba aba : listaAbas) {
 
-        View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
+                Intent intent = new Intent(this, aba.getClass());
+                intent.putExtra("login", login);
 
-        TextView title = (TextView) tabIndicator.findViewById(R.id.title);
-        ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
+                View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
 
-        title.setText(labelId);
-        icon.setImageResource(drawableId);
+                TextView title = (TextView) tabIndicator.findViewById(R.id.title);
+                ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
 
-        if (labelId.equals("Pendentes")) {
-            title.setTextColor(getResources().getColor(R.color.emitido));
-        } else {
-            title.setTextColor(Color.parseColor("#FFFFFF"));
+                title.setText(aba.getTheTitle());
+                icon.setImageResource(aba.getIconTabID());
+
+                if ("Pedidos Pendentes".equals(aba.getTheTitle())) {
+                    title.setTextColor(getResources().getColor(R.color.emitido));
+                } else {
+                    title.setTextColor(Color.parseColor("#FFFFFF"));
+                }
+
+                TabHost.TabSpec spec = tabHost.newTabSpec(aba.getTheTitle());
+                spec.setIndicator(tabIndicator);
+                spec.setContent(intent);
+
+                tabHost.addTab(spec);
+            }
         }
-
-        spec.setIndicator(tabIndicator);
-        spec.setContent(intent);
-
-        tabHost.addTab(spec);
     }
 
     public class DownloadTask extends AsyncTask<Void, Void, List<PedidoCompra>> {

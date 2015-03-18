@@ -4,15 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
@@ -21,30 +18,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
 import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.enums.StatusPedido;
 import br.com.gwaya.jopy.interfaces.ICarregarPedidosDoBancoAsyncTask;
 import br.com.gwaya.jopy.interfaces.IDownloadPedidos;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.tasks.CarregarPedidosDoBancoAsyncTask;
-import br.com.gwaya.jopy.tasks.DownloadPedidos;
+import br.com.gwaya.jopy.tasks.DownloadPedidosAsyncTask;
 
-public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarregarPedidosDoBancoAsyncTask, IDownloadPedidos, AdapterView.OnItemClickListener {
+public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoBancoAsyncTask, IDownloadPedidos, AdapterView.OnItemClickListener {
 
     private ListView listView;
     private SwipyRefreshLayout mSwipyRefreshLayout;
-    private TextView textViewSemPedidos;
+    private TextView textViewStatusLista;
 
     private AdapterPedidoCompra adapter;
-
-    private CarregarPedidosDoBancoAsyncTask carregarPedidosDoBancoAsyncTask;
     private Acesso acesso;
 
     private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
 
-    private DownloadPedidos asyncTask;
+    private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
+    private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
+
     private boolean alertarUsuario = true;
 
     public List<PedidoCompra> getListaPedidosCompra() {
@@ -58,11 +55,8 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        configurarActionBar();
         setContentView(R.layout.aba_pedidocompra);
-
-        Bundle extras = getIntent().getExtras();
-
-        //boolean login = extras.getBoolean("login");
 
         AcessoDAO AcessoDAO = new AcessoDAO();
         List<Acesso> lst = AcessoDAO.getAllAcesso();
@@ -73,7 +67,7 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
         FrameLayout frameLayoutCorPedido = (FrameLayout) findViewById(R.id.frameLayoutCorPedido);
         listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
         mSwipyRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.swipyrefreshlayout);
-        textViewSemPedidos = (TextView) findViewById(R.id.textViewSemPedidos);
+        textViewStatusLista = (TextView) findViewById(R.id.textViewStatusLista);
 
         mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
@@ -84,21 +78,10 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
 
         setCorBackgroundComBaseNoPedido(frameLayoutCorPedido);
 
-        configurarActionBar();
-
-        if (carregarPedidosDoBancoAsyncTask == null) {
-            carregarPedidosDoBancoAsyncTask = new CarregarPedidosDoBancoAsyncTask(AbaPedidoCompra.this, getStatusPedido());
-            carregarPedidosDoBancoAsyncTask.execute();
-        } else {
-            if (!carregarPedidosDoBancoAsyncTask.isRunning()) {
-                carregarPedidosDoBancoAsyncTask.execute();
-            }
-        }
-
         listView.setOnItemClickListener(this);
         configureListViewDivider(listView);
 
-        textViewSemPedidos.setText(textViewSemPedidos.getText() + " " + getStatusPedido().toString().toLowerCase() + "s");
+        textViewStatusLista.setText(textViewStatusLista.getText() + " " + getStatusPedido().toString().toLowerCase() + "s");
     }
 
     @Override
@@ -118,48 +101,24 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
     }
 
     private void configurarActionBar() {
-        ActionBar mActionBar;
-        mActionBar = getSupportActionBar();
-        mActionBar.setDisplayShowHomeEnabled(false);
-        mActionBar.setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         LayoutInflater mInflater = LayoutInflater.from(this);
 
         View customView = mInflater.inflate(R.layout.actionbar_main, null);
-        TextView mTitleTextView = (TextView) customView.findViewById(R.id.title_main);
-        mTitleTextView.setText(getTheTitle());
 
-        mActionBar.setCustomView(customView);
-        mActionBar.setDisplayShowCustomEnabled(true);
+        ((TextView) customView.findViewById(R.id.title_main)).setText(getTheTitle());
+
+        getSupportActionBar().setCustomView(customView);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
     private void pullToRefresh(boolean alertarUsuario) {
-        if (asyncTask != null) {
-            asyncTask = null;
-        }
-        asyncTask = new DownloadPedidos(this, acesso, getStatusPedido());
-        asyncTask.execute();
+        cancelarTasks();
+        asyncTaskDownloadPedidos = new DownloadPedidosAsyncTask(this, acesso);
+        asyncTaskDownloadPedidos.execute();
         this.alertarUsuario = alertarUsuario;
-    }
-
-    public ListView setPedidos(List<PedidoCompra> pedidos) {
-        if (pedidos != null) {
-            if (pedidos.size() > 0) {
-                setListaPedidosCompra(pedidos);
-                adapter = new AdapterPedidoCompra(this, pedidos);
-                listView.setAdapter(adapter);
-
-                textViewSemPedidos.setVisibility(View.GONE);
-                listView.setVisibility(View.VISIBLE);
-            } else {
-                textViewSemPedidos.setVisibility(View.VISIBLE);
-                listView.setVisibility(View.GONE);
-            }
-        }
-
-        setDividerListView();
-
-        mSwipyRefreshLayout.setRefreshing(false);
-        return listView;
     }
 
     private void setDividerListView() {
@@ -189,24 +148,28 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
     @Override
     protected void onPause() {
         super.onPause();
-        asyncTask = null;
+        asyncTaskDownloadPedidos = null;
         mSwipyRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void setListaPedidoCompraDoBanco(List<PedidoCompra> pedidos) {
         if (pedidos != null) {
-            if (pedidos.size() > 0) { //&& pedidos.get(0).getStatusPedido().equals(getStatusPedido().getTexto())
+            if (pedidos.size() > 0) {
                 listView.setAdapter(adapter = new AdapterPedidoCompra(this, pedidos));
                 setListaPedidosCompra(pedidos);
 
-                textViewSemPedidos.setVisibility(View.GONE);
+                textViewStatusLista.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
             } else {
-                textViewSemPedidos.setVisibility(View.VISIBLE);
+                textViewStatusLista.setVisibility(View.VISIBLE);
                 listView.setVisibility(View.GONE);
             }
         }
+
+        setDividerListView();
+
+        mSwipyRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -222,6 +185,7 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                textViewStatusLista.setText(getString(R.string.sem_pedidos_no_banco_de_dados));
                 mSwipyRefreshLayout.setRefreshing(false);
             }
         });
@@ -232,22 +196,44 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(AbaPedidoCompra.this, getString(R.string.falha_ao_baixar_pedidos_de_compra), Toast.LENGTH_SHORT).show();
+                textViewStatusLista.setText(getString(R.string.falha_ao_baixar_pedidos_de_compra));
                 mSwipyRefreshLayout.setRefreshing(false);
+
+                carregarPedidosDoBanco();
             }
         });
     }
 
-    @Override
-    public void showSemNovosProdutos() {
-        if (alertarUsuario) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipyRefreshLayout.setRefreshing(false);
-                }
-            });
+    private void carregarPedidosDoBanco() {
+        if (listaPedidosCompra.size() == 0) {
+            textViewStatusLista.setText(getString(R.string.carregando_pedidos_do_banco));
+            asyncTaskCarregarPedidosDoBanco = new CarregarPedidosDoBancoAsyncTask(AbaPedidoCompra.this, getStatusPedido());
+            asyncTaskCarregarPedidosDoBanco.execute();
         }
+    }
+
+    public void cancelarTasks() {
+        if (asyncTaskCarregarPedidosDoBanco != null && asyncTaskCarregarPedidosDoBanco.isRunning()) {
+            asyncTaskCarregarPedidosDoBanco.setRunning(false);
+            asyncTaskCarregarPedidosDoBanco.cancel(false);
+        }
+        if (asyncTaskDownloadPedidos != null && asyncTaskDownloadPedidos.isRunning()) {
+            asyncTaskDownloadPedidos.setRunning(false);
+            asyncTaskDownloadPedidos.cancel(false);
+        }
+
+        asyncTaskCarregarPedidosDoBanco = null;
+        asyncTaskDownloadPedidos = null;
+
+        if (mSwipyRefreshLayout != null) {
+            mSwipyRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void pedidosBaixadosForamSalvosNoBancoComSucesso() {
+        cancelarTasks();
+        carregarPedidosDoBanco();
     }
 
     @Override
@@ -260,6 +246,4 @@ public abstract class AbaPedidoCompra extends ActionBarActivity implements ICarr
     public abstract void configureListViewDivider(ListView listView);
 
     public abstract StatusPedido getStatusPedido();
-
-    public abstract String getTheTitle();
 }

@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 
 import java.util.List;
 
-import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
+import br.com.gwaya.jopy.enums.StatusPedido;
 import br.com.gwaya.jopy.interfaces.ICarregarPedidosDoBancoAsyncTask;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
@@ -37,21 +37,31 @@ public class CarregarPedidosDoBancoAsyncTask extends AsyncTask<Void, Void, List<
 
     @Override
     public void onPostExecute(List<PedidoCompra> pedidos) {
-        if (pedidos != null) {
-            callback.setListaPedidoCompraDoBanco(pedidos);
-        } else {
-            callback.showFalhaAoCarregarPedidosDoBanco();
+        super.onPostExecute(pedidos);
+        if (running) {
+            if (pedidos != null) {
+                callback.setListaPedidoCompraDoBanco(pedidos);
+            } else {
+                callback.showFalhaAoCarregarPedidosDoBanco();
+            }
         }
         running = false;
     }
 
     @Override
     public void onCancelled() {
-        callback.showFalhaAoCarregarPedidosDoBanco();
+        super.onCancelled();
+        if (running) {
+            callback.showFalhaAoCarregarPedidosDoBanco();
+        }
         running = false;
     }
 
     public boolean isRunning() {
         return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }

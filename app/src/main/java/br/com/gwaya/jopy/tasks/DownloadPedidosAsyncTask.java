@@ -15,7 +15,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.interfaces.IDownloadPedidos;
 import br.com.gwaya.jopy.model.Acesso;
@@ -24,16 +23,15 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 /**
  * Created by pedrofsn on 08/03/2015.
  */
-public class DownloadPedidos extends AsyncTask<Void, Void, Void> {
+public class DownloadPedidosAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
     private Context context;
     private PedidoCompraDAO dao;
     private Acesso acesso;
     private IDownloadPedidos callback;
-    private StatusPedido statusPedido;
+    private boolean running = true;
 
-    public DownloadPedidos(Context context, Acesso acesso, StatusPedido statusPedido) {
-        this.statusPedido = statusPedido;
+    public DownloadPedidosAsyncTask(Context context, Acesso acesso) {
         this.callback = (IDownloadPedidos) context;
         this.dao = new PedidoCompraDAO();
         this.context = context;
@@ -41,7 +39,13 @@ public class DownloadPedidos extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected void onPreExecute() {
+        super.onPreExecute();
+        running = true;
+    }
+
+    @Override
+    protected Boolean doInBackground(Void... voids) {
         HttpClient httpclient = new DefaultHttpClient();
 
         String url = context.getResources().getString(R.string.protocolo)
@@ -72,8 +76,9 @@ public class DownloadPedidos extends AsyncTask<Void, Void, Void> {
                     Gson gson = gsonb.create();
 
                     PedidoCompra[] array = gson.fromJson(responseBody, PedidoCompra[].class);
-                    if (array.length > 0) {
+                    if (array.length > 0 && running) {
                         dao.createUpdatePedidoCompra(array);
+                        return true;
                     }
                 } else {
                     callback.logoff(context, statusCode);
@@ -81,26 +86,37 @@ public class DownloadPedidos extends AsyncTask<Void, Void, Void> {
 
 
             } catch (Exception e) {
-                if (callback != null) {
-                    callback.showFalhaAoBaixar();
-                }
                 e.printStackTrace();
             }
         }
-        return null;
+        return false;
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-
+    protected void onPostExecute(Boolean result) {
+        super.onPostExecute(result);
+        if(result && running) {
+            callback.pedidosBaixadosForamSalvosNoBancoComSucesso();
+            running = false;
+        } else {
+            onCancelled();
+        }
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        if (callback != null) {
+        if (callback != null && running) {
             callback.showFalhaAoBaixar();
         }
+        running = false;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }

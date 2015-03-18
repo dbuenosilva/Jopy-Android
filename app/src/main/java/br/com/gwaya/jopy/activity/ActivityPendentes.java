@@ -19,8 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
+import br.com.gwaya.jopy.enums.StatusPedido;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class ActivityPendentes extends AbaPedidoCompra {
@@ -75,7 +75,6 @@ public class ActivityPendentes extends AbaPedidoCompra {
         unregisterReceiver(receiver);
     }
 
-
     @Override
     public StatusPedido getStatusPedido() {
         return StatusPedido.EMITIDO;
@@ -84,5 +83,15 @@ public class ActivityPendentes extends AbaPedidoCompra {
     @Override
     public String getTheTitle() {
         return "Pedidos Pendentes";
+    }
+
+    @Override
+    public int getIconTabID() {
+        return R.drawable.tab_pendentes;
+    }
+
+    @Override
+    public int getNumeroAba() {
+        return 0;
     }
 }

@@ -3,7 +3,6 @@ package br.com.gwaya.jopy.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
@@ -17,7 +16,7 @@ import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 /**
  * Created by marcelorosa on 11/01/15.
  */
-public class ActivityOpcoes extends ActionBarActivity {
+public class ActivityOpcoes extends Aba {
 
     AcessoDAO AcessoDAO;
     PedidoCompraDAO dataSource;
@@ -90,5 +89,20 @@ public class ActivityOpcoes extends ActionBarActivity {
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
+    }
+
+    @Override
+    public int getIconTabID() {
+        return R.drawable.tab_opcoes;
+    }
+
+    @Override
+    public String getTheTitle() {
+        return "Sobre";
+    }
+
+    @Override
+    public int getNumeroAba() {
+        return 3;
     }
 }

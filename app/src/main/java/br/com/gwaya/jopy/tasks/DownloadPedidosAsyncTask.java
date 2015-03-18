@@ -95,7 +95,7 @@ public class DownloadPedidosAsyncTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         super.onPostExecute(result);
-        if(result && running) {
+        if (result && running) {
             callback.pedidosBaixadosForamSalvosNoBancoComSucesso();
             running = false;
         } else {

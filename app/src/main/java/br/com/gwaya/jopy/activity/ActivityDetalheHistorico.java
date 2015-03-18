@@ -1,7 +1,6 @@
 package br.com.gwaya.jopy.activity;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -9,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -18,7 +18,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,9 +30,6 @@ import br.com.gwaya.jopy.adapter.AdapterDetalhePedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
-//import android.app.ActionBar;
-
-//import android.support.v7.app.ActionBarActivity;
 
 public class ActivityDetalheHistorico extends ActionBarActivity {
 
@@ -52,12 +48,11 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
     }
 
     private void setPedido(PedidoCompra pedido) {
-        Gson gson = new Gson();
 
         //CUSTOM VIEW ACTIONBAR
         ActionBar mActionBar;
         mActionBar = getSupportActionBar();
-        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowHomeEnabled(true);
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
@@ -100,7 +95,7 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
         SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH':'mm':'ss'.'SSSZ").create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH':'mm':'ss'.'SSSZ").create();
 
         try {
             //data = gson.fromJson(dtEmi, Date.class);
@@ -209,20 +204,14 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
             indice = extras.getInt("indice");
         }
 
-        Gson gson = new Gson();
-
-        _pedidos = gson.fromJson(jsonMyObject, PedidoCompra[].class);
+        _pedidos = new Gson().fromJson(jsonMyObject, PedidoCompra[].class);
 
         setPedido(_pedidos[indice]);
-
-        final Context context = getApplicationContext();
-        final int duration = Toast.LENGTH_SHORT;
 
         OnClickListener click = new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String tipo = null;
                 try {
                     if (v.getId() == R.id.buttonPrev || v.getId() == R.id.imgPrev) {
                         if (indice > 0) {
@@ -253,5 +242,15 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
 
         imgPrev.setOnClickListener(click);
         imgNext.setOnClickListener(click);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return (super.onOptionsItemSelected(menuItem));
     }
 }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -66,7 +67,7 @@ public class ActivityHistorico extends ActionBarActivity {
         //CUSTOM VIEW ACTIONBAR
         ActionBar mActionBar;
         mActionBar = getSupportActionBar();
-        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowHomeEnabled(true);
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
@@ -94,6 +95,16 @@ public class ActivityHistorico extends ActionBarActivity {
         } else {
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return (super.onOptionsItemSelected(menuItem));
     }
 
     public class PopulateTask extends AsyncTask<Void, Void, List<PedidoCompra>> {

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.gwaya.jopy.StatusPedido;
+import br.com.gwaya.jopy.enums.StatusPedido;
 import br.com.gwaya.jopy.interfaces.QueryExecutor;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
@@ -197,13 +197,15 @@ public class PedidoCompraDAO {
             public void run(SQLiteDatabase database) {
                 Cursor cursor = null;
 
+                String sql = "SELECT * FROM " + MySQLiteHelper.TABLE_PEDIDO_COMPRA + " WHERE " + MySQLiteHelper.STATUS_PEDIDO + " LIKE '" + statusPedido.getTexto() + "' ";
+
                 if (StatusPedido.EMITIDO.getValor() == statusPedido.getValor()) {
-                    cursor = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA,
-                            allColumns, MySQLiteHelper.STATUS_PEDIDO + " = '" + statusPedido.getTexto() + "'", null, null, null, MySQLiteHelper.DT_NECES+ " ASC", null);
+                    sql = sql + " ORDER BY " + MySQLiteHelper.DT_NECES + " ASC";
                 } else {
-                    cursor = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA,
-                            allColumns, MySQLiteHelper.STATUS_PEDIDO + " = '" + statusPedido.getTexto() + "'", null, null, null, MySQLiteHelper.DT_MOD + " ASC", null);
+                    sql = sql + " ORDER BY " + MySQLiteHelper.DT_MOD + " DESC";
                 }
+
+                cursor = database.rawQuery(sql, null);
 
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {

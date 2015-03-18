@@ -65,8 +65,7 @@
 
         <activity
             android:name=".activity.ActivityDetalhe"
-            android:label="@string/title_activity_main_tab"
-            android:parentActivityName=".activity.ActivityMain">
+            android:label="@string/title_activity_main_tab">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -76,8 +75,7 @@
 
         <activity
             android:name=".activity.ActivityHistorico"
-            android:label="@string/title_activity_main_tab"
-            android:parentActivityName=".activity.ActivityDetalhe">
+            android:label="@string/title_activity_main_tab">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -88,8 +86,7 @@
         <activity
             android:name=".activity.ActivityDetalheHistorico"
             android:label="@string/title_activity_main_tab"
-            android:launchMode="singleTask"
-            android:parentActivityName=".activity.ActivityHistorico">
+            android:launchMode="singleTask">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

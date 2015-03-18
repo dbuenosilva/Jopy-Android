@@ -33,24 +33,12 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     private ListView listView;
     private SwipyRefreshLayout mSwipyRefreshLayout;
     private TextView textViewStatusLista;
-
-    private AdapterPedidoCompra adapter;
     private Acesso acesso;
 
     private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
 
     private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
     private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
-
-    private boolean alertarUsuario = true;
-
-    public List<PedidoCompra> getListaPedidosCompra() {
-        return listaPedidosCompra;
-    }
-
-    public void setListaPedidosCompra(List<PedidoCompra> listaPedidosCompra) {
-        this.listaPedidosCompra = listaPedidosCompra;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +60,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(SwipyRefreshLayoutDirection swipyRefreshLayoutDirection) {
-                pullToRefresh(true);
+                pullToRefresh();
             }
         });
 
@@ -87,7 +75,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     @Override
     protected void onResume() {
         super.onResume();
-        pullToRefresh(false);
+        pullToRefresh();
     }
 
     private void setCorBackgroundComBaseNoPedido(FrameLayout frameLayoutCorPedido) {
@@ -114,11 +102,10 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
-    private void pullToRefresh(boolean alertarUsuario) {
+    private void pullToRefresh() {
         cancelarTasks();
         asyncTaskDownloadPedidos = new DownloadPedidosAsyncTask(this, acesso);
         asyncTaskDownloadPedidos.execute();
-        this.alertarUsuario = alertarUsuario;
     }
 
     private void setDividerListView() {
@@ -137,8 +124,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 101 || requestCode == 101) {
             try {
-                AdapterPedidoCompra adapter = (AdapterPedidoCompra) listView.getAdapter();
-                adapter.notifyDataSetChanged();
+                ((AdapterPedidoCompra) listView.getAdapter()).notifyDataSetChanged();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -156,8 +142,8 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     public void setListaPedidoCompraDoBanco(List<PedidoCompra> pedidos) {
         if (pedidos != null) {
             if (pedidos.size() > 0) {
-                listView.setAdapter(adapter = new AdapterPedidoCompra(this, pedidos));
-                setListaPedidosCompra(pedidos);
+                listView.setAdapter(new AdapterPedidoCompra(this, pedidos));
+                listaPedidosCompra = pedidos;
 
                 textViewStatusLista.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);

@@ -368,7 +368,6 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
         @Override
         public Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
             String usuario = mEmail,
                     senha = mPassword;

@@ -9,7 +9,7 @@ public interface IDownloadPedidos {
 
     public void showFalhaAoBaixar();
 
-    public void showSemNovosProdutos();
-
     public void logoff(Context context, Integer codigoErro);
+
+    public void pedidosBaixadosForamSalvosNoBancoComSucesso();
 }

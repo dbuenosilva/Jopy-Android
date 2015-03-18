@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy;
+package br.com.gwaya.jopy.enums;
 
 /**
  * Created by pedro on 13/03/15.

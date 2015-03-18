@@ -32,11 +32,11 @@
         </com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
 
         <TextView
-            android:id="@+id/textViewSemPedidos"
+            android:id="@+id/textViewStatusLista"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/nao_existem_novos_pedidos" />
+            android:text="@string/carregando_pedidos_do_banco" />
     </FrameLayout>
 </LinearLayout>

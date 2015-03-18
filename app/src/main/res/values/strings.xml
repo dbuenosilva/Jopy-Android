@@ -48,4 +48,6 @@
     <string name="mensagem_erro_com_codigo">Erro %d</string>
     <string name="dados_do_app">Dados do App</string>
     <string name="quase_la">Quase lá, só falta mais 5 toques!</string>
+    <string name="sem_pedidos_no_banco_de_dados">Sem pedidos no banco de dados</string>
+    <string name="carregando_pedidos_do_banco">Carregando pedidos do banco de dados...</string>
 </resources>

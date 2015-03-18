@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,10 +19,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterDetalhePedidoCompra;
@@ -31,25 +28,86 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
 
-public class ActivityDetalheHistorico extends ActionBarActivity {
+public class ActivityDetalheHistorico extends ActionBarActivity implements OnClickListener {
 
-    Button buttonPrev;
-    Button buttonNext;
-    ImageView imgPrev;
-    ImageView imgNext;
+    private Button buttonPrev;
+    private Button buttonNext;
+    private ImageView imgPrev;
+    private ImageView imgNext;
+    private TextView txtPedido;
+    private ListView pedidoList;
+    private TextView txtStatus;
+    private TextView textViewNomeForn;
+    private TextView textViewDtEmi;
+    private TextView textViewDtNeces;
+    private TextView textViewSolicitante;
+    private TextView textViewCentroCusto;
+    private TextView textViewTotalPedido;
+    private TextView textViewDtMod;
+    private TextView textViewMotivo;
+    private RelativeLayout relativeLayout;
+    private ScrollView scrollView;
+
     private int indice;
-    private PedidoCompra[] _pedidos;
-    private String codForn;
+    private PedidoCompra[] arrayPedidoCompra;
 
     @Override
-    public void onBackPressed() {
-        setResult(RESULT_OK, new Intent());
-        finish();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.detalhe_historico);
+
+        initViews();
+
+        String jsonArrayPedidoCompra = "";
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            jsonArrayPedidoCompra = extras.getString("pedidos");
+            indice = extras.getInt("indice");
+        }
+
+        arrayPedidoCompra = new Gson().fromJson(jsonArrayPedidoCompra, PedidoCompra[].class);
+
+        configActionBar();
+
+        if (arrayPedidoCompra != null) {
+            setPedido(arrayPedidoCompra[indice]);
+        }
+
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(View.FOCUS_UP);
+            }
+        });
+
+        buttonNext.setOnClickListener(this);
+        buttonPrev.setOnClickListener(this);
+        imgPrev.setOnClickListener(this);
+        imgNext.setOnClickListener(this);
     }
 
-    private void setPedido(PedidoCompra pedido) {
+    private void initViews() {
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        buttonPrev = (Button) findViewById(R.id.buttonPrev);
+        buttonNext = (Button) findViewById(R.id.buttonNext);
+        imgPrev = (ImageView) findViewById(R.id.imgPrev);
+        imgNext = (ImageView) findViewById(R.id.imgNext);
+        txtPedido = (TextView) findViewById(R.id.txtPedido);
+        pedidoList = (ListView) findViewById(R.id.listViewItens);
+        relativeLayout = (RelativeLayout) findViewById(R.id.layoutStatus);
+        txtStatus = (TextView) findViewById(R.id.txtStatus);
+        textViewNomeForn = (TextView) findViewById(R.id.txtForn);
+        textViewDtEmi = (TextView) findViewById(R.id.txtDtEmi);
+        textViewDtNeces = (TextView) findViewById(R.id.txtNec);
+        textViewSolicitante = (TextView) findViewById(R.id.txtSolic);
+        textViewCentroCusto = (TextView) findViewById(R.id.txtCentroCusto);
+        textViewTotalPedido = (TextView) findViewById(R.id.txtTotal);
+        textViewDtMod = (TextView) findViewById(R.id.txtDtMod);
+        textViewMotivo = (TextView) findViewById(R.id.txtMotivoPedido);
+    }
 
-        //CUSTOM VIEW ACTIONBAR
+    private void configActionBar() {
         ActionBar mActionBar;
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowHomeEnabled(true);
@@ -58,14 +116,14 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
 
         View mCustomView = mInflater.inflate(R.layout.actionbar_default, null);
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_main);
-        mTitleTextView.setText("Histórico " + String.valueOf(indice + 1) + " de " + String.valueOf(_pedidos.length));
+        mTitleTextView.setText("Histórico " + String.valueOf(indice + 1) + " de " + String.valueOf(arrayPedidoCompra.length));
         mTitleTextView.setGravity(Gravity.CENTER);
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
-        //CUSTOM VIEW ACTIONBAR
+    }
 
-        ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
+    private void setPedido(PedidoCompra pedido) {
 
         AdapterDetalhePedidoCompra adapter = new AdapterDetalhePedidoCompra(this, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
 
@@ -90,70 +148,30 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
         String dtMod = pedido.getDtMod();
         String totalPedido = "";
 
-        Date data = null;
-
         SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH':'mm':'ss'.'SSSZ").create();
-
         try {
-            //data = gson.fromJson(dtEmi, Date.class);
-            data = isoFormat.parse(dtEmi);
-            dtEmi = dateFormat.format(data);
+            dtEmi = dateFormat.format(isoFormat.parse(dtEmi));
 
-            data = isoFormat.parse(dtNeces);
-            dtNeces = dateFormat.format(data);
+            dtNeces = dateFormat.format(isoFormat.parse(dtNeces));
 
-            data = isoFormat.parse(dtMod);
-            dtMod = dateFormat.format(data);
+            dtMod = dateFormat.format(isoFormat.parse(dtMod));
 
             totalPedido = String.format("%.2f", pedido.getTotalPedido());
-
         } catch (Exception ex) {
-            String str = ex.getMessage();
-            Log.i("erro", str);
+            ex.printStackTrace();
         }
 
-        TextView txtPedido;
-
-        txtPedido = (TextView) findViewById(R.id.txtPedido);
         txtPedido.setText(pedido.getIdSistema());
-        txtPedido.setTag(pedido.get_id());
-
-        TextView textViewItem = (TextView) findViewById(R.id.txtForn);
-        textViewItem.setText(pedido.getNomeForn());
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) findViewById(R.id.txtDtEmi);
-        textViewItem.setText(dtEmi);
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) findViewById(R.id.txtNec);
-        textViewItem.setText(dtNeces);
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) findViewById(R.id.txtSolic);
-        textViewItem.setText(pedido.getSolicitante());
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) findViewById(R.id.txtCentroCusto);
-        textViewItem.setText(pedido.getCentroCusto());
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) findViewById(R.id.txtTotal);
-        textViewItem.setText(totalPedido);
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) findViewById(R.id.txtDtMod);
-        textViewItem.setText("Data da última modificação: " + dtMod);
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) findViewById(R.id.txtMotivoPedido);
-        textViewItem.setText(pedido.getMotivo());
-        textViewItem.setTag(pedido.get_id());
-
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.layoutStatus);
+        textViewNomeForn.setText(pedido.getNomeForn());
+        textViewDtEmi.setText(dtEmi);
+        textViewDtNeces.setText(dtNeces);
+        textViewSolicitante.setText(pedido.getSolicitante());
+        textViewCentroCusto.setText(pedido.getCentroCusto());
+        textViewTotalPedido.setText(totalPedido);
+        textViewDtMod.setText("Data da última modificação: " + dtMod);
+        textViewMotivo.setText(pedido.getMotivo());
         relativeLayout.setVisibility(RelativeLayout.VISIBLE);
 
         String strStatus = pedido.getStatusPedido().equals("aprovado") ? "Aprovado" : "Motivo da Rejeição: " + pedido.getMotivoRejeicao();
@@ -164,9 +182,8 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
             relativeLayout.setBackgroundResource(R.color.rejeitado);
         }
 
-        txtPedido = (TextView) findViewById(R.id.txtStatus);
-        txtPedido.setText(strStatus);
-        txtPedido.setTag(pedido.get_id());
+        txtStatus.setText(strStatus);
+        txtStatus.setTag(pedido.get_id());
 
         if (indice == 0) {
             buttonPrev.setVisibility(Button.INVISIBLE);
@@ -175,7 +192,7 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
             buttonPrev.setVisibility(Button.VISIBLE);
             imgPrev.setVisibility(Button.VISIBLE);
         }
-        if (indice == _pedidos.length - 1) {
+        if (indice == arrayPedidoCompra.length - 1) {
             buttonNext.setVisibility(Button.INVISIBLE);
             imgNext.setVisibility(Button.INVISIBLE);
         } else {
@@ -185,63 +202,9 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.detalhe_historico);
-
-        buttonPrev = (Button) findViewById(R.id.buttonPrev);
-        buttonNext = (Button) findViewById(R.id.buttonNext);
-
-        imgPrev = (ImageView) findViewById(R.id.imgPrev);
-        imgNext = (ImageView) findViewById(R.id.imgNext);
-
-        String jsonMyObject = "";
-
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            jsonMyObject = extras.getString("pedidos");
-            indice = extras.getInt("indice");
-        }
-
-        _pedidos = new Gson().fromJson(jsonMyObject, PedidoCompra[].class);
-
-        setPedido(_pedidos[indice]);
-
-        OnClickListener click = new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (v.getId() == R.id.buttonPrev || v.getId() == R.id.imgPrev) {
-                        if (indice > 0) {
-                            indice--;
-                        }
-                    }
-
-                    if (v.getId() == R.id.buttonNext || v.getId() == R.id.imgNext) {
-                        indice++;
-                    }
-                    setPedido(_pedidos[indice]);
-                } catch (Exception ignored) {
-
-                }
-            }
-        };
-
-        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(View.FOCUS_UP);
-            }
-        });
-
-        buttonNext.setOnClickListener(click);
-        buttonPrev.setOnClickListener(click);
-
-        imgPrev.setOnClickListener(click);
-        imgNext.setOnClickListener(click);
+    public void onBackPressed() {
+        setResult(RESULT_OK, new Intent());
+        finish();
     }
 
     @Override
@@ -252,5 +215,23 @@ public class ActivityDetalheHistorico extends ActionBarActivity {
                 return true;
         }
         return (super.onOptionsItemSelected(menuItem));
+    }
+
+    @Override
+    public void onClick(View v) {
+        try {
+            if (v.getId() == R.id.buttonPrev || v.getId() == R.id.imgPrev) {
+                if (indice > 0) {
+                    indice--;
+                }
+            }
+
+            if (v.getId() == R.id.buttonNext || v.getId() == R.id.imgNext) {
+                indice++;
+            }
+            setPedido(arrayPedidoCompra[indice]);
+        } catch (Exception ignored) {
+
+        }
     }
 }

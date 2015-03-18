@@ -41,7 +41,7 @@ public class ActivityRejeitados extends AbaPedidoCompra {
                     try {
                         j = new JSONArray(strPedidos);
                         pedidos = Arrays.asList(gson.fromJson(j.toString(), PedidoCompra[].class));
-                        setPedidos(pedidos);
+                        setListaPedidoCompraDoBanco(pedidos);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -43,7 +43,7 @@ public class ActivityAprovados extends AbaPedidoCompra {
                     JSONArray jsonArray;
                     try {
                         jsonArray = new JSONArray(strPedidos);
-                        setPedidos(Arrays.asList(gson.fromJson(jsonArray.toString(), PedidoCompra[].class)));
+                        setListaPedidoCompraDoBanco(Arrays.asList(gson.fromJson(jsonArray.toString(), PedidoCompra[].class)));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -67,7 +67,7 @@ public class ActivityAprovados extends AbaPedidoCompra {
                     try {
                         jsonArray = new JSONArray(strPedidos);
                         pedidos = Arrays.asList(gson.fromJson(jsonArray.toString(), PedidoCompra[].class));
-                        setPedidos(pedidos);
+                        setListaPedidoCompraDoBanco(pedidos);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -33,6 +33,16 @@ public enum StatusPedido {
         }
     }
 
+    public static StatusPedido getFromText(String valor) {
+        if (APROVADO.getTexto().equals(valor)) {
+            return StatusPedido.APROVADO;
+        } else if (REJEITADO.getTexto().equals(valor)) {
+            return StatusPedido.REJEITADO;
+        } else {
+            return StatusPedido.EMITIDO;
+        }
+    }
+
     public int getValor() {
         return valor;
     }

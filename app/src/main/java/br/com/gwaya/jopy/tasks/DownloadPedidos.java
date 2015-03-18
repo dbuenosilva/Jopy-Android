@@ -13,31 +13,27 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.util.Arrays;
-import java.util.List;
-
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.StatusPedido;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.interfaces.IDownloadPedidos;
-import br.com.gwaya.jopy.interfaces.ISalvarPedidosCompraAsyncTask;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 /**
  * Created by pedrofsn on 08/03/2015.
  */
-public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
+public class DownloadPedidos extends AsyncTask<Void, Void, Void> {
 
     private Context context;
     private PedidoCompraDAO dao;
     private Acesso acesso;
     private IDownloadPedidos callback;
-    private SalvarPedidosCompraAsyncTask asyncTask;
-    private ISalvarPedidosCompraAsyncTask callbackNovosPedidos;
+    private StatusPedido statusPedido;
 
-    public DownloadPedidos(Context context, Acesso acesso) {
-        this.callbackNovosPedidos = (ISalvarPedidosCompraAsyncTask) context;
+    public DownloadPedidos(Context context, Acesso acesso, StatusPedido statusPedido) {
+        this.statusPedido = statusPedido;
         this.callback = (IDownloadPedidos) context;
         this.dao = new PedidoCompraDAO();
         this.context = context;
@@ -45,10 +41,7 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
     }
 
     @Override
-    public List<PedidoCompra> doInBackground(Void... params) {
-
-        List<PedidoCompra> pedidos = null;
-
+    protected Void doInBackground(Void... voids) {
         HttpClient httpclient = new DefaultHttpClient();
 
         String url = context.getResources().getString(R.string.protocolo)
@@ -79,7 +72,9 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
                     Gson gson = gsonb.create();
 
                     PedidoCompra[] array = gson.fromJson(responseBody, PedidoCompra[].class);
-                    pedidos = Arrays.asList(array);
+                    if (array.length > 0) {
+                        dao.createUpdatePedidoCompra(array);
+                    }
                 } else {
                     callback.logoff(context, statusCode);
                 }
@@ -92,26 +87,13 @@ public class DownloadPedidos extends AsyncTask<Void, Void, List<PedidoCompra>> {
                 e.printStackTrace();
             }
         }
-        return pedidos;
+        return null;
     }
 
     @Override
-    public void onPostExecute(final List<PedidoCompra> pedidos) {
-        if (pedidos != null && pedidos.size() > 0) {
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
 
-            if (asyncTask == null) {
-                asyncTask = new SalvarPedidosCompraAsyncTask(callbackNovosPedidos, pedidos);
-                asyncTask.execute();
-            } else {
-                if (!asyncTask.isRunning()) {
-                    asyncTask.execute();
-                }
-            }
-        } else {
-            if (callback != null) {
-                callback.showSemNovosProdutos();
-            }
-        }
     }
 
     @Override

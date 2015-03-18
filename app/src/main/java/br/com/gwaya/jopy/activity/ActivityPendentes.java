@@ -40,7 +40,7 @@ public class ActivityPendentes extends AbaPedidoCompra {
                     try {
                         j = new JSONArray(strPedidos);
                         pedidos = Arrays.asList(gson.fromJson(strPedidos, PedidoCompra[].class));
-                        setPedidos(pedidos);
+                        setListaPedidoCompraDoBanco(pedidos);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

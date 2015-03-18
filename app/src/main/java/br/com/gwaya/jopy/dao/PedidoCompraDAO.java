@@ -64,20 +64,6 @@ public class PedidoCompraDAO {
         });
     }
 
-    public void updatePedidoCompra(final PedidoCompra pedidoCompra) {
-        DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
-            @Override
-            public void run(SQLiteDatabase database) {
-                ContentValues values = new ContentValues();
-
-                values.put(MySQLiteHelper.ENVIADO, pedidoCompra.getEnviado());
-
-                database.update(MySQLiteHelper.TABLE_PEDIDO_COMPRA, values,
-                        MySQLiteHelper.COLUMN_ID + " = '" + pedidoCompra.get_id() + "'", null);
-            }
-        });
-    }
-
     public void createUpdatePedidoCompra(final PedidoCompra _pedido) {
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
@@ -132,6 +118,20 @@ public class PedidoCompraDAO {
 
                 database.setTransactionSuccessful();
                 database.endTransaction();
+            }
+        });
+    }
+
+    public void updatePedidoCompra(final PedidoCompra pedidoCompra) {
+        DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
+            @Override
+            public void run(SQLiteDatabase database) {
+                ContentValues values = new ContentValues();
+
+                values.put(MySQLiteHelper.ENVIADO, pedidoCompra.getEnviado());
+
+                database.update(MySQLiteHelper.TABLE_PEDIDO_COMPRA, values,
+                        MySQLiteHelper.COLUMN_ID + " = '" + pedidoCompra.get_id() + "'", null);
             }
         });
     }
@@ -305,7 +305,6 @@ public class PedidoCompraDAO {
 
         return pedido;
     }
-
 
     public boolean ExistePedidoCompra(String _idApi) {
         final String idApi = _idApi;

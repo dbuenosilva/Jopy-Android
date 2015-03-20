@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -46,8 +45,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,24 +86,11 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String newMessage = intent.getExtras().getString(CommonUtilities.EXTRA_MESSAGE);
-            }
-        };
-
         setContentView(R.layout.activity_login);
 
         GCMRegistrar.checkDevice(this);
         GCMRegistrar.checkManifest(this);
 
-        /*
-        if (mHandleMessageReceiver != null) {
-            registerReceiver(mHandleMessageReceiver,new IntentFilter(DISPLAY_MESSAGE_ACTION));
-        }
-        */
         GCMRegistrar.register(this, CommonUtilities.SENDER_ID);
 
         GCMRegistrar.setRegisteredOnServer(this, true);
@@ -356,7 +340,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Integer> {
 
         private final String mEmail;
         private final String mPassword;
@@ -367,12 +351,11 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
-        public Boolean doInBackground(Void... params) {
+        public Integer doInBackground(Void... params) {
 
-            String usuario = mEmail,
-                    senha = mPassword;
-
-            Boolean retorno = false;
+            String usuario = mEmail;
+            String senha = mPassword;
+            Integer statusCode = null;
 
             if (!usuario.equals("") && !senha.equals("")) {
 
@@ -422,8 +405,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
                         HttpResponse response = httpclient.execute(httpPost);
 
                         // Obtem codigo de retorno HTTP
-                        int statusCode = response.getStatusLine().getStatusCode();
-
+                        statusCode = response.getStatusLine().getStatusCode();
 
                         if (statusCode >= 200 && statusCode <= 202) {
                             // Obtem string do Body retorno HTTP
@@ -441,18 +423,11 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
 
                             acesso = acessoDatasource.createAcesso(resp, usuario, senha);
-
-
-                            retorno = true;
-                        } else {
-                            retorno = false;
-                            // mensagem
                         }
                     } catch (Exception e) {
-                        Toast toast = Toast.makeText(ActivityLogin.this, "Você esta sem conexão com a internet, por favor tente mais tarde.", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Toast.makeText(ActivityLogin.this, "Você esta sem conexão com a internet, por favor tente mais tarde.", Toast.LENGTH_SHORT).show();
 
-                        retorno = false;
+                        statusCode = -1;
 
                         e.printStackTrace();
 
@@ -470,32 +445,37 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
                         }
                     }
                 } catch (Exception e) {
-                    retorno = false;
                     e.printStackTrace();
                 }
             } else {
-                retorno = false;
+                statusCode = -10;
             }
 
-            return retorno;
+            return statusCode;
         }
 
         @Override
-        public void onPostExecute(final Boolean success) {
+        public void onPostExecute(Integer statusCode) {
             mAuthTask = null;
-            if (success) {
-                //Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                Intent intent = new Intent(ActivityLogin.this, ActivityMain.class);
-                intent.putExtra("ACESSO", new Gson().toJson(acesso));
-                intent.putExtra("login", true);
-                ActivityLogin.this.startActivity(intent);
-                //LoginActivity.this.overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-                mLoginFormView.setVisibility(View.INVISIBLE);
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+            if (statusCode != null) {
+                switch (statusCode) {
+                    case 401:
+                        Toast.makeText(ActivityLogin.this, getString(R.string.acesso_nao_autorizado), Toast.LENGTH_SHORT).show();
+                        break;
+                    case -10:
+                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+                        mPasswordView.requestFocus();
+                        break;
+                    default:
+                        Intent intent = new Intent(ActivityLogin.this, ActivityMain.class);
+                        intent.putExtra("ACESSO", new Gson().toJson(acesso));
+                        intent.putExtra("login", true);
+                        ActivityLogin.this.startActivity(intent);
+                        mLoginFormView.setVisibility(View.INVISIBLE);
+                        break;
+                }
+                showProgress(false);
             }
-            showProgress(false);
         }
 
         @Override
@@ -553,12 +533,6 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
                         mensagem = resp.getMensagem();
                     }
 
-                } catch (UnsupportedEncodingException e) {
-                    retorno = false;
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    retorno = false;
-                    e.printStackTrace();
                 } catch (Exception e) {
                     retorno = false;
                     e.printStackTrace();

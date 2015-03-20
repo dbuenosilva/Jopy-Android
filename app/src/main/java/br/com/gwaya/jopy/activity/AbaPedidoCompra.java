@@ -1,14 +1,18 @@
 package br.com.gwaya.jopy.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
@@ -19,6 +23,7 @@ import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
+import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.enums.StatusPedido;
 import br.com.gwaya.jopy.interfaces.ICarregarPedidosDoBancoAsyncTask;
@@ -33,12 +38,27 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     private ListView listView;
     private SwipyRefreshLayout mSwipyRefreshLayout;
     private TextView textViewStatusLista;
+    private ProgressBar progressBar;
+    private LinearLayout linearLayout;
     private Acesso acesso;
 
     private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
 
     private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
     private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                if (getStatusPedido() == StatusPedido.getFromInt(bundle.getInt("statusPedido"))) {
+                    pullToRefresh();
+                }
+            }
+        }
+
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,10 +72,11 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
             acesso = lst.get(0);
         }
 
-        FrameLayout frameLayoutCorPedido = (FrameLayout) findViewById(R.id.frameLayoutCorPedido);
         listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
         mSwipyRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.swipyrefreshlayout);
         textViewStatusLista = (TextView) findViewById(R.id.textViewStatusLista);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
 
         mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
@@ -64,18 +85,27 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
             }
         });
 
-        setCorBackgroundComBaseNoPedido(frameLayoutCorPedido);
+        setCorBackgroundComBaseNoPedido((FrameLayout) findViewById(R.id.frameLayoutCorPedido));
 
         listView.setOnItemClickListener(this);
         configureListViewDivider(listView);
 
-        textViewStatusLista.setText(textViewStatusLista.getText() + " " + getStatusPedido().toString().toLowerCase() + "s");
+        textViewStatusLista.setText(textViewStatusLista.getText());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        startService(new Intent(this, PedidoCompraService.class));
         pullToRefresh();
+        registerReceiver(receiver, new IntentFilter(PedidoCompraService.NOTIFICATION));
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(receiver);
+        stopService(new Intent(this, PedidoCompraService.class));
+        super.onDestroy();
     }
 
     private void setCorBackgroundComBaseNoPedido(FrameLayout frameLayoutCorPedido) {
@@ -123,11 +153,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 101 || requestCode == 101) {
-            try {
-                ((AdapterPedidoCompra) listView.getAdapter()).notifyDataSetChanged();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            pedidosBaixadosForamSalvosNoBancoComSucesso();
         }
     }
 
@@ -145,11 +171,14 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
                 listView.setAdapter(new AdapterPedidoCompra(this, pedidos));
                 listaPedidosCompra = pedidos;
 
+                linearLayout.setVisibility(View.GONE);
                 textViewStatusLista.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
             } else {
+                textViewStatusLista.setText(getString(R.string.sem_pedidos_no_banco_de_dados));
                 textViewStatusLista.setVisibility(View.VISIBLE);
                 listView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
         }
 
@@ -191,11 +220,10 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     }
 
     private void carregarPedidosDoBanco() {
-        if (listaPedidosCompra.size() == 0) {
-            textViewStatusLista.setText(getString(R.string.carregando_pedidos_do_banco));
-            asyncTaskCarregarPedidosDoBanco = new CarregarPedidosDoBancoAsyncTask(AbaPedidoCompra.this, getStatusPedido());
-            asyncTaskCarregarPedidosDoBanco.execute();
-        }
+        textViewStatusLista.setText(getString(R.string.carregando_pedidos_do_banco));
+        cancelarTasks();
+        asyncTaskCarregarPedidosDoBanco = new CarregarPedidosDoBancoAsyncTask(this, getStatusPedido());
+        asyncTaskCarregarPedidosDoBanco.execute();
     }
 
     public void cancelarTasks() {
@@ -218,7 +246,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
 
     @Override
     public void pedidosBaixadosForamSalvosNoBancoComSucesso() {
-        cancelarTasks();
+        textViewStatusLista.setText(getString(R.string.pedidos_salvos_no_banco_de_dados));
         carregarPedidosDoBanco();
     }
 

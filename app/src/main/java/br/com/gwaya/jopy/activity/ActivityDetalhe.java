@@ -102,9 +102,6 @@ public class ActivityDetalhe extends ActionBarActivity {
                                         toast.show();
 
                                         Intent data = new Intent();
-                                        data.putExtra("myData1", "Data 1 value");
-                                        data.putExtra("myData2", "Data 2 value");
-
                                         ActivityDetalhe.this.setResult(101, data);
                                         ActivityDetalhe.this.finish();
                                     }

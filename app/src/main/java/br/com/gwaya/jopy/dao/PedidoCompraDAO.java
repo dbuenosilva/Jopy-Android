@@ -122,7 +122,7 @@ public class PedidoCompraDAO {
         });
     }
 
-    public void updatePedidoCompra(final PedidoCompra pedidoCompra) {
+    public void updatePedidoCompra(final PedidoCompra pedidoCompra) {//trtrtr
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {

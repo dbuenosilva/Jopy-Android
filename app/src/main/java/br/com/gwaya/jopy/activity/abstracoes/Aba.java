@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy.activity;
+package br.com.gwaya.jopy.activity.abstracoes;
 
 import android.support.v7.app.ActionBarActivity;
 
@@ -7,10 +7,8 @@ import android.support.v7.app.ActionBarActivity;
  */
 public abstract class Aba extends ActionBarActivity {
 
-    public abstract String getTheTitle();
+    public abstract String getNomeAba();
 
     public abstract int getIconTabID();
-
-    public abstract int getNumeroAba();
 
 }

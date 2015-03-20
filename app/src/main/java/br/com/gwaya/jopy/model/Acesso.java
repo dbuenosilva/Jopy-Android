@@ -6,8 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.activity.AbaPedidoCompra;
 import br.com.gwaya.jopy.activity.ActivityLogin;
+import br.com.gwaya.jopy.activity.abstracoes.AbaPedidoCompra;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 

@@ -1,4 +1,4 @@
-package br.com.gwaya.jopy.activity;
+package br.com.gwaya.jopy.activity.abstracoes;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,12 +9,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.activity.ActivityDetalhe;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.dao.AcessoDAO;
@@ -78,6 +79,8 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
 
+        findViewById(R.id.frameLayoutCorPedido).setBackgroundResource(getColorIntBackgroundPedido());
+
         mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(SwipyRefreshLayoutDirection swipyRefreshLayoutDirection) {
@@ -85,10 +88,10 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
             }
         });
 
-        setCorBackgroundComBaseNoPedido((FrameLayout) findViewById(R.id.frameLayoutCorPedido));
+        listView.setDivider(new ColorDrawable(getResources().getColor(getColorInt())));
+        listView.setDividerHeight(1);
 
         listView.setOnItemClickListener(this);
-        configureListViewDivider(listView);
 
         textViewStatusLista.setText(textViewStatusLista.getText());
     }
@@ -108,16 +111,6 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         super.onDestroy();
     }
 
-    private void setCorBackgroundComBaseNoPedido(FrameLayout frameLayoutCorPedido) {
-        if (StatusPedido.EMITIDO == getStatusPedido()) {
-            frameLayoutCorPedido.setBackgroundResource(R.color.header);
-        } else if (StatusPedido.APROVADO == getStatusPedido()) {
-            frameLayoutCorPedido.setBackgroundResource(R.color.aprovado);
-        } else {
-            frameLayoutCorPedido.setBackgroundResource(R.color.rejeitado);
-        }
-    }
-
     private void configurarActionBar() {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -126,7 +119,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
 
         View customView = mInflater.inflate(R.layout.actionbar_main, null);
 
-        ((TextView) customView.findViewById(R.id.title_main)).setText(getTheTitle());
+        ((TextView) customView.findViewById(R.id.title_main)).setText(getNomeAba());
 
         getSupportActionBar().setCustomView(customView);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -191,7 +184,9 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         PedidoCompra pedidoCompra = listaPedidosCompra.get(position);
         if (pedidoCompra != null) {
-            clickOnItemListView(parent, view, position, id, pedidoCompra);
+            Intent intent = new Intent(this, ActivityDetalhe.class);
+            intent.putExtra("pedidocompra", new Gson().toJson(pedidoCompra));
+            dispararIntetClickItem(intent);
         }
     }
 
@@ -255,9 +250,11 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         Acesso.logoff(context, statusCode);
     }
 
-    public abstract void clickOnItemListView(AdapterView<?> parent, View view, int position, long id, PedidoCompra pedidoCompra);
+    public abstract int getColorIntBackgroundPedido();
 
-    public abstract void configureListViewDivider(ListView listView);
+    public abstract int getColorInt();
+
+    public abstract void dispararIntetClickItem(Intent intent);
 
     public abstract StatusPedido getStatusPedido();
 }

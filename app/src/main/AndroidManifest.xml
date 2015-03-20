@@ -32,7 +32,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.ActivityOpcoes"
+            android:name=".activity.abas.ActivitySobre"
             android:label="@string/title_activity_opcoes"
             android:screenOrientation="portrait" />
 
@@ -49,17 +49,17 @@
         </activity>
 
         <activity
-            android:name=".activity.ActivityPendentes"
+            android:name=".activity.abas.ActivityPendentes"
             android:label="@string/title_activity_main_tab"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.ActivityAprovados"
+            android:name=".activity.abas.ActivityAprovados"
             android:label="@string/title_activity_main_tab"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.ActivityRejeitados"
+            android:name=".activity.abas.ActivityRejeitados"
             android:label="@string/title_activity_main_tab"
             android:screenOrientation="portrait" />
 

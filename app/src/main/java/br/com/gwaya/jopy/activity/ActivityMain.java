@@ -15,6 +15,11 @@ import java.util.List;
 
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.activity.abas.ActivityAprovados;
+import br.com.gwaya.jopy.activity.abas.ActivityPendentes;
+import br.com.gwaya.jopy.activity.abas.ActivityRejeitados;
+import br.com.gwaya.jopy.activity.abas.ActivitySobre;
+import br.com.gwaya.jopy.activity.abstracoes.Aba;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 
 public class ActivityMain extends TabActivity {
@@ -85,7 +90,7 @@ public class ActivityMain extends TabActivity {
             listaAbas.add(new ActivityPendentes());
             listaAbas.add(new ActivityAprovados());
             listaAbas.add(new ActivityRejeitados());
-            listaAbas.add(new ActivityOpcoes());
+            listaAbas.add(new ActivitySobre());
 
             for (Aba aba : listaAbas) {
 
@@ -97,16 +102,16 @@ public class ActivityMain extends TabActivity {
                 TextView title = (TextView) tabIndicator.findViewById(R.id.title);
                 ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
 
-                title.setText(aba.getTheTitle().replace("Pedidos ", ""));
+                title.setText(aba.getNomeAba().replace("Pedidos ", ""));
                 icon.setImageResource(aba.getIconTabID());
 
-                if ("Pedidos Pendentes".equals(aba.getTheTitle())) {
+                if ("Pedidos Pendentes".equals(aba.getNomeAba())) {
                     title.setTextColor(getResources().getColor(R.color.emitido));
                 } else {
                     title.setTextColor(Color.parseColor("#FFFFFF"));
                 }
 
-                TabHost.TabSpec spec = tabHost.newTabSpec(aba.getTheTitle());
+                TabHost.TabSpec spec = tabHost.newTabSpec(aba.getNomeAba());
                 spec.setIndicator(tabIndicator);
                 spec.setContent(intent);
 

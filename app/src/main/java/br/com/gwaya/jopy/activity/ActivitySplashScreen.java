@@ -8,7 +8,7 @@ import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.utils.Utils;
 
 /**
- * Created by marcelorosa on 20/01/15.
+ * Modified by pedro on 20/03/15.
  */
 public class ActivitySplashScreen extends Activity {
 
@@ -24,7 +24,7 @@ public class ActivitySplashScreen extends Activity {
 
                 try {
 
-                    if (!new Utils().isDebuggable(ActivitySplashScreen.this)) {
+                    if (!Utils.isDebuggable(ActivitySplashScreen.this)) {
                         sleep(SEGUNDOS * 1000);
                     }
 

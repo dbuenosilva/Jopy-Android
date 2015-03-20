@@ -8,7 +8,7 @@ import android.content.pm.ApplicationInfo;
  */
 public class Utils {
 
-    public boolean isDebuggable(Context context) {
+    public static boolean isDebuggable(Context context) {
         return (0 != (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
     }
 

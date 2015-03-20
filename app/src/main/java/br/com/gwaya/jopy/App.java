@@ -5,9 +5,10 @@ import android.content.Context;
 
 import br.com.gwaya.jopy.dao.DatabaseManager;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
+import br.com.gwaya.jopy.utils.Utils;
 
 /**
- * Created by marcelorosa on 14/01/15.
+ * Modified by pedro on 20/03/15.
  */
 public class App extends Application {
 
@@ -23,18 +24,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         context = this;
-/*
-        if (new Utils().isDebuggable(this)) {
-  */
-        API_REST = "homologacao.api.jopy.gwaya.com.br";
-        /*} else {
+
+        if (Utils.isDebuggable(this)) {
+            API_REST = "homologacao.api.jopy.gwaya.com.br";
+        } else {
             API_REST = "api.jopy.gwaya.com.br";
         }
-*/
-        initSingletons();
-    }
 
-    protected void initSingletons() {
         DatabaseManager.initializeInstance(new MySQLiteHelper(getApplicationContext()));
     }
 }

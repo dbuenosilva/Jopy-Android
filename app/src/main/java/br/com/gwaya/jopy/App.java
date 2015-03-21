@@ -14,6 +14,7 @@ public class App extends Application {
 
     public static int ABA_ATUAL = 0;
     public static String API_REST;
+    public static String TAG = "teste";
     private static Context context;
 
     public static Context getContext() {

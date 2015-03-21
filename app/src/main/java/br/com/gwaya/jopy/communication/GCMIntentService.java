@@ -1,115 +1,92 @@
 package br.com.gwaya.jopy.communication;
 
-import android.annotation.TargetApi;
-import android.app.Notification;
+import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
-import com.google.android.gcm.GCMBaseIntentService;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.activity.ActivityMain;
+import br.com.gwaya.jopy.activity.ActivityLogin;
 
-import static br.com.gwaya.jopy.utils.CommonUtilities.SENDER_ID;
-import static br.com.gwaya.jopy.utils.CommonUtilities.displayMessage;
-
-public class GCMIntentService extends GCMBaseIntentService {
+public class GCMIntentService extends IntentService {
+    public static final int NOTIFICATION_ID = 1;
+    private NotificationManager mNotificationManager;
 
     public GCMIntentService() {
-        super(SENDER_ID);
-    }
-
-    /**
-     * Issues a notification to inform the user that server has sent a message.
-     */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private static void generateNotification(Context context, String message) {
-        int icon = R.drawable.concebra_pro_64;
-        long when = System.currentTimeMillis();
-        NotificationManager notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        Notification.Builder builder =
-                new Notification.Builder(context)
-                        .setSmallIcon(icon)
-                                //.setLargeIcon()
-                        .setContentTitle(context.getString(R.string.app_name))
-                        .setContentText(message)
-                        .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
-                        .setStyle(new Notification.BigTextStyle()
-                                        .bigText(message)
-                                //.setSummaryText(message)
-                        );
-        //builder.setVisibility(Notification.VISIBILITY_PUBLIC);
-        Notification notification;
-        Intent notificationIntent;
-        PendingIntent intent;
-
-        notification = builder.build();
-        //notification.contentView.setImageViewResource(android.R.id.icon, R.drawable.concebra_pro_24);
-        notificationIntent = new Intent(context, ActivityMain.class);
-        // set intent so it does not start a new activity
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-        notification.setLatestEventInfo(context, context.getString(R.string.app_name), message, intent);
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(0, notification);
-
-        /*
-        notification = new Notification(icon, message, when);
-        String title = context.getString(R.string.app_name);
-        notificationIntent = new Intent(context, MainActivity.class);
-        // set intent so it does not start a new activity
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-        notification.setLatestEventInfo(context, title, message, intent);
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(0, notification);*/
+        super("GcmIntentService");
     }
 
     @Override
-    protected void onRegistered(Context context, String registrationId) {
+    protected void onHandleIntent(Intent intent) {
+        Bundle extras = intent.getExtras();
+        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
+        // The getMessageType() intent parameter must be the intent you received
+        // in your BroadcastReceiver.
+        String messageType = gcm.getMessageType(intent);
 
+        if (!extras.isEmpty()) {  // has effect of unparcelling Bundle
+            /*
+             * Filter messages based on message type. Since it is likely that GCM
+             * will be extended in the future with new message types, just ignore
+             * any message types you're not interested in, or that you don't
+             * recognize.
+             */
+            if (GoogleCloudMessaging.
+                    MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
+                sendNotification("Send error: " + extras.toString());
+            } else if (GoogleCloudMessaging.
+                    MESSAGE_TYPE_DELETED.equals(messageType)) {
+                sendNotification("Deleted messages on server: " +
+                        extras.toString());
+                // If it's a regular GCM message, do some work.
+            } else if (GoogleCloudMessaging.
+                    MESSAGE_TYPE_MESSAGE.equals(messageType)) {
+                // This loop represents the service doing some work.
+                for (int i = 0; i < 5; i++) {
+                    Log.i(App.TAG, "Working... " + (i + 1)
+                            + "/5 @ " + SystemClock.elapsedRealtime());
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+                Log.i(App.TAG, "Completed work @ " + SystemClock.elapsedRealtime());
+                // Post notification of received message.
+                sendNotification("Received: " + extras.toString());
+                Log.i(App.TAG, "Received: " + extras.toString());
+            }
+        }
+        // Release the wake lock provided by the WakefulBroadcastReceiver.
+        GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    @Override
-    protected void onUnregistered(Context context, String s) {
+    // Put the message into a notification and post it.
+    // This is just one simple example of what you might choose to do with
+    // a GCM message.
+    private void sendNotification(String msg) {
+        mNotificationManager = (NotificationManager)
+                this.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, ActivityLogin.class), 0);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_stat_gcm)
+                        .setContentTitle("GCM Notification")
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(msg))
+                        .setContentText(msg);
+
+        mBuilder.setContentIntent(contentIntent);
+        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
-
-    @Override
-    protected void onMessage(Context context, Intent intent) {
-        String message = intent.getExtras().getString("message");
-        displayMessage(context, message);
-        generateNotification(context, message);
-    }
-
-    @Override
-    protected void onDeletedMessages(Context context, int total) {
-        String message = getString(R.string.gcm_deleted, total);
-        displayMessage(context, message);
-        generateNotification(context, message);
-
-        Intent intent = new Intent(context, PedidoCompraService.class);
-        context.startService(intent);
-    }
-
-    @Override
-    public void onError(Context context, String errorId) {
-        displayMessage(context, getString(R.string.gcm_error, errorId));
-    }
-
-    @Override
-    protected boolean onRecoverableError(Context context, String errorId) {
-        displayMessage(context, getString(R.string.gcm_recoverable_error,
-                errorId));
-        return super.onRecoverableError(context, errorId);
-    }
-
-
 }

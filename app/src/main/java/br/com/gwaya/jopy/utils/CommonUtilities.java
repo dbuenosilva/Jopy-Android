@@ -24,22 +24,12 @@ import android.content.Intent;
  */
 public final class CommonUtilities {
 
-    public static final String SERVER_URL = "http://54.173.134.168/api/v1/device";
-
-    public static final String TOKEN = "aNnUOQoVrT7QRoMhR6zglyOUPWAi76f9nZwwa1SxoTY=";
-
     public static final String SENDER_ID = "569142009262";
-
-    /**
-     * Tag used on log messages.
-     */
-    public static final String TAG = "GCMDemo";
 
     /**
      * Intent used to display a message in the screen.
      */
-    public static final String DISPLAY_MESSAGE_ACTION =
-            "br.com.gwaya.jopy.DISPLAY_MESSAGE";
+    public static final String DISPLAY_MESSAGE_ACTION = "br.com.gwaya.jopy.DISPLAY_MESSAGE";
 
     /**
      * Intent's extra that contains the message to be displayed.

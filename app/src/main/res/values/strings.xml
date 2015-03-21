@@ -2,11 +2,8 @@
 <resources>
 
     <string name="app_name">Concebra Pro</string>
-    <string name="title_activity_main_tab">Concebra Pro</string>
     <string name="action_settings">Configurações</string>
-    <string name="title_activity_main">Concebra Pro</string>
 
-    <string name="title_activity_login">Concebra Pro</string>
     <string name="title_activity_opcoes">Opções</string>
     <string name="esqueceu_path">/api/v1/oauth/esqueceu</string>
     <string name="oauth_path">/oauth/token</string>
@@ -27,10 +24,6 @@
     <string name="osType">osType</string>
     <string name="osVersion">osVersion</string>
     <string name="AppVersion">AppVersion</string>
-
-    <string name="gcm_error">From GCM: error (%1$s).</string>
-    <string name="gcm_recoverable_error">From GCM: recoverable error (%1$s).</string>
-    <string name="gcm_deleted">From GCM: server deleted %1$d pending messages!</string>
 
     <!-- activity_login.xml -->
     <string name="prompt_email">Email</string>
@@ -53,4 +46,5 @@
     <string name="carregando_pedidos_do_banco">Carregando pedidos do banco de dados...</string>
     <string name="pedidos_salvos_no_banco_de_dados">Pedidos salvos no banco de dados</string>
     <string name="acesso_nao_autorizado">Acesso não autorizado</string>
+
 </resources>

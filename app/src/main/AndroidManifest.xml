@@ -28,7 +28,6 @@
             android:name=".activity.ActivityLogin"
             android:alwaysRetainTaskState="false"
             android:excludeFromRecents="true"
-            android:label="@string/title_activity_login"
             android:noHistory="true"
             android:screenOrientation="portrait" />
 
@@ -51,22 +50,17 @@
 
         <activity
             android:name=".activity.abas.ActivityPendentes"
-            android:label="@string/title_activity_main_tab"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.abas.ActivityAprovados"
-            android:label="@string/title_activity_main_tab"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.abas.ActivityRejeitados"
-            android:label="@string/title_activity_main_tab"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".activity.ActivityDetalhe"
-            android:label="@string/title_activity_main_tab">
+        <activity android:name=".activity.ActivityDetalhe">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -74,9 +68,7 @@
             >
         </activity>
 
-        <activity
-            android:name=".activity.ActivityHistorico"
-            android:label="@string/title_activity_main_tab">
+        <activity android:name=".activity.ActivityHistorico">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -86,7 +78,6 @@
 
         <activity
             android:name=".activity.ActivityDetalheHistorico"
-            android:label="@string/title_activity_main_tab"
             android:launchMode="singleTask">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -95,9 +86,7 @@
             >
         </activity>
 
-        <activity
-            android:name=".activity.ActivityMain"
-            android:label="@string/title_activity_main" />
+        <activity android:name=".activity.ActivityMain" />
 
         <receiver android:name=".communication.PedidoCompraReceiver" />
 

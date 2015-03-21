@@ -10,7 +10,6 @@ import br.com.gwaya.jopy.interfaces.QueryExecutor;
 /**
  * Created by marcelorosa on 14/01/15.
  */
-
 public class DatabaseManager {
 
     private static DatabaseManager instance;

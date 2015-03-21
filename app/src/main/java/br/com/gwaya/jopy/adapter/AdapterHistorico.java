@@ -40,8 +40,6 @@ public class AdapterHistorico extends ArrayAdapter<PedidoCompra> {
             convertView = inflater.inflate(layoutResourceId, parent, false);
         }
 
-        //convertView.setAlpha(new Float(0.1));
-
         PedidoCompra pedido = data.get(position);
 
         final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");

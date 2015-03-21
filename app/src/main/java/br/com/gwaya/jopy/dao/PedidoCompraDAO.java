@@ -46,10 +46,6 @@ public class PedidoCompraDAO {
             MySQLiteHelper.TOTAL
     };
 
-    public PedidoCompraDAO() {
-
-    }
-
     public void createUpdatePedidoCompra(final PedidoCompra[] pedidos) {
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override

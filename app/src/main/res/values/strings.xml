@@ -11,6 +11,7 @@
     <string name="esqueceu_path">/api/v1/oauth/esqueceu</string>
     <string name="oauth_path">/oauth/token</string>
     <string name="pedidocompra_path">/api/v1/pedidocompra</string>
+    <string name="logout_path">/api/v1/logout</string>
     <string name="protocolo">http://</string>
     <string name="grant_type_key">grant_type</string>
     <string name="client_id_key">client_id</string>

@@ -69,7 +69,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public Acesso acesso;
-    String SENDER_ID = "569142009262";
+    private String SENDER_ID = "569142009262";
     private GoogleCloudMessaging gcm;
     private String regid;
     private UserLoginTask mAuthTask = null;
@@ -202,9 +202,11 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
 
             if (regid.isEmpty()) {
                 registerInBackground();
-            } else {
-                Toast.makeText(this, "No valid Google Play Services APK found.", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(this, "Este dispositivo não possui o Google Play Services APK instalado.", Toast.LENGTH_LONG).show();
+            finish();
+            System.exit(0);
         }
     }
 
@@ -456,7 +458,6 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     public class UserLoginTask extends AsyncTask<Void, Void, Integer> {

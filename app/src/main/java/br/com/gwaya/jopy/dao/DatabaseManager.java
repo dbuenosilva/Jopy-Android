@@ -32,13 +32,11 @@ public class DatabaseManager {
             throw new IllegalStateException(DatabaseManager.class.getSimpleName() +
                     " is not initialized, call initializeInstance(..) method first.");
         }
-
         return instance;
     }
 
     private synchronized SQLiteDatabase openDatabase() {
         if (mOpenCounter.incrementAndGet() == 1) {
-            // Opening new database
             mDatabase = mDatabaseHelper.getWritableDatabase();
         }
         return mDatabase;
@@ -46,7 +44,6 @@ public class DatabaseManager {
 
     private synchronized void closeDatabase() {
         if (mOpenCounter.decrementAndGet() == 0) {
-            // Closing database
             mDatabase.close();
 
         }
@@ -56,16 +53,5 @@ public class DatabaseManager {
         SQLiteDatabase database = openDatabase();
         executor.run(database);
         closeDatabase();
-    }
-
-    public void executeQueryTask(final QueryExecutor executor) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SQLiteDatabase database = openDatabase();
-                executor.run(database);
-                closeDatabase();
-            }
-        }).start();
     }
 }

@@ -12,4 +12,5 @@ public class PedidoCompraReceiver extends BroadcastReceiver {
         Intent service = new Intent(context, PedidoCompraService.class);
         context.startService(service);
     }
+
 }

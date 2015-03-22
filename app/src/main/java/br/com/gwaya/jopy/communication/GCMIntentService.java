@@ -17,8 +17,8 @@ import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.ActivityLogin;
 
 public class GCMIntentService extends IntentService {
+
     public static final int NOTIFICATION_ID = 1;
-    private NotificationManager mNotificationManager;
 
     public GCMIntentService() {
         super("GcmIntentService");
@@ -72,7 +72,7 @@ public class GCMIntentService extends IntentService {
     // This is just one simple example of what you might choose to do with
     // a GCM message.
     private void sendNotification(String msg) {
-        mNotificationManager = (NotificationManager)
+        NotificationManager mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,

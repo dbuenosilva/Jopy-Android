@@ -60,7 +60,9 @@
             android:name=".activity.abas.ActivityRejeitados"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".activity.ActivityDetalhe">
+        <activity
+            android:name=".activity.ActivityDetalhe"
+            android:screenOrientation="portrait">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -68,7 +70,9 @@
             >
         </activity>
 
-        <activity android:name=".activity.ActivityHistorico">
+        <activity
+            android:name=".activity.ActivityHistorico"
+            android:screenOrientation="portrait">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -78,7 +82,8 @@
 
         <activity
             android:name=".activity.ActivityDetalheHistorico"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -86,7 +91,9 @@
             >
         </activity>
 
-        <activity android:name=".activity.ActivityMain" />
+        <activity
+            android:name=".activity.ActivityMain"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".communication.PedidoCompraReceiver" />
 
@@ -98,22 +105,6 @@
             </intent-filter>
         </receiver>
 
-        <!--
-        <service android:name=".communication.GCMIntentService" />
-
-        <receiver
-            android:name="com.google.android.gcm.GCMBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="br.com.gwaya.jopy" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name=".communication.GCMIntentService" />
--->
-
         <receiver
             android:name=".communication.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
@@ -122,6 +113,7 @@
                 <category android:name="br.com.gwaya.jopy" />
             </intent-filter>
         </receiver>
+
         <service android:name=".communication.GCMIntentService" />
 
     </application>

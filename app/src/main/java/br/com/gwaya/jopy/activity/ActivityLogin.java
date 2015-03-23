@@ -81,6 +81,11 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
     private AcessoDAO acessoDatasource;
     private int contadorExibicaoMenuSecreto = 0;
 
+
+    public String GetRegId() {
+        return (this.regid);
+    }
+
     private static int getAppVersion(Context context) {
         try {
             PackageInfo packageInfo = context.getPackageManager()
@@ -500,7 +505,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.password_key),
                             senha));
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.deviceKey),
-                            "")); //regId
+                            GetRegId())); //regId
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.deviceType),
                             "galaxyS4mini"));
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.osType),

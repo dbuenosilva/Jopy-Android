@@ -36,7 +36,6 @@ public class PedidoCompraService extends IntentService {
     public static final String NOTIFICATION = "br.com.gwaya.android.service.receiver";
 
     private PedidoCompraDAO pedidoCompraDatasource = new PedidoCompraDAO();
-    private StatusPedido statusPedido;
 
     public PedidoCompraService() {
         super("PedidoCompraService");

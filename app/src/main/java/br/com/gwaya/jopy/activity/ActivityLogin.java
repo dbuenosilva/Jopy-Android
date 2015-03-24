@@ -29,7 +29,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,7 +61,7 @@ import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 import br.com.gwaya.jopy.model.RespostaPadrao;
 
-public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
+public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, OnClickListener {
 
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
@@ -126,33 +125,9 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        Button btnEsqueceu = (Button) findViewById(R.id.btnEsqueceu);
-
-        btnEsqueceu.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mEmailView.setError(null);
-
-                final String email = mEmailView.getText().toString();
-
-                if (!isEmailValid(email)) {
-                    Toast toast = Toast.makeText(ActivityLogin.this, "Por favor, preencha o usuário corretamente.", Toast.LENGTH_SHORT);
-                    toast.show();
-                } else {
-                    showProgress(true);
-                    new EsqueceuTask(email).execute((Void) null);
-                }
-            }
-        });
-
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        findViewById(R.id.email_sign_in_button).setOnClickListener(this);
+        findViewById(R.id.btnEsqueceu).setOnClickListener(this);
+        findViewById(R.id.linearLayout).setOnClickListener(this);
 
         List<Acesso> lst = acessoDatasource.getAllAcesso();
 
@@ -164,17 +139,6 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
             ActivityLogin.this.startActivity(intent);
         }
 
-        findViewById(R.id.linearLayout).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ++contadorExibicaoMenuSecreto;
-                if (contadorExibicaoMenuSecreto >= 10) {
-                    exibirAlertaSecreto();
-                } else if (contadorExibicaoMenuSecreto == 5) {
-                    Toast.makeText(ActivityLogin.this, getString(R.string.quase_la), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         mEmailView.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -463,6 +427,39 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnEsqueceu:
+                mEmailView.setError(null);
+
+                final String email = mEmailView.getText().toString();
+
+                if (!isEmailValid(email)) {
+                    Toast toast = Toast.makeText(ActivityLogin.this, "Por favor, preencha o usuário corretamente.", Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    showProgress(true);
+                    new EsqueceuTask(email).execute((Void) null);
+                }
+                break;
+
+            case R.id.linearLayout:
+                ++contadorExibicaoMenuSecreto;
+                if (contadorExibicaoMenuSecreto >= 10) {
+                    exibirAlertaSecreto();
+                } else if (contadorExibicaoMenuSecreto == 5) {
+                    Toast.makeText(ActivityLogin.this, getString(R.string.quase_la), Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.email_sign_in_button:
+                attemptLogin();
+                break;
+
+        }
     }
 
     private interface ProfileQuery {

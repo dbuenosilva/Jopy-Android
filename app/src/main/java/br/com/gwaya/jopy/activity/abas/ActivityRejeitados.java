@@ -8,6 +8,8 @@ import br.com.gwaya.jopy.enums.StatusPedido;
 
 public class ActivityRejeitados extends AbaPedidoCompra {
 
+    public static final int ID = 2;
+
     @Override
     public void dispararIntetClickItem(Intent intent) {
         startActivity(intent);

@@ -1,5 +1,6 @@
 package br.com.gwaya.jopy.model;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,34 +23,36 @@ public class Acesso {
     private String dtMod;
 
     public static void logoff(final Context context, final Integer statusCode) {
-        ((AbaPedidoCompra) context).runOnUiThread(new Runnable() {
-            public void run() {
+        if (!((Activity) context).isFinishing()) {
 
-                String mensagem = context.getString(R.string.por_favor_faca_login_novamente) + "\n\n" + String.format(context.getString(R.string.mensagem_erro_com_codigo), statusCode);
+            ((AbaPedidoCompra) context).runOnUiThread(new Runnable() {
 
-                new AlertDialog.Builder(context)
-                        .setTitle(context.getString(R.string.autenticacao))
-                        .setMessage(mensagem)
-                        .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                AcessoDAO acessoDAO = new AcessoDAO();
-                                PedidoCompraDAO pedidoCompraDAO = new PedidoCompraDAO();
+                public void run() {
 
-                                pedidoCompraDAO.deleteAll();
-                                acessoDAO.deleteAcesso();
+                    new AlertDialog.Builder(context)
+                            .setTitle(context.getString(R.string.autenticacao))
+                            .setMessage(context.getString(R.string.por_favor_faca_login_novamente) + "\n\n" + String.format(context.getString(R.string.mensagem_erro_com_codigo), statusCode))
+                            .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    AcessoDAO acessoDAO = new AcessoDAO();
+                                    PedidoCompraDAO pedidoCompraDAO = new PedidoCompraDAO();
 
-                                Intent intent = new Intent(context, ActivityLogin.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                context.startActivity(intent);
+                                    pedidoCompraDAO.deleteAll();
+                                    acessoDAO.deleteAcesso();
 
-                                ((AbaPedidoCompra) context).finish();
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-        });
+                                    Intent intent = new Intent(context, ActivityLogin.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    context.startActivity(intent);
+
+                                    ((AbaPedidoCompra) context).finish();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+            });
+        }
     }
 
     public long getId() {

@@ -26,7 +26,7 @@ public class ActivityMain extends TabActivity {
 
     private Boolean login;
 
-    private TabHost tabHost;
+    private static TabHost tabHost;
 
     private List<Aba> listaAbas = new ArrayList<>();
 
@@ -63,25 +63,33 @@ public class ActivityMain extends TabActivity {
                 switch (tabId) {
                     case "Pedidos Pendentes":
                         title.setTextColor(getResources().getColor(R.color.emitido));
-                        App.ABA_ATUAL = 0;
+                        App.ABA_ATUAL = ActivityPendentes.ID;
                         break;
                     case "Pedidos Aprovados":
                         title.setTextColor(getResources().getColor(R.color.aprovado));
-                        App.ABA_ATUAL = 1;
+                        App.ABA_ATUAL = ActivityAprovados.ID;
                         break;
                     case "Pedidos Rejeitados":
                         title.setTextColor(getResources().getColor(R.color.rejeitado));
-                        App.ABA_ATUAL = 2;
+                        App.ABA_ATUAL = ActivityRejeitados.ID;
                         break;
                     case "Sobre":
                         title.setTextColor(getResources().getColor(R.color.emitido));
-                        App.ABA_ATUAL = 3;
+                        App.ABA_ATUAL = ActivitySobre.ID;
                         break;
                 }
             }
         });
+    }
 
-        tabHost.setCurrentTab(App.ABA_ATUAL);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTab(App.ABA_ATUAL);
+    }
+
+    public static void setTab(int idAba) {
+        tabHost.setCurrentTab(idAba);
     }
 
     private void popularListaDeAbas() {

@@ -8,6 +8,8 @@ import br.com.gwaya.jopy.enums.StatusPedido;
 
 public class ActivityPendentes extends AbaPedidoCompra {
 
+    public static final int ID = 0;
+
     @Override
     public void dispararIntetClickItem(Intent intent) {
         startActivityForResult(intent, 101);

@@ -27,6 +27,8 @@ import br.com.gwaya.jopy.tasks.LogoutAsyncTask;
  */
 public class ActivitySobre extends Aba implements ILogout {
 
+    public static final int ID = 3;
+
     private LogoutAsyncTask asyncTaskLogout;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,6 @@ public class ActivitySobre extends Aba implements ILogout {
             @Override
             public void onClick(View v) {
                 try {
-
                     // Diego - 20/30 - informa para API com intuito de parar as push notifications para o device
                     List<Acesso> lstAcesso = new AcessoDAO().getAllAcesso();
 
@@ -53,14 +54,9 @@ public class ActivitySobre extends Aba implements ILogout {
 
                         Acesso acesso = lstAcesso.get(0);
 
-                        if (asyncTaskLogout == null) {
-                            asyncTaskLogout = new LogoutAsyncTask(ActivitySobre.this, acesso);
-                            asyncTaskLogout.execute();
-                        } else {
-                            if (!asyncTaskLogout.isRunning()) {
-                                asyncTaskLogout.execute();
-                            }
-                        }
+                        asyncTaskLogout = null;
+                        asyncTaskLogout = new LogoutAsyncTask(ActivitySobre.this, acesso);
+                        asyncTaskLogout.execute();
                     }
 
                 } catch (Exception e) {
@@ -101,7 +97,7 @@ public class ActivitySobre extends Aba implements ILogout {
         new AcessoDAO().deleteAcesso();
         new PedidoCompraDAO().deleteAll();
 
-        App.ABA_ATUAL = 0;
+        App.ABA_ATUAL = ActivityPendentes.ID;
 
         stopService(new Intent(this, PedidoCompraService.class));
 

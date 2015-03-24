@@ -516,11 +516,11 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.deviceKey),
                             GetRegId())); //regId
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.deviceType),
-                            "galaxyS4mini"));
+                            android.os.Build.MODEL));
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.osType),
                             "android"));
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.osVersion),
-                            "v19"));
+                            android.os.Build.VERSION.RELEASE));
                     nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.AppVersion),
                             "v1"));
 

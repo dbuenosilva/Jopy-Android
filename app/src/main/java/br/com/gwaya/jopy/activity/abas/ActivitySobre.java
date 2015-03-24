@@ -14,8 +14,6 @@ import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.ActivityLogin;
 import br.com.gwaya.jopy.activity.abstracoes.Aba;
-import br.com.gwaya.jopy.communication.BootReceiver;
-import br.com.gwaya.jopy.communication.GcmBroadcastReceiver;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
@@ -109,8 +107,8 @@ public class ActivitySobre extends Aba implements ILogout {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
-        unregisterReceiver(new BootReceiver());
-        unregisterReceiver(new GcmBroadcastReceiver());
+//        unregisterReceiver(new BootReceiver());
+//        unregisterReceiver(new GcmBroadcastReceiver());
         stopService(new Intent(this, PedidoCompraService.class));
     }
 }

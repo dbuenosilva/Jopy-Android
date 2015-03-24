@@ -92,9 +92,9 @@ public class GCMIntentService extends IntentService {
                 intent, 0);
 
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        if(alarmSound == null){
+        if (alarmSound == null) {
             alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            if(alarmSound == null){
+            if (alarmSound == null) {
                 alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             }
         }
@@ -112,7 +112,7 @@ public class GCMIntentService extends IntentService {
                         .setContentText(msg);
 
         // DIEGO - Tentei criando o metodo getDialogPendingIntent mas também não deu certo...
-        mBuilder.setContentIntent( getDialogPendingIntent(msg, intent.toString()) );
+        mBuilder.setContentIntent(getDialogPendingIntent(msg, intent.toString()));
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 

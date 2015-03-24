@@ -3,9 +3,12 @@ package br.com.gwaya.jopy;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
+
 import br.com.gwaya.jopy.dao.DatabaseManager;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.utils.Utils;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Modified by pedro on 20/03/15.
@@ -24,6 +27,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         context = this;
 
         if (Utils.isDebuggable(this)) {

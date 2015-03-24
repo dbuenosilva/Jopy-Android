@@ -116,6 +116,9 @@
 
         <service android:name=".communication.GCMIntentService" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="f97e520be8898408df5f8d2e8dfea83f5df8fc6d" />
     </application>
 
 </manifest>

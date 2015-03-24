@@ -105,11 +105,21 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     }
 
     @Override
-    protected void onDestroy() {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == 101 || requestCode == 101) {
+            pedidosBaixadosForamSalvosNoBancoComSucesso();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        asyncTaskDownloadPedidos = null;
+        mSwipyRefreshLayout.setRefreshing(false);
         unregisterReceiver(receiver);
         stopService(new Intent(this, PedidoCompraService.class));
-        super.onDestroy();
     }
+
 
     private void configurarActionBar() {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -141,20 +151,6 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
                 listView.setDivider(new ColorDrawable(getResources().getColor(R.color.header)));
             }
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == 101 || requestCode == 101) {
-            pedidosBaixadosForamSalvosNoBancoComSucesso();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        asyncTaskDownloadPedidos = null;
-        mSwipyRefreshLayout.setRefreshing(false);
     }
 
     @Override

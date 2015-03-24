@@ -175,6 +175,15 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor> {
                 }
             }
         });
+
+        mEmailView.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+                    mPasswordView.requestFocus();
+                }
+                return false;
+            }
+        });
     }
 
     private void exibirAlertaSecreto() {

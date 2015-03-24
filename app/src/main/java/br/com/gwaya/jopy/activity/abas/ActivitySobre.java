@@ -105,10 +105,10 @@ public class ActivitySobre extends Aba implements ILogout {
 
         stopService(new Intent(this, PedidoCompraService.class));
 
-        finish();
-
-        Intent intent = new Intent(ActivitySobre.this, ActivityLogin.class);
+        Intent intent = new Intent(this, ActivityLogin.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+
+        finish();
     }
 }

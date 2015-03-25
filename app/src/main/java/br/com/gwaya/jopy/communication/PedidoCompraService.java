@@ -103,9 +103,19 @@ public class PedidoCompraService extends IntentService {
                     for (PedidoCompra pedido : pedidos) {
                         if (pedidoCompraDatasource.ExistePedidoCompra(pedido.get_id())) {
                             pedidoCompraDatasource.deletePedidoCompra(pedido);
-                            pedidoCompraDatasource.createUpdatePedidoCompra(pedido);
+
+
+                            // Se nao estiver deletado, atualiza
+                            if ( !pedido.getStatusPedido().equals("deletado") ) {
+                                pedidoCompraDatasource.createUpdatePedidoCompra(pedido);
+                            }
+
                         } else {
-                            pedidoCompraDatasource.createUpdatePedidoCompra(pedidos);
+                            // Se nao estiver deletado, inclui
+                            if ( !pedido.getStatusPedido().equals("deletado") ) {
+                                pedidoCompraDatasource.createUpdatePedidoCompra(pedidos);
+                            }
+
                         }
                     }
 

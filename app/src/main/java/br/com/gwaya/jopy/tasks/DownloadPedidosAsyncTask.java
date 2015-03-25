@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -75,7 +77,12 @@ public class DownloadPedidosAsyncTask extends AsyncTask<Void, Void, Boolean> {
                     GsonBuilder gsonb = new GsonBuilder();
                     Gson gson = gsonb.create();
 
-                    PedidoCompra[] array = gson.fromJson(responseBody, PedidoCompra[].class);
+                    JsonObject jsPedidosObj = gson.fromJson(responseBody, JsonObject.class);
+
+                    JsonArray jsPedidosArray = jsPedidosObj.getAsJsonArray("pedidos");
+
+                    PedidoCompra[] array = gson.fromJson(jsPedidosArray, PedidoCompra[].class);
+
                     if (array.length > 0 && running) {
                         dao.createUpdatePedidoCompra(array);
                         return true;

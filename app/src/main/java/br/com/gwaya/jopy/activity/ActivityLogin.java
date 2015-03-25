@@ -394,7 +394,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
 
             @Override
             protected void onPostExecute(String msg) {
-                Toast.makeText(ActivityLogin.this, msg, Toast.LENGTH_SHORT).show();
+                Log.d(App.TAG, msg);
             }
         }.execute();
     }
@@ -410,7 +410,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PROPERTY_REG_ID, regId);
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
-        editor.commit();
+        editor.apply();
     }
 
     private boolean checkPlayServices() {

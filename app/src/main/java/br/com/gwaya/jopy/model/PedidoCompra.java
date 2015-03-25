@@ -24,6 +24,7 @@ public class PedidoCompra {
     private float totalPedido;
     private String obs;
     private String dtMod;
+    private String dtAprov;
     private List<PedidoCompraItem> itens;
 
     public PedidoCompra() {
@@ -190,6 +191,14 @@ public class PedidoCompra {
         this.dtMod = dtMod;
     }
 
+    public String getDtAprov() {
+        return this.dtAprov;
+    }
+
+    public void setDtAprov(String dtAprov) {
+        this.dtAprov = dtAprov;
+    }
+
     public List<PedidoCompraItem> getItens() {
         return itens;
     }
@@ -197,4 +206,5 @@ public class PedidoCompra {
     public void setItens(List<PedidoCompraItem> itens) {
         this.itens = itens;
     }
+
 }

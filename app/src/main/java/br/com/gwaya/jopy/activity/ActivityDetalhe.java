@@ -32,7 +32,9 @@ import com.google.gson.GsonBuilder;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterDetalhePedidoCompra;
@@ -90,9 +92,16 @@ public class ActivityDetalhe extends ActionBarActivity {
                                         FilaPedidoCompraDAO filaDataSource = new FilaPedidoCompraDAO();
                                         PedidoCompraDAO dataSource = new PedidoCompraDAO();
 
+                                        Calendar c = Calendar.getInstance();
+                                        TimeZone gmt = TimeZone.getTimeZone("GMT");
+                                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                                        df.setTimeZone(gmt);
+                                        String dataFormatada = df.format(c.getTime());
+
                                         pedido.setStatusPedido(STATUS_APROVADO);
                                         pedido.setEnviado(0);
                                         pedido.setMotivoRejeicao("");
+                                        pedido.setDtAprov(dataFormatada);//2015-03-13T21:27:41.957Z
 
                                         filaDataSource.createFilaPedidoCompra(pedido);
 
@@ -141,9 +150,16 @@ public class ActivityDetalhe extends ActionBarActivity {
                                         PedidoCompraDAO dataSource =
                                                 new PedidoCompraDAO();
 
+                                        Calendar c = Calendar.getInstance();
+                                        TimeZone gmt = TimeZone.getTimeZone("GMT");
+                                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                                        df.setTimeZone(gmt);
+                                        String dataFormatada = df.format(c.getTime());
+
                                         pedido.setStatusPedido("rejeitado");
                                         pedido.setEnviado(0);
                                         pedido.setMotivoRejeicao(textRej.getText().toString().replace("\n", "").replace("\r", ""));
+                                        pedido.setDtRej(dataFormatada);
 
                                         filaDataSource.createFilaPedidoCompra(pedido);
 
@@ -288,7 +304,7 @@ public class ActivityDetalhe extends ActionBarActivity {
                 String dtEmi = pedido.getDtEmi();
                 String dtNeces = pedido.getDtNeces();
                 String dtMod = pedido.getDtMod();
-                String dtAprovRej = pedido.getDtMod();
+                String dtAprovRej = pedido.getDtAprov();
                 String totalPedido = "";
 
                 Date data = null;

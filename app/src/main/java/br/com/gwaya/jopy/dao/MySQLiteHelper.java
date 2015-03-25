@@ -50,6 +50,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TOTAL_PEDIDO = "TOTAL_PEDIDO";
     public static final String OBS = "OBS";
     public static final String DT_MOD = "DT_MOD";
+    public static final String DT_APROV = "DT_APROV";
     private static final String DATABASE_CREATE2 =
             "create table "
                     + TABLE_PEDIDO_COMPRA + "(" + COLUMN_ID + " text primary key, "
@@ -71,7 +72,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                     + MOTIVO_REJEICAO + " text null, "
                     + TOTAL_PEDIDO + " real null, "
                     + OBS + " text null, "
-                    + DT_MOD + " text null "
+                    + DT_MOD + " text null, "
+                    + DT_APROV + " text null "
                     + ");";
     public static final String ID_PAI = "id_pai";
     public static final String PRODUTO = "produto";

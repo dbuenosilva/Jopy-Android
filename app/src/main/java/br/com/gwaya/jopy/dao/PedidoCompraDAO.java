@@ -23,9 +23,6 @@ public class PedidoCompraDAO {
             MySQLiteHelper.NOME_FORN,
             MySQLiteHelper.CPF_CNPJ_FORN,
             MySQLiteHelper.COD_FORN,
-            MySQLiteHelper.DT_EMI,
-            MySQLiteHelper.DT_NECES,
-            MySQLiteHelper.DT_REJ,
             MySQLiteHelper.CENTRO_CUSTO,
             MySQLiteHelper.ID_SOLICITANTE,
             MySQLiteHelper.SOLICITANTE,
@@ -34,7 +31,11 @@ public class PedidoCompraDAO {
             MySQLiteHelper.TOTAL_PEDIDO,
             MySQLiteHelper.COND_PAGTO,
             MySQLiteHelper.OBS,
-            MySQLiteHelper.DT_MOD
+            MySQLiteHelper.DT_MOD,
+            MySQLiteHelper.DT_APROV,
+            MySQLiteHelper.DT_EMI,
+            MySQLiteHelper.DT_NECES,
+            MySQLiteHelper.DT_REJ
     };
     private final String[] allColumnsItems = {
             MySQLiteHelper.COLUMN_ID,
@@ -76,9 +77,6 @@ public class PedidoCompraDAO {
                 values.put(MySQLiteHelper.NOME_FORN, _pedido.getNomeForn());
                 values.put(MySQLiteHelper.CPF_CNPJ_FORN, _pedido.getCpfCnpjForn());
                 values.put(MySQLiteHelper.COD_FORN, _pedido.getCodForn());
-                values.put(MySQLiteHelper.DT_EMI, _pedido.getDtEmi());
-                values.put(MySQLiteHelper.DT_NECES, _pedido.getDtNeces());
-                values.put(MySQLiteHelper.DT_REJ, _pedido.getDtRej());
                 values.put(MySQLiteHelper.CENTRO_CUSTO, _pedido.getCentroCusto());
                 values.put(MySQLiteHelper.COND_PAGTO, _pedido.getCondPagto());
                 values.put(MySQLiteHelper.ID_SOLICITANTE, _pedido.getIdSolicitante());
@@ -88,6 +86,10 @@ public class PedidoCompraDAO {
                 values.put(MySQLiteHelper.TOTAL_PEDIDO, _pedido.getTotalPedido());
                 values.put(MySQLiteHelper.OBS, _pedido.getObs());
                 values.put(MySQLiteHelper.DT_MOD, _pedido.getDtMod());
+                values.put(MySQLiteHelper.DT_APROV, _pedido.getDtAprov());
+                values.put(MySQLiteHelper.DT_EMI, _pedido.getDtEmi());
+                values.put(MySQLiteHelper.DT_NECES, _pedido.getDtNeces());
+                values.put(MySQLiteHelper.DT_REJ, _pedido.getDtRej());
 
                 database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA_ITEM, MySQLiteHelper.ID_PAI + " = '" + _pedido.get_id() + "'", null);
                 database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA, MySQLiteHelper.COLUMN_ID + " = '" + _pedido.get_id() + "'", null);
@@ -197,8 +199,10 @@ public class PedidoCompraDAO {
 
                 if (StatusPedido.EMITIDO.getValor() == statusPedido.getValor()) {
                     sql = sql + " ORDER BY " + MySQLiteHelper.DT_NECES + " ASC";
-                } else {
-                    sql = sql + " ORDER BY " + MySQLiteHelper.DT_MOD + " DESC";
+                } else if (StatusPedido.APROVADO.getValor() == statusPedido.getValor()) {
+                    sql = sql + " ORDER BY " + MySQLiteHelper.DT_APROV + " DESC";
+                } else if (StatusPedido.REJEITADO.getValor() == statusPedido.getValor()){
+                    sql = sql + " ORDER BY " + MySQLiteHelper.DT_REJ + " DESC";
                 }
 
                 cursor = database.rawQuery(sql, null);
@@ -297,6 +301,8 @@ public class PedidoCompraDAO {
         pedido.setDtMod(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_MOD)));
         pedido.setDtNeces(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_NECES)));
         pedido.setDtEmi(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_EMI)));
+        pedido.setDtAprov(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_APROV)));
+        pedido.setDtRej(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_REJ)));
         pedido.setMotivo(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO)));
         pedido.setMotivoRejeicao(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO_REJEICAO)));
         pedido.setObs(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.OBS)));

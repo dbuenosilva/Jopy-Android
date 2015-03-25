@@ -80,11 +80,6 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
     private AcessoDAO acessoDatasource;
     private int contadorExibicaoMenuSecreto = 0;
 
-
-    public String GetRegId() {
-        return (this.regid);
-    }
-
     private static int getAppVersion(Context context) {
         try {
             PackageInfo packageInfo = context.getPackageManager()
@@ -94,6 +89,10 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
             // should never happen
             throw new RuntimeException("Could not get package name: " + e);
         }
+    }
+
+    public String GetRegId() {
+        return (this.regid);
     }
 
     @Override

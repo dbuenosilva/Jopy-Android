@@ -38,21 +38,6 @@ public class App extends Application {
         return context;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Fabric.with(this, new Crashlytics());
-        context = this;
-
-        if (Utils.isDebuggable(this)) {
-            API_REST = "homologacao.api.jopy.gwaya.com.br";
-        } else {
-            API_REST = "api.jopy.gwaya.com.br";
-        }
-
-        DatabaseManager.initializeInstance(new MySQLiteHelper(getApplicationContext()));
-    }
-
     public static void sendNotification(String mensagem) {
 
         Notification note;
@@ -97,5 +82,20 @@ public class App extends Application {
             }
         }
         return alarmSound;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Fabric.with(this, new Crashlytics());
+        context = this;
+
+        if (Utils.isDebuggable(this)) {
+            API_REST = "homologacao.api.jopy.gwaya.com.br";
+        } else {
+            API_REST = "api.jopy.gwaya.com.br";
+        }
+
+        DatabaseManager.initializeInstance(new MySQLiteHelper(getApplicationContext()));
     }
 }

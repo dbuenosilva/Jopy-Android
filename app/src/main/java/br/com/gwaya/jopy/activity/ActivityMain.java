@@ -24,11 +24,13 @@ import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 
 public class ActivityMain extends TabActivity {
 
-    private Boolean login;
-
     private static TabHost tabHost;
-
+    private Boolean login;
     private List<Aba> listaAbas = new ArrayList<>();
+
+    public static void setTab(int idAba) {
+        tabHost.setCurrentTab(idAba);
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +88,6 @@ public class ActivityMain extends TabActivity {
     protected void onResume() {
         super.onResume();
         setTab(App.ABA_ATUAL);
-    }
-
-    public static void setTab(int idAba) {
-        tabHost.setCurrentTab(idAba);
     }
 
     private void popularListaDeAbas() {

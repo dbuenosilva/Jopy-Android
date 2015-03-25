@@ -13,11 +13,24 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_PEDIDO_COMPRA_FILA = "PEDIDO_COMPRA_FILA";
 
     public static final String COLUMN_ID = "_id";
+    private static final String DATABASE_CREATE4 =
+            "create table "
+                    + TABLE_PEDIDO_COMPRA_FILA + "(" + COLUMN_ID + " text primary key);";
     public static final String ACCESS_TOKEN = "ACCESS_TOKEN";
     public static final String REFRESH_TOKEN = "REFRESH_TOKEN";
     public static final String USUARIO = "USUARIO";
     public static final String SENHA = "SENHA";
     public static final String TOKEN_TYPE = "TOKEN_TYPE";
+    // Database creation sql statement
+    private static final String DATABASE_CREATE1 =
+            "create table "
+                    + TABLE_ACESSO + "(" + COLUMN_ID + " integer primary key autoincrement, "
+                    + ACCESS_TOKEN + " text not null, "
+                    + REFRESH_TOKEN + " text not null, "
+                    + USUARIO + " text not null, "
+                    + SENHA + " text not null, "
+                    + TOKEN_TYPE + " text not null "
+                    + ");";
     public static final String ID_SISTEMA = "ID_SISTEMA";
     public static final String APROVADORES = "APROVADORES";
     public static final String ENVIADO = "ENVIADO";
@@ -37,24 +50,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TOTAL_PEDIDO = "TOTAL_PEDIDO";
     public static final String OBS = "OBS";
     public static final String DT_MOD = "DT_MOD";
-    public static final String ID_PAI = "id_pai";
-    public static final String PRODUTO = "produto";
-    public static final String QTDE = "qtde";
-    public static final String VALOR = "valor";
-    public static final String TOTAL = "total";
-    private static final String DATABASE_CREATE4 =
-            "create table "
-                    + TABLE_PEDIDO_COMPRA_FILA + "(" + COLUMN_ID + " text primary key);";
-    // Database creation sql statement
-    private static final String DATABASE_CREATE1 =
-            "create table "
-                    + TABLE_ACESSO + "(" + COLUMN_ID + " integer primary key autoincrement, "
-                    + ACCESS_TOKEN + " text not null, "
-                    + REFRESH_TOKEN + " text not null, "
-                    + USUARIO + " text not null, "
-                    + SENHA + " text not null, "
-                    + TOKEN_TYPE + " text not null "
-                    + ");";
     private static final String DATABASE_CREATE2 =
             "create table "
                     + TABLE_PEDIDO_COMPRA + "(" + COLUMN_ID + " text primary key, "
@@ -78,6 +73,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                     + OBS + " text null, "
                     + DT_MOD + " text null "
                     + ");";
+    public static final String ID_PAI = "id_pai";
+    public static final String PRODUTO = "produto";
+    public static final String QTDE = "qtde";
+    public static final String VALOR = "valor";
+    public static final String TOTAL = "total";
     private static final String DATABASE_CREATE3 =
             "create table "
                     + TABLE_PEDIDO_COMPRA_ITEM + "(" + COLUMN_ID + " text primary key, "

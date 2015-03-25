@@ -36,17 +36,6 @@ import br.com.gwaya.jopy.tasks.DownloadPedidosAsyncTask;
 
 public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoBancoAsyncTask, IDownloadPedidos, AdapterView.OnItemClickListener {
 
-    private ListView listView;
-    private SwipyRefreshLayout mSwipyRefreshLayout;
-    private TextView textViewStatusLista;
-    private ProgressBar progressBar;
-    private LinearLayout linearLayout;
-    private Acesso acesso;
-
-    private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
-
-    private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
-    private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
@@ -60,6 +49,15 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         }
 
     };
+    private ListView listView;
+    private SwipyRefreshLayout mSwipyRefreshLayout;
+    private TextView textViewStatusLista;
+    private ProgressBar progressBar;
+    private LinearLayout linearLayout;
+    private Acesso acesso;
+    private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
+    private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
+    private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

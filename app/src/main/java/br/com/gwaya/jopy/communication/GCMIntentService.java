@@ -35,10 +35,10 @@ public class GCMIntentService extends IntentService {
              */
             if (GoogleCloudMessaging.
                     MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                App.sendNotification(App.getContext(), "Send error: " + extras.toString());
+                App.sendNotification("Send error: " + extras.toString());
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_DELETED.equals(messageType)) {
-                App.sendNotification(App.getContext(), "Deleted messages on server: " + extras.toString());
+                App.sendNotification("Deleted messages on server: " + extras.toString());
                 // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
@@ -53,7 +53,7 @@ public class GCMIntentService extends IntentService {
                 }
                 Log.i(App.TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 // Post notification of received message.
-                App.sendNotification(App.getContext(), extras.get("message").toString());
+                App.sendNotification(extras.get("message").toString());
                 Log.i(App.TAG, "Received: " + extras.get("message").toString());
                 displayMessage(this.getApplicationContext(), extras.get("message").toString());
 

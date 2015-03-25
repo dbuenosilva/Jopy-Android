@@ -38,7 +38,6 @@
 
         <activity
             android:name=".activity.ActivitySplashScreen"
-            android:launchMode="singleTask"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -82,7 +81,6 @@
 
         <activity
             android:name=".activity.ActivityDetalheHistorico"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

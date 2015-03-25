@@ -53,7 +53,7 @@ public class App extends Application {
         DatabaseManager.initializeInstance(new MySQLiteHelper(getApplicationContext()));
     }
 
-    public static void sendNotification(Context context, String mensagem) {
+    public static void sendNotification(String mensagem) {
 
         Notification note;
 

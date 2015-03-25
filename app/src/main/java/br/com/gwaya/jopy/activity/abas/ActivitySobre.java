@@ -46,21 +46,16 @@ public class ActivitySobre extends Aba implements ILogout {
         findViewById(R.id.layoutLogoff).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    // Diego - 20/30 - informa para API com intuito de parar as push notifications para o device
-                    List<Acesso> lstAcesso = new AcessoDAO().getAllAcesso();
+                // Diego - 20/30 - informa para API com intuito de parar as push notifications para o device
+                List<Acesso> lstAcesso = new AcessoDAO().getAllAcesso();
 
-                    if (lstAcesso.size() > 0) {
+                if (lstAcesso.size() > 0) {
 
-                        Acesso acesso = lstAcesso.get(0);
+                    Acesso acesso = lstAcesso.get(0);
 
-                        asyncTaskLogout = null;
-                        asyncTaskLogout = new LogoutAsyncTask(ActivitySobre.this, acesso);
-                        asyncTaskLogout.execute();
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    asyncTaskLogout = null;
+                    asyncTaskLogout = new LogoutAsyncTask(ActivitySobre.this, acesso);
+                    asyncTaskLogout.execute();
                 }
             }
         });

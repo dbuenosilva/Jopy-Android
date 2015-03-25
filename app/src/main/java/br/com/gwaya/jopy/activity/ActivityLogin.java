@@ -536,15 +536,10 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
                             ResponseHandler<String> responseHandler = new BasicResponseHandler();
                             String responseBody = responseHandler.handleResponse(response);
 
-
                             GsonBuilder gsonb = new GsonBuilder();
                             Gson gson = gsonb.create();
-                            JSONObject j;
-                            RespostaLogin resp = null;
-
-                            j = new JSONObject(responseBody);
-                            resp = gson.fromJson(j.toString(), RespostaLogin.class);
-
+                            JSONObject j = new JSONObject(responseBody);
+                            RespostaLogin resp = gson.fromJson(j.toString(), RespostaLogin.class);
 
                             acesso = acessoDatasource.createAcesso(resp, usuario, senha);
                         }
@@ -649,9 +644,8 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
 
                         GsonBuilder gsonb = new GsonBuilder();
                         Gson gson = gsonb.create();
-                        RespostaPadrao resp = null;
 
-                        resp = gson.fromJson(responseBody, RespostaPadrao.class);
+                        RespostaPadrao resp = gson.fromJson(responseBody, RespostaPadrao.class);
 
                         retorno = resp.getStatus();
                         mensagem = resp.getMensagem();

@@ -7,6 +7,8 @@ import android.os.IBinder;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -88,14 +90,15 @@ public class PedidoCompraService extends IntentService {
 
                 descarregaFila(acesso);
 
-                String responseData = "";
-
-                responseData = loadFromNetwork(url, acesso, this.getApplicationContext());
+                String responseBody = loadFromNetwork(url, acesso, this.getApplicationContext());
 
                 GsonBuilder gsonb = new GsonBuilder();
                 Gson gson = gsonb.create();
 
-                PedidoCompra[] pedidos = gson.fromJson(responseData, PedidoCompra[].class);
+                JsonObject jsPedidosObj = gson.fromJson(responseBody, JsonObject.class);
+                JsonArray jsPedidosArray = jsPedidosObj.getAsJsonArray("pedidos");
+
+                PedidoCompra[] pedidos = gson.fromJson(jsPedidosArray, PedidoCompra[].class);
 
                 if (pedidos != null && pedidos.length > 0) {
 

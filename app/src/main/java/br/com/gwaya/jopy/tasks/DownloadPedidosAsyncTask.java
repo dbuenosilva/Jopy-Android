@@ -78,7 +78,6 @@ public class DownloadPedidosAsyncTask extends AsyncTask<Void, Void, Boolean> {
                     Gson gson = gsonb.create();
 
                     JsonObject jsPedidosObj = gson.fromJson(responseBody, JsonObject.class);
-
                     JsonArray jsPedidosArray = jsPedidosObj.getAsJsonArray("pedidos");
 
                     PedidoCompra[] array = gson.fromJson(jsPedidosArray, PedidoCompra[].class);

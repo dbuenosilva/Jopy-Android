@@ -58,6 +58,7 @@ public class FilaPedidoCompraDAO {
                 database.beginTransaction();
 
                 values.put(MySQLiteHelper.STATUS_PEDIDO, _pedido.getStatusPedido());
+
                 if (_pedido.getMotivoRejeicao() != null && !_pedido.getMotivoRejeicao().trim().equals("")) {
                     values.put(MySQLiteHelper.MOTIVO_REJEICAO, _pedido.getMotivoRejeicao());
                     values.put(MySQLiteHelper.ENVIADO, 0);
@@ -73,10 +74,8 @@ public class FilaPedidoCompraDAO {
                 if (cursor.getCount() <= 0) {
 
                     try {
-                        values = new ContentValues();
                         values.put(MySQLiteHelper.COLUMN_ID, _pedido.get_id());
-                        database.insert(MySQLiteHelper.TABLE_PEDIDO_COMPRA_FILA, null,
-                                values);
+                        database.insert(MySQLiteHelper.TABLE_PEDIDO_COMPRA_FILA, null, values);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

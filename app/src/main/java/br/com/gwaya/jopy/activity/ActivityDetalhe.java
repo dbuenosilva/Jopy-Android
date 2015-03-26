@@ -101,7 +101,7 @@ public class ActivityDetalhe extends ActionBarActivity {
                                         pedido.setStatusPedido(STATUS_APROVADO);
                                         pedido.setEnviado(0);
                                         pedido.setMotivoRejeicao("");
-                                        pedido.setDtAprov(dataFormatada);//2015-03-13T21:27:41.957Z
+                                        pedido.setDtAprov(dataFormatada);
 
                                         filaDataSource.createFilaPedidoCompra(pedido);
 

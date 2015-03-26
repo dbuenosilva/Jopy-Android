@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.enums.StatusPedido;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 
@@ -23,13 +24,15 @@ public class AdapterPedidoCompra extends ArrayAdapter<PedidoCompra> {
     final int layoutResourceId;
     protected View lnTipo;
     List<PedidoCompra> data = null;
+    private StatusPedido statusPedido;
 
-    public AdapterPedidoCompra(Context mContext, List<PedidoCompra> data) {
+    public AdapterPedidoCompra(Context mContext, List<PedidoCompra> data, StatusPedido statusPedido) {
         super(mContext, R.layout.adapter_pedidocompra, data);
 
         this.layoutResourceId = R.layout.adapter_pedidocompra;
         this.mContext = mContext;
         this.data = data;
+        this.statusPedido = statusPedido;
     }
 
     @Override
@@ -54,31 +57,48 @@ public class AdapterPedidoCompra extends ArrayAdapter<PedidoCompra> {
             lnTipo.setBackgroundResource(R.color.rejeitado2);
         }
 
-        final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        final String ISOFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-        Date date;
+
+        String totalPedido = String.format("%.2f", pedido.getTotalPedido());
+        totalPedido = NumberFormat.getCurrencyInstance().format(pedido.getTotalPedido());
+
+        TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewNomeForn);
+        textViewItem.setText(pedido.getNomeForn());
+        textViewItem.setTag(pedido.get_id());
+
+        textViewItem = (TextView) convertView.findViewById(R.id.textViewTotalPedido);
+        textViewItem.setText(totalPedido);
+        textViewItem.setTag(pedido.get_id());
+
+        textViewItem = (TextView) convertView.findViewById(R.id.textViewDtPedido);
+        textViewItem.setText(getDataEmString(pedido));
+        textViewItem.setTag(pedido.get_id());
+
+
+        return convertView;
+    }
+
+    public String getDataEmString(PedidoCompra pedido) {
+        String data = "";
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        String ISOFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
         try {
-            date = (new SimpleDateFormat(ISOFormat)).parse(pedido.getDtNeces());
 
-            String dtEmi = format.format(date);
-            String totalPedido = String.format("%.2f", pedido.getTotalPedido());
-            totalPedido = NumberFormat.getCurrencyInstance().format(pedido.getTotalPedido());
+            if (StatusPedido.APROVADO == statusPedido) {
+                data = pedido.getDtAprov();
+            } else if (StatusPedido.REJEITADO == statusPedido) {
+                data = pedido.getDtRej();
+            } else {
+                data = pedido.getDtNeces();
+            }
 
-            TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewNomeForn);
-            textViewItem.setText(pedido.getNomeForn());
-            textViewItem.setTag(pedido.get_id());
+            Date date = (new SimpleDateFormat(ISOFormat)).parse(data);
+            data = format.format(date);
 
-            textViewItem = (TextView) convertView.findViewById(R.id.textViewTotalPedido);
-            textViewItem.setText(totalPedido);
-            textViewItem.setTag(pedido.get_id());
-
-            textViewItem = (TextView) convertView.findViewById(R.id.textViewDtPedido);
-            textViewItem.setText(dtEmi);
-            textViewItem.setTag(pedido.get_id());
         } catch (Exception ignored) {
 
         }
-
-        return convertView;
+        return data;
     }
 }

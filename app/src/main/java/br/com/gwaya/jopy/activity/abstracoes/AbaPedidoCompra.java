@@ -155,7 +155,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     public void setListaPedidoCompraDoBanco(List<PedidoCompra> pedidos) {
         if (pedidos != null) {
             if (pedidos.size() > 0) {
-                listView.setAdapter(new AdapterPedidoCompra(this, pedidos));
+                listView.setAdapter(new AdapterPedidoCompra(this, pedidos, getStatusPedido()));
                 listaPedidosCompra = pedidos;
 
                 linearLayout.setVisibility(View.GONE);

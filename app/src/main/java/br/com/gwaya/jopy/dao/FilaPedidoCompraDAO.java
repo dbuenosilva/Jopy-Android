@@ -35,7 +35,8 @@ public class FilaPedidoCompraDAO {
             MySQLiteHelper.MOTIVO_REJEICAO,
             MySQLiteHelper.TOTAL_PEDIDO,
             MySQLiteHelper.OBS,
-            MySQLiteHelper.DT_MOD
+            MySQLiteHelper.DT_MOD,
+            MySQLiteHelper.DT_APROV
     };
     private final String[] allColumnsItems = {
             MySQLiteHelper.COLUMN_ID,
@@ -47,44 +48,56 @@ public class FilaPedidoCompraDAO {
     };
 
     public void createFilaPedidoCompra(PedidoCompra pedido) {
-        final String id = pedido.get_id() == null ? "" : pedido.get_id();
-        final PedidoCompra _pedido = pedido;
-        DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
-            @Override
-            public void run(SQLiteDatabase database) {
+        final String id = pedido.get_id();
+        if (id != null && !"".equals(id.trim())) {
+            final PedidoCompra _pedido = pedido;
 
-                ContentValues values = new ContentValues();
+            DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
+                @Override
+                public void run(SQLiteDatabase database) {
 
-                database.beginTransaction();
+                    ContentValues values = new ContentValues();
 
-                values.put(MySQLiteHelper.STATUS_PEDIDO, _pedido.getStatusPedido());
+                    database.beginTransaction();
 
-                if (_pedido.getMotivoRejeicao() != null && !_pedido.getMotivoRejeicao().trim().equals("")) {
-                    values.put(MySQLiteHelper.MOTIVO_REJEICAO, _pedido.getMotivoRejeicao());
-                    values.put(MySQLiteHelper.ENVIADO, 0);
-                }
+                    values.put(MySQLiteHelper.STATUS_PEDIDO, _pedido.getStatusPedido());
 
-                database.update(MySQLiteHelper.TABLE_PEDIDO_COMPRA, values,
-                        MySQLiteHelper.COLUMN_ID + " = '" + _pedido.get_id() + "'", null);
-
-                Cursor cursor = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA_FILA,
-                        allColumns, MySQLiteHelper.COLUMN_ID + " = '" + id + "'",
-                        null, null, null, null);
-
-                if (cursor.getCount() <= 0) {
-
-                    try {
-                        values.put(MySQLiteHelper.COLUMN_ID, _pedido.get_id());
-                        database.insert(MySQLiteHelper.TABLE_PEDIDO_COMPRA_FILA, null, values);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (_pedido.getDtAprov() != null) {
+                        values.put(MySQLiteHelper.DT_APROV, _pedido.getDtAprov());
+                    } else {
+                        values.put(MySQLiteHelper.DT_REJ, _pedido.getDtRej());
                     }
-                }
 
-                database.setTransactionSuccessful();
-                database.endTransaction();
-            }
-        });
+                    if (_pedido.getMotivoRejeicao() != null && !_pedido.getMotivoRejeicao().trim().equals("")) {
+                        values.put(MySQLiteHelper.MOTIVO_REJEICAO, _pedido.getMotivoRejeicao());
+                        values.put(MySQLiteHelper.ENVIADO, 0);
+                    }
+
+                    database.update(MySQLiteHelper.TABLE_PEDIDO_COMPRA, values,
+                            MySQLiteHelper.COLUMN_ID + " = '" + _pedido.get_id() + "'", null);
+
+                    Cursor cursor = database.query(MySQLiteHelper.TABLE_PEDIDO_COMPRA_FILA,
+                            allColumns, MySQLiteHelper.COLUMN_ID + " = '" + id + "'",
+                            null, null, null, null);
+
+                    if (cursor.getCount() <= 0) {
+
+                        try {
+                            values = new ContentValues();
+                            values.put(MySQLiteHelper.COLUMN_ID, id);
+                            database.insert(MySQLiteHelper.TABLE_PEDIDO_COMPRA_FILA, null, values);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    database.setTransactionSuccessful();
+                    database.endTransaction();
+                }
+            });
+        } else {
+            throw new RuntimeException("Pedido com _id nulo ou vazio!");
+        }
     }
 
     public void deleteAll() {
@@ -190,6 +203,7 @@ public class FilaPedidoCompraDAO {
         pedido.setDtNeces(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_NECES)));
         pedido.setDtEmi(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_EMI)));
         pedido.setDtRej(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_REJ)));
+        pedido.setDtAprov(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.DT_APROV)));
         pedido.setMotivo(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO)));
         pedido.setMotivoRejeicao(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO_REJEICAO)));
         pedido.setObs(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.OBS)));

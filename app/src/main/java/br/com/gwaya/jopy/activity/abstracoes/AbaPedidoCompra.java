@@ -179,7 +179,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         PedidoCompra pedidoCompra = listaPedidosCompra.get(position);
         if (pedidoCompra != null) {
             Intent intent = new Intent(this, ActivityDetalhe.class);
-            intent.putExtra("pedidocompra", new Gson().toJson(pedidoCompra));
+            intent.putExtra("pedidocompra", pedidoCompra);
             dispararIntetClickItem(intent);
         }
     }

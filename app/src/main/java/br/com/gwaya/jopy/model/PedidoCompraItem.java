@@ -1,6 +1,8 @@
 package br.com.gwaya.jopy.model;
 
-public class PedidoCompraItem {
+import java.io.Serializable;
+
+public class PedidoCompraItem implements Serializable {
 
     private String _id;
     private String produto;

@@ -197,11 +197,11 @@ public class PedidoCompraDAO {
 
                 String sql = "SELECT * FROM " + MySQLiteHelper.TABLE_PEDIDO_COMPRA + " WHERE " + MySQLiteHelper.STATUS_PEDIDO + " LIKE '" + statusPedido.getTexto() + "' ";
 
-                if (StatusPedido.EMITIDO.getValor() == statusPedido.getValor()) {
+                if (StatusPedido.EMITIDO == statusPedido) {
                     sql = sql + " ORDER BY " + MySQLiteHelper.DT_NECES + " ASC";
-                } else if (StatusPedido.APROVADO.getValor() == statusPedido.getValor()) {
+                } else if (StatusPedido.APROVADO == statusPedido) {
                     sql = sql + " ORDER BY " + MySQLiteHelper.DT_APROV + " DESC";
-                } else if (StatusPedido.REJEITADO.getValor() == statusPedido.getValor()){
+                } else if (StatusPedido.REJEITADO == statusPedido){
                     sql = sql + " ORDER BY " + MySQLiteHelper.DT_REJ + " DESC";
                 }
 

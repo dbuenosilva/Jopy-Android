@@ -1,2 +1,2 @@
-# jopyAndroid
-Projeto Jopy versão Google Android
+# Jopy Android - Triunfo Concebra
+Versão específica

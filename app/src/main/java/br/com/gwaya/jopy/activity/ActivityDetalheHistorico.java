@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompraItens;
 import br.com.gwaya.jopy.model.PedidoCompra;
-import br.com.gwaya.jopy.model.PedidoCompraItem;
 
 
 public class ActivityDetalheHistorico extends ActionBarActivity implements OnClickListener {
@@ -125,7 +124,7 @@ public class ActivityDetalheHistorico extends ActionBarActivity implements OnCli
 
     private void setPedido(PedidoCompra pedido) {
 
-        AdapterPedidoCompraItens adapter = new AdapterPedidoCompraItens(this, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
+        AdapterPedidoCompraItens adapter = new AdapterPedidoCompraItens(this, pedido.getItens());
 
         pedidoList.setAdapter(adapter);
 

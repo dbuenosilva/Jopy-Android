@@ -37,7 +37,6 @@ import br.com.gwaya.jopy.adapter.AdapterPedidoCompraItens;
 import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
-import br.com.gwaya.jopy.model.PedidoCompraItem;
 
 
 public class ActivityDetalhe extends ActionBarActivity implements OnClickListener {
@@ -123,8 +122,7 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
 
             ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 
-            AdapterPedidoCompraItens adapter = new AdapterPedidoCompraItens(ActivityDetalhe.this,
-                    pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
+            AdapterPedidoCompraItens adapter = new AdapterPedidoCompraItens(this, pedido.getItens());
 
             pedidoList.setAdapter(adapter);
 

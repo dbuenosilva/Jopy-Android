@@ -16,7 +16,6 @@ import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.enums.StatusPedido;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-
 public class AdapterPedidoCompra extends BaseAdapter {
 
     private final Context context;

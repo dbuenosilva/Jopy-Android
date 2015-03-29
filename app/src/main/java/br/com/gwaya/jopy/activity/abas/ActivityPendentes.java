@@ -17,11 +17,6 @@ public class ActivityPendentes extends AbaPedidoCompra {
 
     @Override
     public int getColorIntBackgroundPedido() {
-        return R.color.header;
-    }
-
-    @Override
-    public int getColorInt() {
         return R.color.emitido;
     }
 

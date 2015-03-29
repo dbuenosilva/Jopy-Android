@@ -70,7 +70,7 @@ public class ActivityMain extends TabActivity {
                         App.ABA_ATUAL = ActivityPendentes.ID;
                         break;
                     case "Pedidos Aprovados":
-                        title.setTextColor(getResources().getColor(R.color.aprovado));
+                        title.setTextColor(getResources().getColor(R.color.aprovado_forte));
                         App.ABA_ATUAL = ActivityAprovados.ID;
                         break;
                     case "Pedidos Rejeitados":

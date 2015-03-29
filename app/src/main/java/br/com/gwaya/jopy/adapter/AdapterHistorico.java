@@ -20,9 +20,9 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class AdapterHistorico extends ArrayAdapter<PedidoCompra> {
 
-    final Context mContext;
-    final int layoutResourceId;
-    List<PedidoCompra> data = null;
+    private final Context mContext;
+    private final int layoutResourceId;
+    private List<PedidoCompra> data = null;
 
     public AdapterHistorico(Context mContext, List<PedidoCompra> data) {
         super(mContext, R.layout.rowitem_historico, data);
@@ -49,9 +49,9 @@ public class AdapterHistorico extends ArrayAdapter<PedidoCompra> {
             FrameLayout frameLayout = (FrameLayout) convertView.findViewById(R.id.frmStatus);
             int resourceColor = R.color.emitido;
             if (pedido.getStatusPedido().equals("aprovado")) {
-                resourceColor = R.color.aprovado;
+                resourceColor = R.color.aprovado_forte;
             } else if (pedido.getStatusPedido().equals("rejeitado")) {
-                resourceColor = R.color.rejeitado;
+                resourceColor = R.color.rejeitado_forte;
             } else {
                 resourceColor = R.color.emitido;
             }

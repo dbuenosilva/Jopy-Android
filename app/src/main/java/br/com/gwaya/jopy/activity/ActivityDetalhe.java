@@ -250,14 +250,14 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
 
                 relativeLayout = (RelativeLayout) findViewById(R.id.layoutStatus1);
                 if (pedido.getStatusPedido().equals("aprovado")) {
-                    //relativeLayout.setBackgroundResource(R.color.aprovado);
+                    //relativeLayout.setBackgroundResource(R.color.aprovado_forte_forte);
                     relativeLayout.setVisibility(View.GONE);
-                    relStatusRdp.setBackgroundResource(R.color.aprovado);
+                    relStatusRdp.setBackgroundResource(R.color.aprovado_forte);
                     txtStatusRdp.setText("Pedido aprovado");
                 } else {
-                    relativeLayout.setBackgroundResource(R.color.rejeitado);
+                    relativeLayout.setBackgroundResource(R.color.rejeitado_forte);
                     relativeLayout.setVisibility(View.VISIBLE);
-                    relStatusRdp.setBackgroundResource(R.color.rejeitado);
+                    relStatusRdp.setBackgroundResource(R.color.rejeitado_forte);
                     txtStatusRdp.setText("Pedido rejeitado" + (dtAprovRej == null ? "" : " em " + dtAprovRej));
 
                     textViewItem = (TextView) findViewById(R.id.txtStatus2);

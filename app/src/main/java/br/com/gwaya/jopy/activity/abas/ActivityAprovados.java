@@ -17,12 +17,7 @@ public class ActivityAprovados extends AbaPedidoCompra {
 
     @Override
     public int getColorIntBackgroundPedido() {
-        return getColorInt();
-    }
-
-    @Override
-    public int getColorInt() {
-        return R.color.aprovado;
+        return R.color.aprovado_forte;
     }
 
     @Override

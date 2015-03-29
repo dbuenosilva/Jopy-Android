@@ -10,13 +10,11 @@ import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
@@ -25,7 +23,6 @@ import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.ActivityDetalhe;
-import br.com.gwaya.jopy.activity.abas.ActivityAprovados;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.dao.AcessoDAO;
@@ -39,6 +36,15 @@ import br.com.gwaya.jopy.tasks.DownloadPedidosAsyncTask;
 
 public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoBancoAsyncTask, IDownloadPedidos, AdapterView.OnItemClickListener {
 
+    private ListView listView;
+    private SwipyRefreshLayout mSwipyRefreshLayout;
+    private TextView textViewStatusLista;
+    private ProgressBar progressBar;
+    private LinearLayout linearLayout;
+    private Acesso acesso;
+    private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
+    private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
+    private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
@@ -52,15 +58,6 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         }
 
     };
-    private ListView listView;
-    private SwipyRefreshLayout mSwipyRefreshLayout;
-    private TextView textViewStatusLista;
-    private ProgressBar progressBar;
-    private LinearLayout linearLayout;
-    private Acesso acesso;
-    private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
-    private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
-    private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,7 +86,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
             }
         });
 
-        listView.setDivider(new ColorDrawable(getResources().getColor(getColorInt())));
+        listView.setDivider(new ColorDrawable(getResources().getColor(getColorIntBackgroundPedido())));
         listView.setDividerHeight(1);
 
         listView.setOnItemClickListener(this);
@@ -147,9 +144,9 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     private void setDividerListView() {
         if (listView != null) {
             if ("aprovado".equals(getStatusPedido().getTexto())) {
-                listView.setDivider(new ColorDrawable(getResources().getColor(R.color.aprovado)));
+                listView.setDivider(new ColorDrawable(getResources().getColor(R.color.aprovado_forte)));
             } else if ("rejeitado".equals(getStatusPedido().getTexto())) {
-                listView.setDivider(new ColorDrawable(getResources().getColor(R.color.rejeitado)));
+                listView.setDivider(new ColorDrawable(getResources().getColor(R.color.rejeitado_forte)));
             } else {
                 listView.setDivider(new ColorDrawable(getResources().getColor(R.color.header)));
             }
@@ -250,8 +247,6 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     }
 
     public abstract int getColorIntBackgroundPedido();
-
-    public abstract int getColorInt();
 
     public abstract void dispararIntetClickItem(Intent intent);
 

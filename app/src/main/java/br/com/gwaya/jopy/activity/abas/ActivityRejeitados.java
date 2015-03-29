@@ -17,12 +17,7 @@ public class ActivityRejeitados extends AbaPedidoCompra {
 
     @Override
     public int getColorIntBackgroundPedido() {
-        return R.color.rejeitado;
-    }
-
-    @Override
-    public int getColorInt() {
-        return R.color.rejeitado;
+        return R.color.rejeitado_forte;
     }
 
     @Override

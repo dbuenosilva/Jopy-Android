@@ -20,10 +20,12 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class AdapterPedidoCompra extends ArrayAdapter<PedidoCompra> {
 
-    final Context mContext;
-    final int layoutResourceId;
-    protected View lnTipo;
-    List<PedidoCompra> data = null;
+    private final Context mContext;
+    private final int layoutResourceId;
+    private View lnTipo;
+    private View viewMarcadorLateral;
+    private View viewMarcadorRodape;
+    private List<PedidoCompra> data = null;
     private StatusPedido statusPedido;
 
     public AdapterPedidoCompra(Context mContext, List<PedidoCompra> data, StatusPedido statusPedido) {
@@ -48,15 +50,20 @@ public class AdapterPedidoCompra extends ArrayAdapter<PedidoCompra> {
 
 
         lnTipo = convertView.findViewById(R.id.lnTipo);
+        viewMarcadorLateral = convertView.findViewById(R.id.viewMarcadorLateral);
+        viewMarcadorRodape = convertView.findViewById(R.id.viewMarcadorRodape);
 
         if (pedido.getStatusPedido().equals("emitido")) {
             lnTipo.setBackgroundResource(R.color.emitido2);
         } else if (pedido.getStatusPedido().equals("aprovado")) {
-            lnTipo.setBackgroundResource(R.color.aprovado2);
+            lnTipo.setBackgroundResource(R.color.aprovado_fraco);
+            viewMarcadorLateral.setBackgroundResource(R.color.aprovado_forte);
+            viewMarcadorRodape.setBackgroundResource(R.color.aprovado_forte);
         } else {
-            lnTipo.setBackgroundResource(R.color.rejeitado2);
+            lnTipo.setBackgroundResource(R.color.rejeitado_fraco);
+            viewMarcadorLateral.setBackgroundResource(R.color.rejeitado_forte);
+            viewMarcadorRodape.setBackgroundResource(R.color.rejeitado_forte);
         }
-
 
         String totalPedido = String.format("%.2f", pedido.getTotalPedido());
         totalPedido = NumberFormat.getCurrencyInstance().format(pedido.getTotalPedido());

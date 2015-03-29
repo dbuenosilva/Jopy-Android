@@ -177,9 +177,9 @@ public class ActivityDetalheHistorico extends ActionBarActivity implements OnCli
         String strStatus = pedido.getStatusPedido().equals("aprovado") ? "Aprovado" : "Motivo da Rejeição: " + pedido.getMotivoRejeicao();
 
         if (pedido.getStatusPedido().equals("aprovado")) {
-            relativeLayout.setBackgroundResource(R.color.aprovado);
+            relativeLayout.setBackgroundResource(R.color.aprovado_forte);
         } else {
-            relativeLayout.setBackgroundResource(R.color.rejeitado);
+            relativeLayout.setBackgroundResource(R.color.rejeitado_forte);
         }
 
         txtStatus.setText(strStatus);

@@ -64,9 +64,6 @@
                 android:layout_marginRight="30dp"
                 android:background="@drawable/corners"
                 android:hint="@string/prompt_password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionGo|actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:padding="10dp"
@@ -74,26 +71,29 @@
                 android:text=""
                 android:textSize="20sp" />
 
-            <Button
-                android:id="@+id/email_sign_in_button"
+            <TextView
+                android:textAllCaps="true"
+                android:id="@+id/textview_entrar"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@android:color/transparent"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:text="@string/action_sign_in"
                 android:textColor="#FFCE00"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnEsqueceu"
+            <TextView
+                android:textAllCaps="true"
+                android:id="@+id/textview_esqueceu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
                 android:text="Esqueceu sua senha ?"
-                android:textColor="#FFCE00"
-                android:textSize="17dp" />
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="17sp" />
 
         </LinearLayout>
 

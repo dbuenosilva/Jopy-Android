@@ -67,7 +67,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
     private static final String PROPERTY_APP_VERSION = "appVersion";
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    public Acesso acesso;
+    private Acesso acesso;
     private String SENDER_ID = "569142009262";
     private GoogleCloudMessaging gcm;
     private String regid;
@@ -116,7 +116,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if (id == R.id.password || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -124,8 +124,8 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
             }
         });
 
-        findViewById(R.id.email_sign_in_button).setOnClickListener(this);
-        findViewById(R.id.btnEsqueceu).setOnClickListener(this);
+        findViewById(R.id.textview_entrar).setOnClickListener(this);
+        findViewById(R.id.textview_esqueceu).setOnClickListener(this);
         findViewById(R.id.linearLayout).setOnClickListener(this);
 
         List<Acesso> lst = acessoDatasource.getAllAcesso();
@@ -431,7 +431,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnEsqueceu:
+            case R.id.textview_esqueceu:
                 mEmailView.setError(null);
 
                 final String email = mEmailView.getText().toString();
@@ -454,7 +454,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
                 }
                 break;
 
-            case R.id.email_sign_in_button:
+            case R.id.textview_entrar:
                 attemptLogin();
                 break;
 

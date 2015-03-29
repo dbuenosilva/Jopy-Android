@@ -140,7 +140,6 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
             pedidoList.setLayoutParams(_params);
             pedidoList.requestLayout();
 
-            // TODO - A variável dtMod e dtAprovRej, já estavam recebendo o mesmo valor (dtMod). Não sei se realmente deveria acontecer isto, checar regra de negócios.
             String dtEmi = pedido.getDtEmi();
             String dtNeces = pedido.getDtNeces();
             String dtMod = pedido.getDtMod();

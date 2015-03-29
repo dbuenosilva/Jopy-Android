@@ -2,13 +2,11 @@ package br.com.gwaya.jopy.activity;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,26 +61,26 @@ public class ActivityMain extends TabActivity {
 
                 View indicator = tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab());
                 TextView title = (TextView) indicator.findViewById(R.id.title);
-
+*/
                 switch (tabId) {
                     case "Pedidos Pendentes":
-                        title.setTextColor(getResources().getColor(R.color.emitido));
+                        //                      title.setTextColor(getResources().getColor(R.color.emitido));
                         App.ABA_ATUAL = ActivityPendentes.ID;
                         break;
                     case "Pedidos Aprovados":
-                        title.setTextColor(getResources().getColor(R.color.aprovado_forte));
+                        //                    title.setTextColor(getResources().getColor(R.color.aprovado_forte));
                         App.ABA_ATUAL = ActivityAprovados.ID;
                         break;
                     case "Pedidos Rejeitados":
-                        title.setTextColor(getResources().getColor(R.color.rejeitado));
+                        //              title.setTextColor(getResources().getColor(R.color.rejeitado));
                         App.ABA_ATUAL = ActivityRejeitados.ID;
                         break;
                     case "Sobre":
-                        title.setTextColor(getResources().getColor(R.color.emitido));
+                        //              title.setTextColor(getResources().getColor(R.color.emitido));
                         App.ABA_ATUAL = ActivitySobre.ID;
                         break;
                 }
-                */
+
             }
         });
     }

@@ -201,7 +201,7 @@ public class PedidoCompraDAO {
                     sql = sql + " ORDER BY " + MySQLiteHelper.DT_NECES + " ASC";
                 } else if (StatusPedido.APROVADO == statusPedido) {
                     sql = sql + " ORDER BY " + MySQLiteHelper.DT_APROV + " DESC";
-                } else if (StatusPedido.REJEITADO == statusPedido){
+                } else if (StatusPedido.REJEITADO == statusPedido) {
                     sql = sql + " ORDER BY " + MySQLiteHelper.DT_REJ + " DESC";
                 }
 

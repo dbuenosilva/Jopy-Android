@@ -20,24 +20,24 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_above="@+id/viewSeparador"
                     android:id="@+id/txtHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_above="@+id/viewSeparador"
                     android:background="@color/header"
                     android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:text="DADOS DO PEDIDO"
-                    android:paddingBottom="5dp"
                     android:textColor="@color/header_text"
                     android:textSize="14sp" />
 
                 <View
+                    android:id="@+id/viewSeparador"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:id="@+id/viewSeparador"
-                    android:background="@color/separador_laranja"
-                    android:layout_alignParentBottom="true" />
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/separador_laranja" />
             </RelativeLayout>
 
             <FrameLayout
@@ -311,12 +311,12 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_marginTop="5dp"
                         android:id="@+id/txtDtMod"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
+                        android:layout_marginTop="5dp"
                         android:background="@color/header"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="Data da ultima modificacao:"
@@ -334,23 +334,23 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_above="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_above="@+id/view"
                     android:background="@color/header"
                     android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:text="ITENS DO PEDIDO"
-                    android:paddingBottom="5dp"
                     android:textColor="@color/header_text"
                     android:textSize="14sp" />
 
                 <View
+                    android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:id="@+id/view"
-                    android:background="@color/separador_laranja"
-                    android:layout_alignParentBottom="true" />
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/separador_laranja" />
             </RelativeLayout>
 
             <LinearLayout

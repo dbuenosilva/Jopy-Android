@@ -8,8 +8,8 @@
     <View
         android:id="@+id/viewMarcadorLateral"
         android:layout_width="5dp"
-        android:orientation="vertical"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,9 +30,9 @@
                 android:textSize="17sp" />
 
             <RelativeLayout
-                android:layout_margin="2dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp">
 
                 <TextView
                     android:id="@+id/textViewDtPedido"
@@ -45,11 +45,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    android:gravity="right"
                     android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@+id/textViewDtPedido" />
+                    android:layout_toRightOf="@+id/textViewDtPedido"
+                    android:gravity="right"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
         </LinearLayout>

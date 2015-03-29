@@ -72,7 +72,6 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:textAllCaps="true"
                 android:id="@+id/textview_entrar"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
@@ -80,18 +79,19 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="@string/action_sign_in"
+                android:textAllCaps="true"
                 android:textColor="#FFCE00"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:textAllCaps="true"
                 android:id="@+id/textview_esqueceu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Esqueceu sua senha ?"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
+                android:text="Esqueceu sua senha ?"
+                android:textAllCaps="true"
                 android:textColor="@android:color/white"
                 android:textSize="17sp" />
 

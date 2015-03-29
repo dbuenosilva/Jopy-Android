@@ -20,7 +20,7 @@
             android:layout_marginLeft="33dp"
             android:layout_marginStart="33dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_logoff" />
+            android:src="@drawable/logoff" />
 
         <TextView
             android:id="@+id/txtLogoff"

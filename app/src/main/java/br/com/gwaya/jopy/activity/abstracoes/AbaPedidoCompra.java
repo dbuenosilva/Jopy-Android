@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -23,6 +25,7 @@ import java.util.List;
 
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.ActivityDetalhe;
+import br.com.gwaya.jopy.activity.abas.ActivityAprovados;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
 import br.com.gwaya.jopy.dao.AcessoDAO;
@@ -120,8 +123,8 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
 
 
     private void configurarActionBar() {
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowHomeEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         LayoutInflater mInflater = LayoutInflater.from(this);
 
@@ -129,8 +132,10 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
 
         ((TextView) customView.findViewById(R.id.title_main)).setText(getNomeAba());
 
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(customView);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        //getSupportActionBar().setDisplayShowCustomEnabled(true);
+
     }
 
     private void pullToRefresh() {

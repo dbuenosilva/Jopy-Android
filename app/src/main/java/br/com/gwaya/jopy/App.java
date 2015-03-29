@@ -50,11 +50,11 @@ public class App extends Application {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         Bitmap background = BitmapFactory.decodeResource(context.getResources(),
-                R.drawable.ic_launcher);
+                R.drawable.ico);
 
         NotificationCompat.Builder mNotification = new NotificationCompat.Builder(context)
                 .setLargeIcon(background)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.ico)
                 .setContentTitle(context.getString(R.string.app_name))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setSound(getAlarmSound())

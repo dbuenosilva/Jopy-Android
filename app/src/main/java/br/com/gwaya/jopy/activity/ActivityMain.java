@@ -53,10 +53,12 @@ public class ActivityMain extends TabActivity {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-
+/*
                 for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+
                     ((TextView) tabHost.getTabWidget().getChildAt(i).findViewById(R.id.title))
                             .setTextColor(Color.parseColor("#FFFFFF")); //unselected
+
                 }
 
                 View indicator = tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab());
@@ -80,6 +82,7 @@ public class ActivityMain extends TabActivity {
                         App.ABA_ATUAL = ActivitySobre.ID;
                         break;
                 }
+                */
             }
         });
     }
@@ -105,18 +108,18 @@ public class ActivityMain extends TabActivity {
 
                 View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
 
-                TextView title = (TextView) tabIndicator.findViewById(R.id.title);
+                //TextView title = (TextView) tabIndicator.findViewById(R.id.title);
                 ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
 
-                title.setText(aba.getNomeAba().replace("Pedidos ", ""));
+                //title.setText(aba.getNomeAba().replace("Pedidos ", ""));
                 icon.setImageResource(aba.getIconTabID());
-
+/*
                 if ("Pedidos Pendentes".equals(aba.getNomeAba())) {
                     title.setTextColor(getResources().getColor(R.color.emitido));
                 } else {
                     title.setTextColor(Color.parseColor("#FFFFFF"));
                 }
-
+*/
                 TabHost.TabSpec spec = tabHost.newTabSpec(aba.getNomeAba());
                 spec.setIndicator(tabIndicator);
                 spec.setContent(intent);

@@ -95,7 +95,7 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
             mActionBar.setDisplayShowTitleEnabled(false);
             LayoutInflater mInflater = LayoutInflater.from(ActivityDetalhe.this);
 
-            View mCustomView = mInflater.inflate(R.layout.actionbar_custom_title_view_centered, null);
+            View mCustomView = mInflater.inflate(R.layout.actionbar_activity_detalhes, null);
             TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
             String title = pedido.getNomeForn();
 

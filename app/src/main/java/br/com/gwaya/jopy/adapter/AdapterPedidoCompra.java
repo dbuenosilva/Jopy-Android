@@ -1,11 +1,10 @@
 package br.com.gwaya.jopy.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -18,68 +17,70 @@ import br.com.gwaya.jopy.enums.StatusPedido;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 
-public class AdapterPedidoCompra extends ArrayAdapter<PedidoCompra> {
+public class AdapterPedidoCompra extends BaseAdapter {
 
-    private final Context mContext;
-    private final int layoutResourceId;
-    private View lnTipo;
-    private View viewMarcadorLateral;
-    private View viewMarcadorRodape;
-    private List<PedidoCompra> data = null;
+    private final Context context;
+    private List<PedidoCompra> lista;
     private StatusPedido statusPedido;
 
-    public AdapterPedidoCompra(Context mContext, List<PedidoCompra> data, StatusPedido statusPedido) {
-        super(mContext, R.layout.adapter_pedidocompra, data);
-
-        this.layoutResourceId = R.layout.adapter_pedidocompra;
-        this.mContext = mContext;
-        this.data = data;
+    public AdapterPedidoCompra(Context context, List<PedidoCompra> lista, StatusPedido statusPedido) {
+        this.context = context;
+        this.lista = lista;
         this.statusPedido = statusPedido;
     }
 
     @Override
+    public int getCount() {
+        return lista.size();
+    }
+
+    @Override
+    public List<PedidoCompra> getItem(int i) {
+        return lista;
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        ViewHolder viewHolder;
         if (convertView == null) {
-            // inflate the layout
-            LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-            convertView = inflater.inflate(layoutResourceId, parent, false);
-        }
+            viewHolder = new ViewHolder();
+            LayoutInflater inflater = LayoutInflater.from(context);
+            convertView = inflater.inflate(R.layout.adapter_pedidocompra, parent, false);
 
-        PedidoCompra pedido = data.get(position);
+            viewHolder.textViewNomeForn = (TextView) convertView.findViewById(R.id.textViewNomeForn);
+            viewHolder.textViewTotalPedido = (TextView) convertView.findViewById(R.id.textViewTotalPedido);
+            viewHolder.textViewDtPedido = (TextView) convertView.findViewById(R.id.textViewDtPedido);
+            viewHolder.lnTipo = convertView.findViewById(R.id.lnTipo);
+            viewHolder.viewMarcadorLateral = convertView.findViewById(R.id.viewMarcadorLateral);
+            viewHolder.viewMarcadorRodape = convertView.findViewById(R.id.viewMarcadorRodape);
 
-
-        lnTipo = convertView.findViewById(R.id.lnTipo);
-        viewMarcadorLateral = convertView.findViewById(R.id.viewMarcadorLateral);
-        viewMarcadorRodape = convertView.findViewById(R.id.viewMarcadorRodape);
-
-        if (pedido.getStatusPedido().equals("emitido")) {
-            lnTipo.setBackgroundResource(R.color.emitido2);
-        } else if (pedido.getStatusPedido().equals("aprovado")) {
-            lnTipo.setBackgroundResource(R.color.aprovado_fraco);
-            viewMarcadorLateral.setBackgroundResource(R.color.aprovado_forte);
-            viewMarcadorRodape.setBackgroundResource(R.color.aprovado_forte);
+            convertView.setTag(viewHolder);
         } else {
-            lnTipo.setBackgroundResource(R.color.rejeitado_fraco);
-            viewMarcadorLateral.setBackgroundResource(R.color.rejeitado_forte);
-            viewMarcadorRodape.setBackgroundResource(R.color.rejeitado_forte);
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        String totalPedido = String.format("%.2f", pedido.getTotalPedido());
-        totalPedido = NumberFormat.getCurrencyInstance().format(pedido.getTotalPedido());
+        PedidoCompra pedido = lista.get(position);
 
-        TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewNomeForn);
-        textViewItem.setText(pedido.getNomeForn());
-        textViewItem.setTag(pedido.get_id());
+        if (StatusPedido.EMITIDO.getTexto().equalsIgnoreCase(pedido.getStatusPedido())) {
+            viewHolder.lnTipo.setBackgroundResource(R.color.emitido2);
+        } else if (StatusPedido.APROVADO.getTexto().equalsIgnoreCase(pedido.getStatusPedido())) {
+            viewHolder.lnTipo.setBackgroundResource(R.color.aprovado_fraco);
+            viewHolder.viewMarcadorLateral.setBackgroundResource(R.color.aprovado_forte);
+            viewHolder.viewMarcadorRodape.setBackgroundResource(R.color.aprovado_forte);
+        } else {
+            viewHolder.lnTipo.setBackgroundResource(R.color.rejeitado_fraco);
+            viewHolder.viewMarcadorLateral.setBackgroundResource(R.color.rejeitado_forte);
+            viewHolder.viewMarcadorRodape.setBackgroundResource(R.color.rejeitado_forte);
+        }
 
-        textViewItem = (TextView) convertView.findViewById(R.id.textViewTotalPedido);
-        textViewItem.setText(totalPedido);
-        textViewItem.setTag(pedido.get_id());
-
-        textViewItem = (TextView) convertView.findViewById(R.id.textViewDtPedido);
-        textViewItem.setText(getDataEmString(pedido));
-        textViewItem.setTag(pedido.get_id());
-
+        viewHolder.textViewNomeForn.setText(pedido.getNomeForn());
+        viewHolder.textViewDtPedido.setText(getDataEmString(pedido));
+        viewHolder.textViewTotalPedido.setText(NumberFormat.getCurrencyInstance().format(pedido.getTotalPedido()));
 
         return convertView;
     }
@@ -107,5 +108,14 @@ public class AdapterPedidoCompra extends ArrayAdapter<PedidoCompra> {
 
         }
         return data;
+    }
+
+    private static class ViewHolder {
+        TextView textViewNomeForn;
+        TextView textViewTotalPedido;
+        TextView textViewDtPedido;
+        View lnTipo;
+        View viewMarcadorLateral;
+        View viewMarcadorRodape;
     }
 }

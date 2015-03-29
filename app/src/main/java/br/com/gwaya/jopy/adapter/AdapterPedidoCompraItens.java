@@ -17,13 +17,13 @@ import java.text.NumberFormat;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
-public class AdapterDetalhePedidoCompra extends ArrayAdapter<PedidoCompraItem> {
+public class AdapterPedidoCompraItens extends ArrayAdapter<PedidoCompraItem> {
 
     final Context mContext;
     final int layoutResourceId;
     PedidoCompraItem data[] = null;
 
-    public AdapterDetalhePedidoCompra(Context mContext, PedidoCompraItem[] data) {
+    public AdapterPedidoCompraItens(Context mContext, PedidoCompraItem[] data) {
         super(mContext, R.layout.list_view_row_item_detalhe, data);
 
         this.layoutResourceId = R.layout.list_view_row_item_detalhe;

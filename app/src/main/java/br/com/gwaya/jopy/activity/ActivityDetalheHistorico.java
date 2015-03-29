@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.adapter.AdapterDetalhePedidoCompra;
+import br.com.gwaya.jopy.adapter.AdapterPedidoCompraItens;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.model.PedidoCompraItem;
 
@@ -125,7 +125,7 @@ public class ActivityDetalheHistorico extends ActionBarActivity implements OnCli
 
     private void setPedido(PedidoCompra pedido) {
 
-        AdapterDetalhePedidoCompra adapter = new AdapterDetalhePedidoCompra(this, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
+        AdapterPedidoCompraItens adapter = new AdapterPedidoCompraItens(this, pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
 
         pedidoList.setAdapter(adapter);
 

@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.adapter.AdapterDetalhePedidoCompra;
+import br.com.gwaya.jopy.adapter.AdapterPedidoCompraItens;
 import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
@@ -123,7 +123,7 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
 
             ListView pedidoList = (ListView) findViewById(R.id.listViewItens);
 
-            AdapterDetalhePedidoCompra adapter = new AdapterDetalhePedidoCompra(ActivityDetalhe.this,
+            AdapterPedidoCompraItens adapter = new AdapterPedidoCompraItens(ActivityDetalhe.this,
                     pedido.getItens().toArray(new PedidoCompraItem[pedido.getItens().size()]));
 
             pedidoList.setAdapter(adapter);

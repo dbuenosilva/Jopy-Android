@@ -14,26 +14,31 @@
             android:orientation="vertical"
             android:scrollbars="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="60dp"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_above="@+id/viewSeparador"
                     android:id="@+id/txtHeader"
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_height="wrap_content"
                     android:background="@color/header"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:paddingTop="20dp"
                     android:text="DADOS DO PEDIDO"
+                    android:paddingBottom="5dp"
                     android:textColor="@color/header_text"
-                    android:textSize="14dp" />
+                    android:textSize="14sp" />
 
-            </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:id="@+id/viewSeparador"
+                    android:background="@color/separador_laranja"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
 
             <FrameLayout
                 android:id="@+id/flag"
@@ -57,7 +62,7 @@
                     android:layout_marginLeft="65dp"
                     android:layout_marginStart="65dp"
                     android:text="Pedido"
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/txtPedido"
@@ -69,7 +74,7 @@
                     android:layout_toEndOf="@+id/textView1"
                     android:layout_toRightOf="@+id/textView1"
 
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
             </RelativeLayout>
 
@@ -86,7 +91,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="31dp"
                     android:text="Fornecedor"
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/txtForn"
@@ -97,7 +102,7 @@
                     android:layout_marginLeft="19dp"
                     android:layout_toRightOf="@+id/textView2"
 
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
             </RelativeLayout>
 
@@ -114,7 +119,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="31dp"
                     android:text="Pagamento"
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/txtPagto"
@@ -125,7 +130,7 @@
                     android:layout_marginLeft="19dp"
                     android:layout_toRightOf="@+id/textView3"
 
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
             </RelativeLayout>
 
@@ -142,7 +147,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="53dp"
                     android:text="Emissao"
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/txtDtEmi"
@@ -153,7 +158,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textView4"
 
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
             </RelativeLayout>
 
@@ -170,7 +175,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="22dp"
                     android:text="Necessidade"
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/txtNec"
@@ -181,7 +186,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textView5"
 
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
             </RelativeLayout>
 
@@ -198,7 +203,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textView6"
 
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -209,7 +214,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="42dp"
                     android:text="Solicitante"
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
             </RelativeLayout>
 
@@ -227,7 +232,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="24dp"
                     android:text="Centro Custo"
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/txtCentroCusto"
@@ -237,7 +242,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textView7"
 
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
             </RelativeLayout>
 
@@ -255,7 +260,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="85dp"
                     android:text="Total"
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/txtTotal"
@@ -264,17 +269,37 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textView8"
-
-                    android:textSize="17dp" />
+                    android:textSize="17sp" />
 
             </RelativeLayout>
 
-            <FrameLayout
-                android:id="@+id/flagStatus123"
+            <RelativeLayout
+                android:id="@+id/relativeLayoutMotivoPedido"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.1"
-                android:background="@color/header_text" />
+                android:layout_height="@dimen/row_detalhe"
+                android:background="@drawable/border">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/txtMotivoPedido"
+                    android:layout_alignBottom="@+id/txtMotivoPedido"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="75dp"
+                    android:text="Motivo"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/txtMotivoPedido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/textView9"
+                    android:textSize="17sp" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -286,6 +311,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:layout_marginTop="5dp"
                         android:id="@+id/txtDtMod"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -302,32 +328,30 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="60dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/txtItens"
+                    android:layout_above="@+id/view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_height="wrap_content"
                     android:background="@color/header"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:paddingTop="10dp"
                     android:text="ITENS DO PEDIDO"
+                    android:paddingBottom="5dp"
                     android:textColor="@color/header_text"
-                    android:textSize="15dp" />
-            </LinearLayout>
+                    android:textSize="14sp" />
 
-            <FrameLayout
-                android:id="@+id/frm"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.1"
-                android:background="@color/header_text" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:id="@+id/view"
+                    android:background="@color/separador_laranja"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -337,51 +361,11 @@
                 <ListView
                     android:id="@+id/listViewItens"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:padding="0dp"
+                    android:layout_height="wrap_content"
                     android:scrollbarAlwaysDrawVerticalTrack="false"
                     android:scrollbars="none" />
 
             </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/flagStatus"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.1"
-                android:background="@color/header_text" />
-
-            <RelativeLayout
-                android:id="@+id/frmMotivo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
-                    android:text="Motivo do Pedido:"
-                    android:textColor="#000000"
-                    android:textSize="15dp"
-                    android:textStyle="normal" />
-
-                <TextView
-                    android:id="@+id/txtMotivoPedido"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/textView"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="10dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/header_text" />
-
-            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -19,9 +19,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,18 +93,17 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
             LayoutInflater mInflater = LayoutInflater.from(ActivityDetalhe.this);
 
             View mCustomView = mInflater.inflate(R.layout.actionbar_activity_detalhes, null);
-            TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
+            TextView title_main = (TextView) mCustomView.findViewById(R.id.title_main);
             String title = pedido.getNomeForn();
 
             if (title.length() > 25) {
                 title = title.substring(0, 24) + "...";
             }
 
-            mTitleTextView.setText(title);
+            title_main.setText(title);
 
-            ImageButton imageButton = (ImageButton) mCustomView
-                    .findViewById(R.id.imageButton);
-            imageButton.setOnClickListener(new OnClickListener() {
+            (mCustomView
+                    .findViewById(R.id.imageButton)).setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
@@ -176,58 +173,44 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
 
             TextView textViewItem;
 
-            String strStatus = pedido.getStatusPedido().equals("aprovado") ? "Aprovado" : "Motivo da Rejeição: " + pedido.getMotivo();
-
-            textViewItem = (TextView) findViewById(R.id.txtStatus1);
-            if (textViewItem != null) {
-                textViewItem.setText(strStatus);
-                textViewItem.setTag(pedido.get_id());
-            }
-
             TextView txtPedido = (TextView) findViewById(R.id.txtPedido);
             txtPedido.setText(pedido.getIdSistema());
-            txtPedido.setTag(pedido.get_id());
 
             textViewItem = (TextView) findViewById(R.id.txtForn);
             textViewItem.setText(pedido.getNomeForn());
-            textViewItem.setTag(pedido.get_id());
+
 
             textViewItem = (TextView) findViewById(R.id.txtPagto);
             textViewItem.setText(pedido.getCondPagto());
-            textViewItem.setTag(pedido.get_id());
+
 
             textViewItem = (TextView) findViewById(R.id.txtDtEmi);
             textViewItem.setText(dtEmi);
-            textViewItem.setTag(pedido.get_id());
+
 
             textViewItem = (TextView) findViewById(R.id.txtNec);
             textViewItem.setText(dtNeces);
-            textViewItem.setTag(pedido.get_id());
+
 
             textViewItem = (TextView) findViewById(R.id.txtSolic);
             textViewItem.setText(pedido.getSolicitante());
-            textViewItem.setTag(pedido.get_id());
+
 
             textViewItem = (TextView) findViewById(R.id.txtCentroCusto);
             textViewItem.setText(pedido.getCentroCusto());
-            textViewItem.setTag(pedido.get_id());
+
 
             textViewItem = (TextView) findViewById(R.id.txtTotal);
             textViewItem.setText(totalPedido);
-            textViewItem.setTag(pedido.get_id());
+
 
             textViewItem = (TextView) findViewById(R.id.txtDtMod);
             textViewItem.setText("Data da última modificação: " + dtMod);
-            textViewItem.setTag(pedido.get_id());
 
-            RelativeLayout relativeLayout;
 
-            relativeLayout = (RelativeLayout) findViewById(R.id.frmMotivo);
-
-            relativeLayout.setVisibility(RelativeLayout.VISIBLE);
             textViewItem = (TextView) findViewById(R.id.txtMotivoPedido);
             textViewItem.setText(pedido.getMotivo());
-            textViewItem.setTag(pedido.get_id());
+
 
             relStatusRdp = findViewById(R.id.relStatusRdp);
             txtStatusRdp = (TextView) findViewById(R.id.txtStatusRdp);
@@ -245,21 +228,15 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
                     imgView.setVisibility(View.VISIBLE);
                 }
 
-                relativeLayout = (RelativeLayout) findViewById(R.id.layoutStatus1);
                 if (pedido.getStatusPedido().equals("aprovado")) {
-                    //relativeLayout.setBackgroundResource(R.color.aprovado_forte_forte);
-                    relativeLayout.setVisibility(View.GONE);
                     relStatusRdp.setBackgroundResource(R.color.aprovado_forte);
                     txtStatusRdp.setText("Pedido aprovado");
                 } else {
-                    relativeLayout.setBackgroundResource(R.color.rejeitado_forte);
-                    relativeLayout.setVisibility(View.VISIBLE);
                     relStatusRdp.setBackgroundResource(R.color.rejeitado_forte);
                     txtStatusRdp.setText("Pedido rejeitado" + (dtAprovRej == null ? "" : " em " + dtAprovRej));
 
-                    textViewItem = (TextView) findViewById(R.id.txtStatus2);
                     textViewItem.setText(pedido.getMotivoRejeicao() == null ? "" : pedido.getMotivoRejeicao());
-                    textViewItem.setTag(pedido.get_id());
+
                 }
             }
 
@@ -274,7 +251,6 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
             case R.id.buttonAprovar:
 

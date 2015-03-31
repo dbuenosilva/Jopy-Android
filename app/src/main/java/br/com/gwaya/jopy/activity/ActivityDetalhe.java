@@ -36,7 +36,6 @@ import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-
 public class ActivityDetalhe extends ActionBarActivity implements OnClickListener {
 
     public static final String STATUS_APROVADO = "aprovado";
@@ -46,26 +45,6 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
     private View relStatusRdp;
     private TextView txtStatusRdp;
     private View imgView;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        scrollView.fullScroll(View.FOCUS_UP);
-    }
-
-    @Override
-    public void onBackPressed() {
-        setResult(RESULT_OK, new Intent());
-        finish();
-    }
-
-    private void setRodapeEmitido() {
-        Button buttonRejeitar = (Button) findViewById(R.id.buttonRejeitar);
-        Button buttonAproButton = (Button) findViewById(R.id.buttonAprovar);
-
-        buttonAproButton.setOnClickListener(this);
-        buttonRejeitar.setOnClickListener(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +57,9 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
 
         if (pedido != null) {
             if (pedido.getStatusPedido().equals("emitido")) {
-                setContentView(R.layout.detalhe_main);
+                setContentView(R.layout.activity_detalhe);
             } else {
-                setContentView(R.layout.detalhe_aprov_rej);
+                setContentView(R.layout.activity_detalhe_aprov_rej);
             }
 
             scrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -217,7 +196,8 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
 
 
             if (pedido.getStatusPedido().equals("emitido")) {
-                setRodapeEmitido();
+                findViewById(R.id.relativeLayoutRejeitar).setOnClickListener(this);
+                findViewById(R.id.relativeLayoutAprovar).setOnClickListener(this);
             } else {
 
                 imgView = findViewById(R.id.imgUpload);
@@ -252,7 +232,7 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.buttonAprovar:
+            case R.id.relativeLayoutAprovar:
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityDetalhe.this);
                 builder.setMessage("Deseja confirmar aprovação ?")
@@ -293,7 +273,7 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
                 dialog.show();
                 break;
 
-            case R.id.buttonRejeitar:
+            case R.id.relativeLayoutRejeitar:
 
                 AlertDialog.Builder builderRejeitar = new AlertDialog.Builder(ActivityDetalhe.this);
                 // Get the layout inflater
@@ -363,18 +343,20 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
                     }
                 });
                 alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
-
-                        /*
-                        Intent intent = new Intent(DetalheActivity.this, AprovRejeicaoActivity.class);
-                        intent.putExtra(PEDIDO, new Gson().toJson(pedido));
-                        intent.putExtra(TIPO, tipo);
-                        DetalheActivity.this.startActivity(intent);*/
-
                 break;
-
-
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        scrollView.fullScroll(View.FOCUS_UP);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK, new Intent());
+        finish();
+    }
 }

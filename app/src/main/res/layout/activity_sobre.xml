@@ -16,12 +16,12 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="33dp"
-            android:drawablePadding="10dp"
-            android:text="Sair"
-            android:gravity="center"
-            android:textSize="17sp"
             android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/logoff" />
+            android:drawableLeft="@drawable/logoff"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="Sair"
+            android:textSize="17sp" />
 
         <View
             android:id="@+id/viewSeparador"
@@ -53,12 +53,12 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_centerInParent="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:gravity="center"
-                android:textColor="@color/cinza_claro"
                 android:text="Desenvolvido por Gwaya do Brasil"
+                android:textColor="@color/cinza_claro"
                 android:textSize="19sp" />
 
         </RelativeLayout>
@@ -67,11 +67,11 @@
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:scrollbars="none"
             android:layout_marginBottom="40dp"
-            android:layout_marginTop="0dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="0dp"
+            android:scrollbars="none" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"

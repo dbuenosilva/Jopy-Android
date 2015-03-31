@@ -37,11 +37,10 @@
                 android:id="@+id/imgUpload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/txtStatusRdp"
-                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
-                android:src="@android:drawable/ic_media_next" />
+                android:src="@drawable/ic_file_cloud_upload" />
 
         </RelativeLayout>
 

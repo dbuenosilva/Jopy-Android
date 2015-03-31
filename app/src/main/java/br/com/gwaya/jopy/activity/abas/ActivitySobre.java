@@ -33,7 +33,7 @@ public class ActivitySobre extends Aba implements ILogout {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_opcoes);
+        setContentView(R.layout.activity_sobre);
 
         configActionBar();
 
@@ -43,7 +43,7 @@ public class ActivitySobre extends Aba implements ILogout {
             e.printStackTrace();
         }
 
-        findViewById(R.id.layoutLogoff).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.relativeLayoutLogoff).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Diego - 20/30 - informa para API com intuito de parar as push notifications para o device

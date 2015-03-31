@@ -21,6 +21,7 @@
     <color name="icon_foreground">#A3AAAE</color>
     <color name="line_background">#B2292E</color>
     <color name="separador_laranja">#faab18</color>
+    <color name="cinza_claro">#9c9a9b</color>
 
     <!-- marcadores do adapter -->
     <color name="rejeitado_forte">#EC1C24</color>

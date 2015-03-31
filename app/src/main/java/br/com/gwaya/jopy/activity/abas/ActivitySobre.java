@@ -23,7 +23,7 @@ import br.com.gwaya.jopy.tasks.LogoutAsyncTask;
 
 
 /**
- * Created by marcelorosa on 11/01/15.
+ * Created by pedrofsn on 31/03/15.
  */
 public class ActivitySobre extends Aba implements ILogout {
 

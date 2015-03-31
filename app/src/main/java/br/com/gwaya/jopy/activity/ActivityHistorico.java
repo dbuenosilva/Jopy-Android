@@ -48,8 +48,7 @@ public class ActivityHistorico extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.historico);
+        setContentView(R.layout.activity_historico);
 
         mProgressView = findViewById(R.id.historico_progress);
 
@@ -64,6 +63,10 @@ public class ActivityHistorico extends ActionBarActivity {
         mTask = new PopulateTask(codForn);
         mTask.execute((Void) null);
 
+       configurarActionBar();
+    }
+
+    private void configurarActionBar() {
         //CUSTOM VIEW ACTIONBAR
         ActionBar mActionBar;
         mActionBar = getSupportActionBar();
@@ -71,7 +74,7 @@ public class ActivityHistorico extends ActionBarActivity {
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
-        View mCustomView = mInflater.inflate(R.layout.actionbar_default, null);
+        View mCustomView = mInflater.inflate(R.layout.actionbar_main, null);
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_main);
         mTitleTextView.setText("Histórico");
 

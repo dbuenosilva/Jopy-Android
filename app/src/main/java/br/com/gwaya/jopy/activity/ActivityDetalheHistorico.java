@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -29,13 +28,12 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class ActivityDetalheHistorico extends ActionBarActivity implements OnClickListener {
 
-    private Button buttonPrev;
-    private Button buttonNext;
-    private ImageView imgPrev;
-    private ImageView imgNext;
+    private RelativeLayout relativeLayoutAnterior;
+    private RelativeLayout relativeLayoutProximo;
     private TextView txtPedido;
     private ListView pedidoList;
     private TextView txtStatus;
+    private TextView mTitleTextView;
     private TextView textViewNomeForn;
     private TextView textViewDtEmi;
     private TextView textViewDtNeces;
@@ -44,7 +42,7 @@ public class ActivityDetalheHistorico extends ActionBarActivity implements OnCli
     private TextView textViewTotalPedido;
     private TextView textViewDtMod;
     private TextView textViewMotivo;
-    private RelativeLayout relativeLayout;
+    private RelativeLayout relativeLayoutStatus;
     private ScrollView scrollView;
 
     private int indice;
@@ -53,7 +51,7 @@ public class ActivityDetalheHistorico extends ActionBarActivity implements OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detalhe_historico);
+        setContentView(R.layout.activity_detalhe_historico);
 
         initViews();
 
@@ -80,21 +78,17 @@ public class ActivityDetalheHistorico extends ActionBarActivity implements OnCli
             }
         });
 
-        buttonNext.setOnClickListener(this);
-        buttonPrev.setOnClickListener(this);
-        imgPrev.setOnClickListener(this);
-        imgNext.setOnClickListener(this);
+        relativeLayoutProximo.setOnClickListener(this);
+        relativeLayoutAnterior.setOnClickListener(this);
     }
 
     private void initViews() {
         scrollView = (ScrollView) findViewById(R.id.scrollView);
-        buttonPrev = (Button) findViewById(R.id.buttonPrev);
-        buttonNext = (Button) findViewById(R.id.buttonNext);
-        imgPrev = (ImageView) findViewById(R.id.imgPrev);
-        imgNext = (ImageView) findViewById(R.id.imgNext);
+        relativeLayoutAnterior = (RelativeLayout) findViewById(R.id.relativeLayoutAnterior);
+        relativeLayoutProximo = (RelativeLayout) findViewById(R.id.relativeLayoutProximo);
         txtPedido = (TextView) findViewById(R.id.txtPedido);
         pedidoList = (ListView) findViewById(R.id.listViewItens);
-        relativeLayout = (RelativeLayout) findViewById(R.id.layoutStatus);
+        relativeLayoutStatus = (RelativeLayout) findViewById(R.id.relativeLayoutStatus);
         txtStatus = (TextView) findViewById(R.id.txtStatus);
         textViewNomeForn = (TextView) findViewById(R.id.txtForn);
         textViewDtEmi = (TextView) findViewById(R.id.txtDtEmi);
@@ -107,14 +101,13 @@ public class ActivityDetalheHistorico extends ActionBarActivity implements OnCli
     }
 
     private void configActionBar() {
-        ActionBar mActionBar;
-        mActionBar = getSupportActionBar();
+        ActionBar mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowHomeEnabled(true);
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
         View mCustomView = mInflater.inflate(R.layout.actionbar_default, null);
-        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_main);
+        mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_main);
         mTitleTextView.setText("Histórico " + String.valueOf(indice + 1) + " de " + String.valueOf(arrayPedidoCompra.length));
         mTitleTextView.setGravity(Gravity.CENTER);
 
@@ -135,11 +128,11 @@ public class ActivityDetalheHistorico extends ActionBarActivity implements OnCli
             totalHeight += listItem.getMeasuredHeight();
         }
 
-        ViewGroup.LayoutParams _params = pedidoList.getLayoutParams();
+        ViewGroup.LayoutParams params = pedidoList.getLayoutParams();
 
-        _params.height = totalHeight + (pedidoList.getDividerHeight() * (adapter.getCount() - 1));
+        params.height = totalHeight + (pedidoList.getDividerHeight() * (adapter.getCount() - 1));
 
-        pedidoList.setLayoutParams(_params);
+        pedidoList.setLayoutParams(params);
         pedidoList.requestLayout();
 
         String dtEmi = pedido.getDtEmi();
@@ -171,32 +164,27 @@ public class ActivityDetalheHistorico extends ActionBarActivity implements OnCli
         textViewTotalPedido.setText(totalPedido);
         textViewDtMod.setText("Data da última modificação: " + dtMod);
         textViewMotivo.setText(pedido.getMotivo());
-        relativeLayout.setVisibility(RelativeLayout.VISIBLE);
+        relativeLayoutStatus.setVisibility(RelativeLayout.VISIBLE);
 
-        String strStatus = pedido.getStatusPedido().equals("aprovado") ? "Aprovado" : "Motivo da Rejeição: " + pedido.getMotivoRejeicao();
 
         if (pedido.getStatusPedido().equals("aprovado")) {
-            relativeLayout.setBackgroundResource(R.color.aprovado_forte);
+            relativeLayoutStatus.setBackgroundResource(R.color.aprovado_forte);
+            txtStatus.setText("Pedido Aprovado");
         } else {
-            relativeLayout.setBackgroundResource(R.color.rejeitado_forte);
+            relativeLayoutStatus.setBackgroundResource(R.color.rejeitado_forte);
+            txtStatus.setText("Pedido Rejeitado");
         }
-
-        txtStatus.setText(strStatus);
-        txtStatus.setTag(pedido.get_id());
 
         if (indice == 0) {
-            buttonPrev.setVisibility(Button.INVISIBLE);
-            imgPrev.setVisibility(Button.INVISIBLE);
+            relativeLayoutAnterior.setVisibility(Button.INVISIBLE);
         } else {
-            buttonPrev.setVisibility(Button.VISIBLE);
-            imgPrev.setVisibility(Button.VISIBLE);
+            relativeLayoutAnterior.setVisibility(Button.VISIBLE);
         }
+
         if (indice == arrayPedidoCompra.length - 1) {
-            buttonNext.setVisibility(Button.INVISIBLE);
-            imgNext.setVisibility(Button.INVISIBLE);
+            relativeLayoutProximo.setVisibility(Button.INVISIBLE);
         } else {
-            buttonNext.setVisibility(Button.VISIBLE);
-            imgNext.setVisibility(Button.VISIBLE);
+            relativeLayoutProximo.setVisibility(Button.VISIBLE);
         }
     }
 
@@ -218,19 +206,16 @@ public class ActivityDetalheHistorico extends ActionBarActivity implements OnCli
 
     @Override
     public void onClick(View v) {
-        try {
-            if (v.getId() == R.id.buttonPrev || v.getId() == R.id.imgPrev) {
-                if (indice > 0) {
-                    indice--;
-                }
+        if (v.getId() == R.id.relativeLayoutAnterior) {
+            if (indice > 0) {
+                indice--;
             }
-
-            if (v.getId() == R.id.buttonNext || v.getId() == R.id.imgNext) {
-                indice++;
-            }
-            setPedido(arrayPedidoCompra[indice]);
-        } catch (Exception ignored) {
-
         }
+
+        if (v.getId() == R.id.relativeLayoutProximo) {
+            indice++;
+        }
+        mTitleTextView.setText("Histórico " + String.valueOf(indice + 1) + " de " + String.valueOf(arrayPedidoCompra.length));
+        setPedido(arrayPedidoCompra[indice]);
     }
 }

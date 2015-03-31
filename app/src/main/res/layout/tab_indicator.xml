@@ -3,7 +3,7 @@
     android:layout_width="0dip"
     android:layout_height="55dip"
     android:layout_weight="1"
-    android:background="@color/background_tabs"
+    android:background="@color/background_azul_escuro"
     android:orientation="vertical"
     android:padding="5dp">
 

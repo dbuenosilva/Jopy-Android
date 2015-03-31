@@ -11,33 +11,43 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
-    <RelativeLayout
-        android:id="@+id/relStatusRdp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:alpha="0.8"
-        android:background="@color/rejeitado_forte">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txtStatusRdp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textColor="#FFFFFF"
-            android:textSize="18dp"
-            android:textStyle="normal" />
+        <RelativeLayout
+            android:id="@+id/relStatusRdp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:alpha="0.8"
+            android:background="@color/rejeitado_forte">
 
-        <ImageView
-            android:id="@+id/imgUpload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/txtStatusRdp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:src="@android:drawable/ic_media_next" />
+            <TextView
+                android:id="@+id/txtStatusRdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp"
+                android:textStyle="normal" />
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/imgUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/txtStatusRdp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:src="@android:drawable/ic_media_next" />
 
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/separador_laranja" />
+    </LinearLayout>
 </LinearLayout>

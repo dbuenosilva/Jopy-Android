@@ -73,7 +73,7 @@ public class ActivityDetalhe extends ActionBarActivity implements OnClickListene
 
             View mCustomView = mInflater.inflate(R.layout.actionbar_activity_detalhes, null);
             TextView title_main = (TextView) mCustomView.findViewById(R.id.title_main);
-            String title = pedido.getNomeForn();
+            String title = pedido.getNomeForn().trim();
 
             if (title.length() > 25) {
                 title = title.substring(0, 24) + "...";

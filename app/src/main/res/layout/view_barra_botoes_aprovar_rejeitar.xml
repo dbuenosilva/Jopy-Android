@@ -32,7 +32,7 @@
             <View
                 android:layout_below="@+id/textViewRejeitar"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="2dp"
                 android:background="@color/separador_laranja" />
 
         </RelativeLayout>
@@ -60,7 +60,7 @@
             <View
                 android:layout_below="@+id/textViewAprovar"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="2dp"
                 android:background="@color/separador_laranja" />
 
         </RelativeLayout>

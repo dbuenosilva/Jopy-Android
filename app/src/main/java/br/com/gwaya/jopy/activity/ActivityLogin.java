@@ -57,11 +57,12 @@ import java.util.List;
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.interfaces.IRecuperarSenhaAsyncTask;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
-import br.com.gwaya.jopy.model.RespostaPadrao;
+import br.com.gwaya.jopy.tasks.RecuperarSenhaAsyncTask;
 
-public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, OnClickListener {
+public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask, LoaderCallbacks<Cursor>, OnClickListener {
 
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
@@ -441,7 +442,7 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
                     toast.show();
                 } else {
                     showProgress(true);
-                    new EsqueceuTask(email).execute((Void) null);
+                    new RecuperarSenhaAsyncTask(this, email).execute();
                 }
                 break;
 
@@ -459,6 +460,12 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
                 break;
 
         }
+    }
+
+    @Override
+    public void onResultadoRecuperarSenha(String mensagem) {
+        showProgress(false);
+        Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
     }
 
     private interface ProfileQuery {
@@ -604,73 +611,6 @@ public class ActivityLogin extends Activity implements LoaderCallbacks<Cursor>, 
         }
     }
 
-    public class EsqueceuTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private String mensagem;
-
-        EsqueceuTask(String email) {
-            mEmail = email;
-            mensagem = "Serviço indisponível. Por favor, tente novamnete mais tarde.";
-        }
-
-        @Override
-        public Boolean doInBackground(Void... params) {
-            Boolean retorno = false;
-
-            if (mEmail != null && !mEmail.equals("")) {
-
-                HttpClient httpclient = new DefaultHttpClient();
-                String url = getResources().getString(R.string.protocolo)
-                        + App.API_REST
-                        + getResources().getString(R.string.esqueceu_path);
-                HttpPost httpPost = new HttpPost(url);
-                try {
-                    List<NameValuePair> nameValuePairs = new ArrayList<>(1);
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.username_key),
-                            mEmail));
-
-                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                    HttpResponse response = httpclient.execute(httpPost);
-
-                    // Obtem codigo de retorno HTTP
-                    int statusCode = response.getStatusLine().getStatusCode();
-
-                    if (statusCode >= 200 && statusCode <= 202) {
-                        // Obtem string do Body retorno HTTP
-                        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                        String responseBody = responseHandler.handleResponse(response);
-
-                        GsonBuilder gsonb = new GsonBuilder();
-                        Gson gson = gsonb.create();
-
-                        RespostaPadrao resp = gson.fromJson(responseBody, RespostaPadrao.class);
-
-                        retorno = resp.getStatus();
-                        mensagem = resp.getMensagem();
-                    }
-
-                } catch (Exception e) {
-                    retorno = false;
-                    e.printStackTrace();
-                }
-            }
-            return retorno;
-        }
-
-        @Override
-        public void onPostExecute(final Boolean success) {
-            showProgress(false);
-            Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCancelled() {
-            showProgress(false);
-            Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_SHORT).show();
-        }
-    }
 }
 
 

@@ -2,7 +2,6 @@ package br.com.gwaya.jopy.activity;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,7 +94,7 @@ public class ActivityMain extends TabActivity implements TabHost.OnTabChangeList
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
 
             ((TextView) tabHost.getTabWidget().getChildAt(i).findViewById(R.id.textView))
-                    .setTextColor(Color.parseColor("#FFFFFF"));
+                    .setTextColor(getResources().getColor(R.color.cinza_claro));
 
         }
 
@@ -104,22 +103,20 @@ public class ActivityMain extends TabActivity implements TabHost.OnTabChangeList
 
         switch (tabId) {
             case "Pedidos Pendentes":
-                textView.setText(listaAbas.get(0).getNomeAba());
                 App.ABA_ATUAL = ActivityPendentes.ID;
                 break;
             case "Pedidos Aprovados":
-                textView.setText(listaAbas.get(1).getNomeAba());
                 App.ABA_ATUAL = ActivityAprovados.ID;
                 break;
             case "Pedidos Rejeitados":
-                textView.setText(listaAbas.get(2).getNomeAba());
                 App.ABA_ATUAL = ActivityRejeitados.ID;
                 break;
             case "Sobre":
-                textView.setText(listaAbas.get(3).getNomeAba());
                 App.ABA_ATUAL = ActivitySobre.ID;
                 break;
         }
+
+        textView.setTextColor(getResources().getColor(android.R.color.white));
 
     }
 }

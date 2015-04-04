@@ -37,18 +37,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,12 +45,13 @@ import java.util.List;
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.interfaces.ILoginAsyncTask;
 import br.com.gwaya.jopy.interfaces.IRecuperarSenhaAsyncTask;
 import br.com.gwaya.jopy.model.Acesso;
-import br.com.gwaya.jopy.model.RespostaLogin;
+import br.com.gwaya.jopy.tasks.LoginAsyncTask;
 import br.com.gwaya.jopy.tasks.RecuperarSenhaAsyncTask;
 
-public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask, LoaderCallbacks<Cursor>, OnClickListener {
+public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask, ILoginAsyncTask, LoaderCallbacks<Cursor>, OnClickListener {
 
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
@@ -72,7 +61,6 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
     private String SENDER_ID = "569142009262";
     private GoogleCloudMessaging gcm;
     private String regid;
-    private UserLoginTask mAuthTask = null;
 
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -90,10 +78,6 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
             // should never happen
             throw new RuntimeException("Could not get package name: " + e);
         }
-    }
-
-    public String GetRegId() {
-        return (this.regid);
     }
 
     @Override
@@ -199,9 +183,6 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
      */
     public void attemptLogin() {
         hideKeyboard();
-        if (mAuthTask != null) {
-            return;
-        }
 
         // Reset errors.
         mEmailView.setError(null);
@@ -241,8 +222,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            new LoginAsyncTask(this, regid, email, password).execute();
         }
     }
 
@@ -468,6 +448,49 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
         Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onLogon(Integer statusCode, Acesso acessoLogin) {
+        if (statusCode != null) {
+            switch (statusCode) {
+                case -1:
+                    Toast.makeText(this, "Você esta sem conexão com a internet, por favor tente mais tarde.", Toast.LENGTH_SHORT).show();
+                    break;
+                case -2:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Serviço temporariamente indisponível.")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //do things
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    break;
+                case 401:
+                    Toast.makeText(this, getString(R.string.acesso_nao_autorizado), Toast.LENGTH_SHORT).show();
+                    break;
+                case -10:
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                    break;
+                default:
+                    Intent intent = new Intent(this, ActivityMain.class);
+                    intent.putExtra("ACESSO", new Gson().toJson(acessoLogin));
+                    intent.putExtra("login", true);
+                    startActivity(intent);
+                    mLoginFormView.setVisibility(View.INVISIBLE);
+                    break;
+            }
+            showProgress(false);
+        }
+    }
+
+    @Override
+    public void onLogonFail() {
+        showProgress(false);
+    }
+
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -475,140 +498,6 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
         };
 
         int ADDRESS = 0;
-    }
-
-    public class UserLoginTask extends AsyncTask<Void, Void, Integer> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        public Integer doInBackground(Void... params) {
-
-            String usuario = mEmail;
-            String senha = mPassword;
-            Integer statusCode = null;
-
-            if (!usuario.equals("") && !senha.equals("")) {
-
-                HttpClient httpclient = new DefaultHttpClient();
-                String url = getResources().getString(R.string.protocolo)
-                        + App.API_REST
-                        + getResources().getString(R.string.oauth_path);
-                HttpPost httpPost = new HttpPost(url);
-
-                try {
-
-                    List<NameValuePair> nameValuePairs = new ArrayList<>(4);
-                    /*nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.grant_type_key),
-                            getResources().getString(R.string.grant_type)));
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.client_id_key),
-                            getResources().getString(R.string.client_id)));
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.client_secret_key),
-                            getResources().getString(R.string.client_secret)));
-                    */
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.username_key),
-                            usuario));
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.password_key),
-                            senha));
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.deviceKey),
-                            GetRegId())); //regId
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.deviceType),
-                            android.os.Build.MODEL));
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.osType),
-                            "android"));
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.osVersion),
-                            android.os.Build.VERSION.RELEASE));
-                    nameValuePairs.add(new BasicNameValuePair(getResources().getString(R.string.AppVersion),
-                            "v1"));
-
-                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                    try {
-                        //ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                        //String responseData = httpclient.execute(httpPost, responseHandler);
-
-                        HttpResponse response = httpclient.execute(httpPost);
-
-                        // Obtem codigo de retorno HTTP
-                        statusCode = response.getStatusLine().getStatusCode();
-
-                        if (statusCode >= 200 && statusCode <= 202) {
-                            // Obtem string do Body retorno HTTP
-                            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                            String responseBody = responseHandler.handleResponse(response);
-
-                            GsonBuilder gsonb = new GsonBuilder();
-                            Gson gson = gsonb.create();
-                            JSONObject j = new JSONObject(responseBody);
-                            RespostaLogin resp = gson.fromJson(j.toString(), RespostaLogin.class);
-
-                            acesso = acessoDatasource.createAcesso(resp, usuario, senha);
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(ActivityLogin.this, "Você esta sem conexão com a internet, por favor tente mais tarde.", Toast.LENGTH_SHORT).show();
-
-                        statusCode = -1;
-
-                        e.printStackTrace();
-
-                        if (e.getMessage().contains("refuse")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityLogin.this);
-                            builder.setMessage("Serviço indisponível temporariamente.")
-                                    .setCancelable(false)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            //do things
-                                        }
-                                    });
-                            AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                statusCode = -10;
-            }
-
-            return statusCode;
-        }
-
-        @Override
-        public void onPostExecute(Integer statusCode) {
-            mAuthTask = null;
-            if (statusCode != null) {
-                switch (statusCode) {
-                    case 401:
-                        Toast.makeText(ActivityLogin.this, getString(R.string.acesso_nao_autorizado), Toast.LENGTH_SHORT).show();
-                        break;
-                    case -10:
-                        mPasswordView.setError(getString(R.string.error_incorrect_password));
-                        mPasswordView.requestFocus();
-                        break;
-                    default:
-                        Intent intent = new Intent(ActivityLogin.this, ActivityMain.class);
-                        intent.putExtra("ACESSO", new Gson().toJson(acesso));
-                        intent.putExtra("login", true);
-                        ActivityLogin.this.startActivity(intent);
-                        mLoginFormView.setVisibility(View.INVISIBLE);
-                        break;
-                }
-                showProgress(false);
-            }
-        }
-
-        @Override
-        public void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
     }
 
 }

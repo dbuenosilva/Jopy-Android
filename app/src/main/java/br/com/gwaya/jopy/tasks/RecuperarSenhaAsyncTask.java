@@ -39,10 +39,11 @@ public class RecuperarSenhaAsyncTask extends AsyncTask<Void, Void, Boolean> {
         this.context = context;
         this.mEmail = email;
         this.mensagem = "Serviço indisponível. Por favor, tente novamnete mais tarde.";
+
         try {
             this.callback = ((IRecuperarSenhaAsyncTask) context);
-        } catch (RuntimeException e) {
-            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
 
     }

@@ -36,15 +36,6 @@ import br.com.gwaya.jopy.tasks.DownloadPedidosAsyncTask;
 
 public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoBancoAsyncTask, IDownloadPedidos, AdapterView.OnItemClickListener {
 
-    private ListView listView;
-    private SwipyRefreshLayout mSwipyRefreshLayout;
-    private TextView textViewStatusLista;
-    private ProgressBar progressBar;
-    private LinearLayout linearLayout;
-    private Acesso acesso;
-    private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
-    private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
-    private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
@@ -58,6 +49,15 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         }
 
     };
+    private ListView listView;
+    private SwipyRefreshLayout mSwipyRefreshLayout;
+    private TextView textViewStatusLista;
+    private ProgressBar progressBar;
+    private LinearLayout linearLayout;
+    private Acesso acesso;
+    private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
+    private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
+    private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,7 +127,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
 
         View customView = mInflater.inflate(R.layout.actionbar_main, null);
 
-        ((TextView) customView.findViewById(R.id.title_main)).setText(getNomeAba());
+        ((TextView) customView.findViewById(R.id.title_main)).setText(getTituloTela());
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(customView);
@@ -244,6 +244,11 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     @Override
     public void logoff(Context context, Integer statusCode) {
         Acesso.logoff(context, statusCode);
+    }
+
+    @Override
+    public String getTituloTela() {
+        return "Pedidos ".concat(getNomeAba());
     }
 
     public abstract int getColorIntBackgroundPedido();

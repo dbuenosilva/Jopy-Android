@@ -2,11 +2,13 @@ package br.com.gwaya.jopy.activity;
 
 import android.app.TabActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import br.com.gwaya.jopy.activity.abas.ActivitySobre;
 import br.com.gwaya.jopy.activity.abstracoes.Aba;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 
-public class ActivityMain extends TabActivity {
+public class ActivityMain extends TabActivity implements TabHost.OnTabChangeListener {
 
     private static TabHost tabHost;
     private Boolean login;
@@ -48,41 +50,7 @@ public class ActivityMain extends TabActivity {
 
         popularListaDeAbas();
 
-        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tabId) {
-/*
-                for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
-
-                    ((TextView) tabHost.getTabWidget().getChildAt(i).findViewById(R.id.title))
-                            .setTextColor(Color.parseColor("#FFFFFF")); //unselected
-
-                }
-
-                View indicator = tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab());
-                TextView title = (TextView) indicator.findViewById(R.id.title);
-*/
-                switch (tabId) {
-                    case "Pedidos Pendentes":
-                        //                      title.setTextColor(getResources().getColor(R.color.emitido));
-                        App.ABA_ATUAL = ActivityPendentes.ID;
-                        break;
-                    case "Pedidos Aprovados":
-                        //                    title.setTextColor(getResources().getColor(R.color.aprovado_forte));
-                        App.ABA_ATUAL = ActivityAprovados.ID;
-                        break;
-                    case "Pedidos Rejeitados":
-                        //              title.setTextColor(getResources().getColor(R.color.rejeitado));
-                        App.ABA_ATUAL = ActivityRejeitados.ID;
-                        break;
-                    case "Sobre":
-                        //              title.setTextColor(getResources().getColor(R.color.emitido));
-                        App.ABA_ATUAL = ActivitySobre.ID;
-                        break;
-                }
-
-            }
-        });
+        tabHost.setOnTabChangedListener(this);
     }
 
     @Override
@@ -106,18 +74,12 @@ public class ActivityMain extends TabActivity {
 
                 View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
 
-                //TextView title = (TextView) tabIndicator.findViewById(R.id.title);
                 ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
+                TextView textView = (TextView) tabIndicator.findViewById(R.id.textView);
 
-                //title.setText(aba.getNomeAba().replace("Pedidos ", ""));
                 icon.setImageResource(aba.getIconTabID());
-/*
-                if ("Pedidos Pendentes".equals(aba.getNomeAba())) {
-                    title.setTextColor(getResources().getColor(R.color.emitido));
-                } else {
-                    title.setTextColor(Color.parseColor("#FFFFFF"));
-                }
-*/
+                textView.setText(aba.getNomeAba());
+
                 TabHost.TabSpec spec = tabHost.newTabSpec(aba.getNomeAba());
                 spec.setIndicator(tabIndicator);
                 spec.setContent(intent);
@@ -125,5 +87,39 @@ public class ActivityMain extends TabActivity {
                 tabHost.addTab(spec);
             }
         }
+    }
+
+    @Override
+    public void onTabChanged(String tabId) {
+
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+
+            ((TextView) tabHost.getTabWidget().getChildAt(i).findViewById(R.id.textView))
+                    .setTextColor(Color.parseColor("#FFFFFF"));
+
+        }
+
+        View indicator = tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab());
+        TextView textView = (TextView) indicator.findViewById(R.id.textView);
+
+        switch (tabId) {
+            case "Pedidos Pendentes":
+                textView.setText(listaAbas.get(0).getNomeAba());
+                App.ABA_ATUAL = ActivityPendentes.ID;
+                break;
+            case "Pedidos Aprovados":
+                textView.setText(listaAbas.get(1).getNomeAba());
+                App.ABA_ATUAL = ActivityAprovados.ID;
+                break;
+            case "Pedidos Rejeitados":
+                textView.setText(listaAbas.get(2).getNomeAba());
+                App.ABA_ATUAL = ActivityRejeitados.ID;
+                break;
+            case "Sobre":
+                textView.setText(listaAbas.get(3).getNomeAba());
+                App.ABA_ATUAL = ActivitySobre.ID;
+                break;
+        }
+
     }
 }

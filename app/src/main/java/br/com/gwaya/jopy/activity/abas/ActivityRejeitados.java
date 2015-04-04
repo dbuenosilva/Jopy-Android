@@ -27,7 +27,7 @@ public class ActivityRejeitados extends AbaPedidoCompra {
 
     @Override
     public String getNomeAba() {
-        return "Pedidos Rejeitados";
+        return "Rejeitados";
     }
 
     @Override

@@ -9,6 +9,8 @@ public abstract class Aba extends ActionBarActivity {
 
     public abstract String getNomeAba();
 
+    public abstract String getTituloTela();
+
     public abstract int getIconTabID();
 
 }

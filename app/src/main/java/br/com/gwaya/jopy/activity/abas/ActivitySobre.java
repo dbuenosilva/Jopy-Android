@@ -88,6 +88,11 @@ public class ActivitySobre extends Aba implements ILogout {
     }
 
     @Override
+    public String getTituloTela() {
+        return getNomeAba();
+    }
+
+    @Override
     public void logout(boolean resultado) {
         new AcessoDAO().deleteAcesso();
         new PedidoCompraDAO().deleteAll();

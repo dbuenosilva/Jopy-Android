@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ConcebraPro-Android.iml" filepath="$PROJECT_DIR$/ConcebraPro-Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Jopy-Android.iml" filepath="$PROJECT_DIR$/Jopy-Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -50,6 +50,7 @@ import br.com.gwaya.jopy.interfaces.IRecuperarSenhaAsyncTask;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.tasks.LoginAsyncTask;
 import br.com.gwaya.jopy.tasks.RecuperarSenhaAsyncTask;
+import br.com.gwaya.jopy.utils.Utils;
 
 public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask, ILoginAsyncTask, LoaderCallbacks<Cursor>, OnClickListener {
 
@@ -221,8 +222,12 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            new LoginAsyncTask(this, regid, email, password).execute();
+            if (Utils.isConectado()) {
+                showProgress(true);
+                new LoginAsyncTask(this, regid, email, password).execute();
+            } else {
+                Toast.makeText(this, getString(R.string.sem_conexao_com_a_internet), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

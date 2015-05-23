@@ -47,5 +47,6 @@
     <string name="pedidos_salvos_no_banco_de_dados">Pedidos salvos no banco de dados</string>
     <string name="acesso_nao_autorizado">Acesso não autorizado</string>
     <string name="funcionalidade_em_desenvolvimento">Funcionalidade em desenvolvimento</string>
+    <string name="sem_conexao_com_a_internet">Sem conexão com a internet</string>
 
 </resources>

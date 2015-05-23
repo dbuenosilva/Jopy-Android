@@ -33,9 +33,19 @@ import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.tasks.CarregarPedidosDoBancoAsyncTask;
 import br.com.gwaya.jopy.tasks.DownloadPedidosAsyncTask;
+import br.com.gwaya.jopy.utils.Utils;
 
 public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoBancoAsyncTask, IDownloadPedidos, AdapterView.OnItemClickListener {
 
+    private ListView listView;
+    private SwipyRefreshLayout mSwipyRefreshLayout;
+    private TextView textViewStatusLista;
+    private ProgressBar progressBar;
+    private LinearLayout linearLayout;
+    private Acesso acesso;
+    private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
+    private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
+    private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
@@ -49,15 +59,6 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         }
 
     };
-    private ListView listView;
-    private SwipyRefreshLayout mSwipyRefreshLayout;
-    private TextView textViewStatusLista;
-    private ProgressBar progressBar;
-    private LinearLayout linearLayout;
-    private Acesso acesso;
-    private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
-    private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
-    private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,9 +137,13 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     }
 
     private void pullToRefresh() {
-        cancelarTasks();
-        asyncTaskDownloadPedidos = new DownloadPedidosAsyncTask(this, acesso);
-        asyncTaskDownloadPedidos.execute();
+        if (Utils.isConectado()) {
+            cancelarTasks();
+            asyncTaskDownloadPedidos = new DownloadPedidosAsyncTask(this, acesso);
+            asyncTaskDownloadPedidos.execute();
+        } else {
+            textViewStatusLista.setText(getString(R.string.sem_conexao_com_a_internet));
+        }
     }
 
     private void setDividerListView() {

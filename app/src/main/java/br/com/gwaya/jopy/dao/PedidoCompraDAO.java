@@ -35,7 +35,9 @@ public class PedidoCompraDAO {
             MySQLiteHelper.DT_APROV,
             MySQLiteHelper.DT_EMI,
             MySQLiteHelper.DT_NECES,
-            MySQLiteHelper.DT_REJ
+            MySQLiteHelper.DT_REJ,
+            MySQLiteHelper.CODIGO_EMPRESA,
+            MySQLiteHelper.CODIGO_FILIAL
     };
     private final String[] allColumnsItems = {
             MySQLiteHelper.COLUMN_ID,
@@ -90,6 +92,8 @@ public class PedidoCompraDAO {
                 values.put(MySQLiteHelper.DT_EMI, _pedido.getDtEmi());
                 values.put(MySQLiteHelper.DT_NECES, _pedido.getDtNeces());
                 values.put(MySQLiteHelper.DT_REJ, _pedido.getDtRej());
+                values.put(MySQLiteHelper.CODIGO_EMPRESA, _pedido.getCodigoEmpresa());
+                values.put(MySQLiteHelper.CODIGO_FILIAL, _pedido.getCodigoFilial());
 
                 database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA_ITEM, MySQLiteHelper.ID_PAI + " = '" + _pedido.get_id() + "'", null);
                 database.delete(MySQLiteHelper.TABLE_PEDIDO_COMPRA, MySQLiteHelper.COLUMN_ID + " = '" + _pedido.get_id() + "'", null);
@@ -120,7 +124,7 @@ public class PedidoCompraDAO {
         });
     }
 
-    public void updatePedidoCompra(final PedidoCompra pedidoCompra) {//trtrtr
+    public void updatePedidoCompra(final PedidoCompra pedidoCompra) {
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
             public void run(SQLiteDatabase database) {
@@ -306,6 +310,8 @@ public class PedidoCompraDAO {
         pedido.setMotivo(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO)));
         pedido.setMotivoRejeicao(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.MOTIVO_REJEICAO)));
         pedido.setObs(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.OBS)));
+        pedido.setCodigoEmpresa(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.CODIGO_EMPRESA)));
+        pedido.setCodigoFilial(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.CODIGO_FILIAL)));
 
         return pedido;
     }

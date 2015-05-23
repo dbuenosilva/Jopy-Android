@@ -26,10 +26,28 @@ public class PedidoCompra implements Serializable {
     private String obs;
     private String dtMod;
     private String dtAprov;
+    private String codigoEmpresa;
+    private String codigoFilial;
     private List<PedidoCompraItem> itens;
 
     public PedidoCompra() {
         this.enviado = 1;
+    }
+
+    public String getCodigoEmpresa() {
+        return codigoEmpresa;
+    }
+
+    public void setCodigoEmpresa(String codigoEmpresa) {
+        this.codigoEmpresa = codigoEmpresa;
+    }
+
+    public String getCodigoFilial() {
+        return codigoFilial;
+    }
+
+    public void setCodigoFilial(String codigoFilial) {
+        this.codigoFilial = codigoFilial;
     }
 
     public String get_id() {

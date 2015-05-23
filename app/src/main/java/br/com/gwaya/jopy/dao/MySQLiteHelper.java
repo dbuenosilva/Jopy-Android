@@ -43,6 +43,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String QTDE = "qtde";
     public static final String VALOR = "valor";
     public static final String TOTAL = "total";
+    public static final String CODIGO_FILIAL = "CODIGO_FILIAL";
+    public static final String CODIGO_EMPRESA = "CODIGO_EMPRESA";
+
     private static final String DATABASE_CREATE4 =
             "create table "
                     + TABLE_PEDIDO_COMPRA_FILA + "(" + COLUMN_ID + " text primary key);";
@@ -78,7 +81,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                     + TOTAL_PEDIDO + " real null, "
                     + OBS + " text null, "
                     + DT_MOD + " text null, "
-                    + DT_APROV + " text null "
+                    + DT_APROV + " text null, "
+                    + CODIGO_EMPRESA + " text null, "
+                    + CODIGO_FILIAL + " text null "
                     + ");";
     private static final String DATABASE_CREATE3 =
             "create table "

@@ -46,5 +46,6 @@
     <string name="carregando_pedidos_do_banco">Carregando pedidos do banco de dados...</string>
     <string name="pedidos_salvos_no_banco_de_dados">Pedidos salvos no banco de dados</string>
     <string name="acesso_nao_autorizado">Acesso não autorizado</string>
+    <string name="funcionalidade_em_desenvolvimento">Funcionalidade em desenvolvimento</string>
 
 </resources>

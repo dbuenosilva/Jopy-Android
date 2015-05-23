@@ -344,7 +344,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
 
             @Override
             protected String doInBackground(Void... params) {
-                String msg = "";
+                String msg;
                 try {
                     if (gcm == null) {
                         gcm = GoogleCloudMessaging.getInstance(ActivityLogin.this);
@@ -475,8 +475,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
                     mPasswordView.requestFocus();
                     break;
                 default:
-                    Intent intent = new Intent(this, ActivityMain.class);
-                    intent.putExtra("ACESSO", new Gson().toJson(acessoLogin));
+                    Intent intent = new Intent(this, ActivityMenu.class);
                     intent.putExtra("login", true);
                     startActivity(intent);
                     mLoginFormView.setVisibility(View.INVISIBLE);

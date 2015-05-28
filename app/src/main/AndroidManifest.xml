@@ -26,6 +26,17 @@
         android:theme="@style/MyAppTheme">
 
         <activity
+            android:name=".activity.ActivitySplashScreen"
+            android:noHistory="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".activity.ActivityLogin"
             android:alwaysRetainTaskState="false"
             android:excludeFromRecents="true"
@@ -36,17 +47,6 @@
             android:name=".activity.abas.ActivitySobre"
             android:label="@string/title_activity_opcoes"
             android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".activity.ActivitySplashScreen"
-            android:noHistory="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".activity.abas.ActivityPendentes"

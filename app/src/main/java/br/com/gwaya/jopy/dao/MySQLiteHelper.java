@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import br.com.gwaya.jopy.model.Permissao;
+
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_ACESSO = "ACESSO";
@@ -18,6 +20,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String USUARIO = "USUARIO";
     public static final String SENHA = "SENHA";
     public static final String TOKEN_TYPE = "TOKEN_TYPE";
+    public static final String PERMISSOES = "PERMISSOES";
     public static final String ID_SISTEMA = "ID_SISTEMA";
     public static final String APROVADORES = "APROVADORES";
     public static final String ENVIADO = "ENVIADO";
@@ -95,6 +98,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                     + OBS + " text null, "
                     + TOTAL + " real null "
                     + ");";
+
+    private static final String CREATE_TABLE_PERMISSAO = "CREATE TABLE " + Permissao.TABELA + "( " +
+            Permissao.ACESSO + " INTEGER NOT NULL, " +
+            Permissao.NIVEL + " INTEGER NOT NULL " +
+            ");";
+
     private static final String DATABASE_NAME = "july.db";
     private static final int DATABASE_VERSION = 27;
 
@@ -108,6 +117,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         database.execSQL(DATABASE_CREATE2);
         database.execSQL(DATABASE_CREATE3);
         database.execSQL(DATABASE_CREATE4);
+        database.execSQL(CREATE_TABLE_PERMISSAO);
     }
 
     @Override
@@ -119,6 +129,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PEDIDO_COMPRA);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PEDIDO_COMPRA_ITEM);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PEDIDO_COMPRA_FILA);
+        db.execSQL("DROP TABLE IF EXISTS " + Permissao.TABELA);
         onCreate(db);
     }
 

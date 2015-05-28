@@ -6,6 +6,7 @@ public class RespostaLogin {
     private String refresh_token;
     private int expires_in;
     private String token_type;
+    private Permissao[] permissoes;
 
     public String getAccess_token() {
         return access_token;
@@ -37,5 +38,13 @@ public class RespostaLogin {
 
     public void setToken_type(String token_type) {
         this.token_type = token_type;
+    }
+
+    public Permissao[] getPermissoes() {
+        return permissoes;
+    }
+
+    public void setPermissoes(Permissao[] permissoes) {
+        this.permissoes = permissoes;
     }
 }

@@ -37,6 +37,10 @@
         </activity>
 
         <activity
+            android:name=".activity.ActivityMenu"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".activity.ActivityLogin"
             android:alwaysRetainTaskState="false"
             android:excludeFromRecents="true"
@@ -69,10 +73,6 @@
                 android:value=".activity.ActivityMain" />
             >
         </activity>
-
-        <activity
-            android:name=".activity.ActivityMenu"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.ActivityHistorico"

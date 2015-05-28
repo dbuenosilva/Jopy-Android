@@ -13,9 +13,13 @@ public class Permissao {
     private int nivel;
     private int acesso;
 
-    public Permissao(int nivel, int acesso) {
-        this.nivel = nivel;
+    public Permissao(int acesso, int nivel) {
         this.acesso = acesso;
+        this.nivel = nivel;
+    }
+
+    public Permissao() {
+
     }
 
     public int getNivel() {

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gwaya.jopy.controller.ControllerPermissao;
 import br.com.gwaya.jopy.interfaces.QueryExecutor;
 import br.com.gwaya.jopy.model.Acesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
@@ -21,6 +22,7 @@ public class AcessoDAO {
             MySQLiteHelper.SENHA,
             MySQLiteHelper.TOKEN_TYPE
     };
+    private ControllerPermissao controllerPermissao = new ControllerPermissao();
 
     public Acesso createAcesso(final RespostaLogin respostaLogin, final String usuario, final String senha) {
         final List<Acesso> newAcesso = new ArrayList<>();
@@ -38,6 +40,8 @@ public class AcessoDAO {
                 values.put(MySQLiteHelper.TOKEN_TYPE, respostaLogin.getToken_type());
 
                 deleteAll();
+
+                controllerPermissao.create(respostaLogin.getPermissoes());
 
                 long insertId = database.insert(MySQLiteHelper.TABLE_ACESSO, null,
                         values);

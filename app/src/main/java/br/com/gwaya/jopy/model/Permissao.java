@@ -5,11 +5,27 @@ package br.com.gwaya.jopy.model;
  */
 public class Permissao {
 
+    /*
+     * ACESSOS
+     * 0 -
+     * 1 -
+     * 2 -
+     * 3 -
+     *
+     * NÍVEIS
+     * 0 - LER
+     * 1 - ESCREVER
+     * 2 - EDITAR
+     * 3 - DELETAR
+     */
+
     public static final String TABELA = "PERMISSOES";
 
     public static final String NIVEL = "NIVEL";
     public static final String ACESSO = "ACESSO";
+    public static final String ID = "_id";
 
+    private transient int id;
     private int nivel;
     private int acesso;
 
@@ -20,6 +36,14 @@ public class Permissao {
 
     public Permissao() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getNivel() {

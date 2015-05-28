@@ -100,6 +100,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                     + ");";
 
     private static final String CREATE_TABLE_PERMISSAO = "CREATE TABLE " + Permissao.TABELA + "( " +
+            Permissao.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Permissao.ACESSO + " INTEGER NOT NULL, " +
             Permissao.NIVEL + " INTEGER NOT NULL " +
             ");";

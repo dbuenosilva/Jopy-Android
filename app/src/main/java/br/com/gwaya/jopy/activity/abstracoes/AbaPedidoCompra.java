@@ -137,6 +137,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     }
 
     private void pullToRefresh() {
+        carregarPedidosDoBanco();
         if (Utils.isConectado()) {
             cancelarTasks();
             asyncTaskDownloadPedidos = new DownloadPedidosAsyncTask(this, dadosAcesso);

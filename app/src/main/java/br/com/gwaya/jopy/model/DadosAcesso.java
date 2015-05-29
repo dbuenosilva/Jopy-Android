@@ -12,7 +12,7 @@ import br.com.gwaya.jopy.activity.abstracoes.AbaPedidoCompra;
 import br.com.gwaya.jopy.dao.AcessoDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 
-public class Acesso {
+public class DadosAcesso {
 
     private long id;
     private String Access_Token;

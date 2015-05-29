@@ -42,7 +42,7 @@ public class ControllerPermissao implements Crudable<Permissao> {
 
     @Override
     public boolean deleteAll() {
-        return false;
+        return permissaoDAO.deleteAll();
     }
 
     @Override

@@ -25,11 +25,11 @@ import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.ActivityDetalhe;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompra;
 import br.com.gwaya.jopy.communication.PedidoCompraService;
-import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.DadosAcessoDAO;
 import br.com.gwaya.jopy.enums.StatusPedido;
 import br.com.gwaya.jopy.interfaces.ICarregarPedidosDoBancoAsyncTask;
 import br.com.gwaya.jopy.interfaces.IDownloadPedidos;
-import br.com.gwaya.jopy.model.Acesso;
+import br.com.gwaya.jopy.model.DadosAcesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 import br.com.gwaya.jopy.tasks.CarregarPedidosDoBancoAsyncTask;
 import br.com.gwaya.jopy.tasks.DownloadPedidosAsyncTask;
@@ -42,7 +42,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     private TextView textViewStatusLista;
     private ProgressBar progressBar;
     private LinearLayout linearLayout;
-    private Acesso acesso;
+    private DadosAcesso dadosAcesso;
     private List<PedidoCompra> listaPedidosCompra = new ArrayList<>();
     private DownloadPedidosAsyncTask asyncTaskDownloadPedidos;
     private CarregarPedidosDoBancoAsyncTask asyncTaskCarregarPedidosDoBanco;
@@ -66,10 +66,10 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         configurarActionBar();
         setContentView(R.layout.aba_pedidocompra);
 
-        AcessoDAO AcessoDAO = new AcessoDAO();
-        List<Acesso> lst = AcessoDAO.getAllAcesso();
+        DadosAcessoDAO DadosAcessoDAO = new DadosAcessoDAO();
+        List<DadosAcesso> lst = DadosAcessoDAO.getAllDadosAcesso();
         if (lst.size() > 0) {
-            acesso = lst.get(0);
+            dadosAcesso = lst.get(0);
         }
 
         listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
@@ -139,7 +139,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
     private void pullToRefresh() {
         if (Utils.isConectado()) {
             cancelarTasks();
-            asyncTaskDownloadPedidos = new DownloadPedidosAsyncTask(this, acesso);
+            asyncTaskDownloadPedidos = new DownloadPedidosAsyncTask(this, dadosAcesso);
             asyncTaskDownloadPedidos.execute();
         } else {
             textViewStatusLista.setText(getString(R.string.sem_conexao_com_a_internet));
@@ -248,7 +248,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
 
     @Override
     public void logoff(Context context, Integer statusCode) {
-        Acesso.logoff(context, statusCode);
+        DadosAcesso.logoff(context, statusCode);
     }
 
     @Override

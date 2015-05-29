@@ -9,10 +9,10 @@ import java.util.List;
 
 import br.com.gwaya.jopy.controller.ControllerPermissao;
 import br.com.gwaya.jopy.interfaces.QueryExecutor;
-import br.com.gwaya.jopy.model.Acesso;
+import br.com.gwaya.jopy.model.DadosAcesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 
-public class AcessoDAO {
+public class DadosAcessoDAO {
 
     private final String[] allColumns = {
             MySQLiteHelper.COLUMN_ID,
@@ -24,8 +24,8 @@ public class AcessoDAO {
     };
     private ControllerPermissao controllerPermissao = new ControllerPermissao();
 
-    public Acesso createAcesso(final RespostaLogin respostaLogin, final String usuario, final String senha) {
-        final List<Acesso> newAcesso = new ArrayList<>();
+    public DadosAcesso createDadosAcesso(final RespostaLogin respostaLogin, final String usuario, final String senha) {
+        final List<DadosAcesso> newDadosAcesso = new ArrayList<>();
 
         DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
             @Override
@@ -49,12 +49,12 @@ public class AcessoDAO {
                         allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
                         null, null, null);
                 cursor.moveToFirst();
-                newAcesso.add(cursorToAcesso(cursor));
+                newDadosAcesso.add(cursorToDadosAcesso(cursor));
                 cursor.close();
 
             }
         });
-        return newAcesso.get(0);
+        return newDadosAcesso.get(0);
     }
 
     private void deleteAll() {
@@ -66,20 +66,20 @@ public class AcessoDAO {
         });
     }
 
-    public void updateAcesso(final Acesso acesso) {
+    public void updateDadosAcesso(final DadosAcesso dadosAcesso) {
         DatabaseManager.getInstance().executeQuery(
                 new QueryExecutor() {
                     @Override
                     public void run(SQLiteDatabase database) {
                         ContentValues values = new ContentValues();
-                        values.put(MySQLiteHelper.DT_MOD, acesso.getDtMod());
+                        values.put(MySQLiteHelper.DT_MOD, dadosAcesso.getDtMod());
                         database.update(MySQLiteHelper.TABLE_ACESSO, values, MySQLiteHelper.COLUMN_ID
-                                + " = " + acesso.getId(), null);
+                                + " = " + dadosAcesso.getId(), null);
                     }
                 });
     }
 
-    public void deleteAcesso() {
+    public void deleteDadosAcesso() {
         DatabaseManager.getInstance().executeQuery(
                 new QueryExecutor() {
                     @Override
@@ -93,9 +93,9 @@ public class AcessoDAO {
                 });
     }
 
-    public List<Acesso> getAllAcesso() {
+    public List<DadosAcesso> getAllDadosAcesso() {
 
-        final List<Acesso> acessos = new ArrayList<>();
+        final List<DadosAcesso> dadosAcessos = new ArrayList<>();
         DatabaseManager.getInstance().executeQuery(
                 new QueryExecutor() {
                     @Override
@@ -105,25 +105,25 @@ public class AcessoDAO {
 
                         cursor.moveToFirst();
                         while (!cursor.isAfterLast()) {
-                            Acesso acesso = cursorToAcesso(cursor);
-                            acessos.add(acesso);
+                            DadosAcesso dadosAcesso = cursorToDadosAcesso(cursor);
+                            dadosAcessos.add(dadosAcesso);
                             cursor.moveToNext();
                         }
 
                         cursor.close();
                     }
                 });
-        return acessos;
+        return dadosAcessos;
     }
 
-    private Acesso cursorToAcesso(Cursor cursor) {
-        Acesso acesso = new Acesso();
-        acesso.setId(cursor.getLong(0));
-        acesso.setAccess_Token(cursor.getString(1));
-        acesso.setRefresh_Token(cursor.getString(2));
-        acesso.setUsuario(cursor.getString(3));
-        acesso.setSenha(cursor.getString(4));
-        acesso.setToken_Type(cursor.getString(5));
-        return acesso;
+    private DadosAcesso cursorToDadosAcesso(Cursor cursor) {
+        DadosAcesso dadosAcesso = new DadosAcesso();
+        dadosAcesso.setId(cursor.getLong(0));
+        dadosAcesso.setAccess_Token(cursor.getString(1));
+        dadosAcesso.setRefresh_Token(cursor.getString(2));
+        dadosAcesso.setUsuario(cursor.getString(3));
+        dadosAcesso.setSenha(cursor.getString(4));
+        dadosAcesso.setToken_Type(cursor.getString(5));
+        return dadosAcesso;
     }
 }

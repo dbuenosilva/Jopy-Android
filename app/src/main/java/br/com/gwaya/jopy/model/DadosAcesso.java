@@ -9,7 +9,7 @@ import android.content.Intent;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.ActivityLogin;
 import br.com.gwaya.jopy.activity.abstracoes.AbaPedidoCompra;
-import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.DadosAcessoDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 
 public class DadosAcesso {
@@ -35,11 +35,11 @@ public class DadosAcesso {
                             .setNeutralButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    AcessoDAO acessoDAO = new AcessoDAO();
+                                    DadosAcessoDAO dadosAcessoDAO = new DadosAcessoDAO();
                                     PedidoCompraDAO pedidoCompraDAO = new PedidoCompraDAO();
 
                                     pedidoCompraDAO.deleteAll();
-                                    acessoDAO.deleteAcesso();
+                                    dadosAcessoDAO.deleteDadosAcesso();
 
                                     Intent intent = new Intent(context, ActivityLogin.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

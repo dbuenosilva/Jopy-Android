@@ -22,9 +22,9 @@ import java.util.List;
 
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.DadosAcessoDAO;
 import br.com.gwaya.jopy.interfaces.ILoginAsyncTask;
-import br.com.gwaya.jopy.model.Acesso;
+import br.com.gwaya.jopy.model.DadosAcesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
 
 /**
@@ -38,7 +38,7 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Integer> {
     private String mPassword;
 
     private ILoginAsyncTask callback;
-    private Acesso acesso;
+    private DadosAcesso dadosAcesso;
 
     public LoginAsyncTask(Context context, String regid, String email, String password) {
         this.context = context;
@@ -114,7 +114,7 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Integer> {
                         JSONObject j = new JSONObject(responseBody);
                         RespostaLogin resp = gson.fromJson(j.toString(), RespostaLogin.class);
 
-                        acesso = new AcessoDAO().createAcesso(resp, usuario, senha);
+                        dadosAcesso = new DadosAcessoDAO().createDadosAcesso(resp, usuario, senha);
                     }
                 } catch (Exception e) {
                     statusCode = -1;
@@ -135,7 +135,7 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Integer> {
 
     @Override
     public void onPostExecute(Integer statusCode) {
-        callback.onLogon(statusCode, acesso);
+        callback.onLogon(statusCode, dadosAcesso);
     }
 
     @Override

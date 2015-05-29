@@ -26,11 +26,11 @@ import java.util.List;
 
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.DadosAcessoDAO;
 import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.enums.StatusPedido;
-import br.com.gwaya.jopy.model.Acesso;
+import br.com.gwaya.jopy.model.DadosAcesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 public class PedidoCompraService extends IntentService {
@@ -43,13 +43,13 @@ public class PedidoCompraService extends IntentService {
         super("PedidoCompraService");
     }
 
-    public static String loadFromNetwork(String urlString, Acesso acesso, Context context) {
+    public static String loadFromNetwork(String urlString, DadosAcesso dadosAcesso, Context context) {
         String responseBody = "";
         try {
             HttpClient httpclient = new DefaultHttpClient();
             HttpGet httpGet = new HttpGet(urlString);
 
-            httpGet.setHeader("Authorization", acesso.getToken_Type() + " " + acesso.getAccess_Token());
+            httpGet.setHeader("Authorization", dadosAcesso.getToken_Type() + " " + dadosAcesso.getAccess_Token());
 
             HttpResponse response = httpclient.execute(httpGet);
 
@@ -60,7 +60,7 @@ public class PedidoCompraService extends IntentService {
                 ResponseHandler<String> responseHandler = new BasicResponseHandler();
                 responseBody = responseHandler.handleResponse(response);
             } else {
-                Acesso.logoff(context, statusCode);
+                DadosAcesso.logoff(context, statusCode);
             }
 
         } catch (Exception e) {
@@ -73,11 +73,11 @@ public class PedidoCompraService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
-            List<Acesso> lstAcesso = new AcessoDAO().getAllAcesso();
+            List<DadosAcesso> lstDadosAcesso = new DadosAcessoDAO().getAllDadosAcesso();
 
-            if (lstAcesso.size() > 0) {
+            if (lstDadosAcesso.size() > 0) {
 
-                Acesso acesso = lstAcesso.get(0);
+                DadosAcesso dadosAcesso = lstDadosAcesso.get(0);
 
                 String url = getResources().getString(R.string.protocolo)
                         + App.API_REST
@@ -88,9 +88,9 @@ public class PedidoCompraService extends IntentService {
                     url += "?gte=" + dtMod;
                 }
 
-                descarregaFila(acesso);
+                descarregaFila(dadosAcesso);
 
-                String responseBody = loadFromNetwork(url, acesso, this.getApplicationContext());
+                String responseBody = loadFromNetwork(url, dadosAcesso, this.getApplicationContext());
 
                 GsonBuilder gsonb = new GsonBuilder();
                 Gson gson = gsonb.create();
@@ -130,7 +130,7 @@ public class PedidoCompraService extends IntentService {
         }
     }
 
-    private void descarregaFila(Acesso acesso) {
+    private void descarregaFila(DadosAcesso dadosAcesso) {
         FilaPedidoCompraDAO filaDataSource = null;
         try {
 
@@ -158,7 +158,7 @@ public class PedidoCompraService extends IntentService {
 
                     HttpClient httpclient = new DefaultHttpClient();
                     HttpPut httpPut = new HttpPut(url + "/" + pedidoCompra.get_id());
-                    httpPut.setHeader("Authorization", acesso.getToken_Type() + " " + acesso.getAccess_Token());
+                    httpPut.setHeader("Authorization", dadosAcesso.getToken_Type() + " " + dadosAcesso.getAccess_Token());
 
                     StringEntity entity = new StringEntity(new Gson().toJson(pedidoCompra), HTTP.UTF_8);
 
@@ -185,7 +185,7 @@ public class PedidoCompraService extends IntentService {
                         new PedidoCompraDAO().updatePedidoCompra(pedidoCompra);
                     } else {
                         // mensagem
-                        //acesso.logoff( tem que descobri qual é a active que esta ativa na tela do usuario ); // logout
+                        //dadosAcesso.logoff( tem que descobri qual é a active que esta ativa na tela do usuario ); // logout
                     }
                 }
 

@@ -19,7 +19,7 @@ import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.interfaces.IDownloadPedidos;
-import br.com.gwaya.jopy.model.Acesso;
+import br.com.gwaya.jopy.model.DadosAcesso;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 /**
@@ -29,15 +29,15 @@ public class DownloadPedidosAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
     private Context context;
     private PedidoCompraDAO dao;
-    private Acesso acesso;
+    private DadosAcesso dadosAcesso;
     private IDownloadPedidos callback;
     private boolean running = true;
 
-    public DownloadPedidosAsyncTask(Context context, Acesso acesso) {
+    public DownloadPedidosAsyncTask(Context context, DadosAcesso dadosAcesso) {
         this.callback = (IDownloadPedidos) context;
         this.dao = new PedidoCompraDAO();
         this.context = context;
-        this.acesso = acesso;
+        this.dadosAcesso = dadosAcesso;
     }
 
     @Override
@@ -60,8 +60,8 @@ public class DownloadPedidosAsyncTask extends AsyncTask<Void, Void, Boolean> {
         }
 
         HttpGet httpGet = new HttpGet(url);
-        if (acesso != null) {
-            httpGet.setHeader("Authorization", acesso.getToken_Type() + " " + acesso.getAccess_Token());
+        if (dadosAcesso != null) {
+            httpGet.setHeader("Authorization", dadosAcesso.getToken_Type() + " " + dadosAcesso.getAccess_Token());
 
             try {
                 HttpResponse response = httpclient.execute(httpGet);

@@ -12,7 +12,7 @@ import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.interfaces.ILogout;
-import br.com.gwaya.jopy.model.Acesso;
+import br.com.gwaya.jopy.model.DadosAcesso;
 
 /**
  * Created by diego on 20/03/15.
@@ -21,14 +21,14 @@ public class LogoutAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
     private Context context;
     private PedidoCompraDAO dao;
-    private Acesso acesso;
+    private DadosAcesso dadosAcesso;
     private boolean running = true;
     private ILogout callback;
 
-    public LogoutAsyncTask(Context context, Acesso acesso) {
+    public LogoutAsyncTask(Context context, DadosAcesso dadosAcesso) {
         this.dao = new PedidoCompraDAO();
         this.context = context;
-        this.acesso = acesso;
+        this.dadosAcesso = dadosAcesso;
         this.callback = (ILogout) context;
     }
 
@@ -47,8 +47,8 @@ public class LogoutAsyncTask extends AsyncTask<Void, Void, Boolean> {
                 + context.getResources().getString(R.string.logout_path);
 
         HttpGet httpGet = new HttpGet(url);
-        if (acesso != null) {
-            httpGet.setHeader("Authorization", acesso.getToken_Type() + " " + acesso.getAccess_Token());
+        if (dadosAcesso != null) {
+            httpGet.setHeader("Authorization", dadosAcesso.getToken_Type() + " " + dadosAcesso.getAccess_Token());
 
             try {
                 HttpResponse response = httpclient.execute(httpGet);

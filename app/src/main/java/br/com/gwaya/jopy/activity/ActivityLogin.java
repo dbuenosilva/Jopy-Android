@@ -44,10 +44,10 @@ import java.util.List;
 
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.dao.AcessoDAO;
+import br.com.gwaya.jopy.dao.DadosAcessoDAO;
 import br.com.gwaya.jopy.interfaces.ILoginAsyncTask;
 import br.com.gwaya.jopy.interfaces.IRecuperarSenhaAsyncTask;
-import br.com.gwaya.jopy.model.Acesso;
+import br.com.gwaya.jopy.model.DadosAcesso;
 import br.com.gwaya.jopy.tasks.LoginAsyncTask;
 import br.com.gwaya.jopy.tasks.RecuperarSenhaAsyncTask;
 import br.com.gwaya.jopy.utils.Utils;
@@ -58,7 +58,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
     private static final String PROPERTY_APP_VERSION = "appVersion";
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private Acesso acesso;
+    private DadosAcesso dadosAcesso;
     private String SENDER_ID = "569142009262";
     private GoogleCloudMessaging gcm;
     private String regid;
@@ -67,7 +67,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private AcessoDAO acessoDatasource;
+    private DadosAcessoDAO acessoDatasource;
     private int contadorExibicaoMenuSecreto = 0;
 
     private static int getAppVersion(Context context) {
@@ -92,7 +92,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
         mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        acessoDatasource = new AcessoDAO();
+        acessoDatasource = new DadosAcessoDAO();
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -114,12 +114,12 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
         findViewById(R.id.textview_esqueceu).setOnClickListener(this);
         findViewById(R.id.linearLayout).setOnClickListener(this);
 
-        List<Acesso> lst = acessoDatasource.getAllAcesso();
+        List<DadosAcesso> lst = acessoDatasource.getAllDadosAcesso();
 
         if (lst.size() > 0) {
-            acesso = lst.get(0);
+            dadosAcesso = lst.get(0);
             Intent intent = new Intent(ActivityLogin.this, ActivityMain.class);
-            intent.putExtra("ACESSO", new Gson().toJson(acesso));
+            intent.putExtra("ACESSO", new Gson().toJson(dadosAcesso));
             intent.putExtra("login", false);
             ActivityLogin.this.startActivity(intent);
         }
@@ -454,7 +454,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
     }
 
     @Override
-    public void onLogon(Integer statusCode, Acesso acessoLogin) {
+    public void onLogon(Integer statusCode, DadosAcesso dadosAcessoLogin) {
         if (statusCode != null) {
             switch (statusCode) {
                 case -1:
@@ -481,7 +481,6 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
                     break;
                 default:
                     Intent intent = new Intent(this, ActivityMenu.class);
-                    intent.putExtra("login", true);
                     startActivity(intent);
                     mLoginFormView.setVisibility(View.INVISIBLE);
                     break;

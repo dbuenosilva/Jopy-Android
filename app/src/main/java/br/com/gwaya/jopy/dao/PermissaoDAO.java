@@ -17,6 +17,7 @@ import br.com.gwaya.jopy.model.Permissao;
 public class PermissaoDAO implements Crudable<Permissao> {
 
     private List<Boolean> listaResultado;
+    private boolean retorno = false;
 
     @Override
     public boolean create(Permissao... t) {
@@ -50,7 +51,7 @@ public class PermissaoDAO implements Crudable<Permissao> {
     }
 
     @Override
-    public Permissao read(int id) {
+    public Permissao read(final int id) {
         return null;
     }
 
@@ -62,7 +63,7 @@ public class PermissaoDAO implements Crudable<Permissao> {
                     @Override
                     public void run(SQLiteDatabase database) {
                         Cursor cursor = database.query(Permissao.TABELA,
-                                new String[]{Permissao.ACESSO, Permissao.NIVEL}, null, null, null, null, null);
+                                new String[]{Permissao.ID, Permissao.ACESSO, Permissao.NIVEL}, null, null, null, null, null);
 
                         cursor.moveToFirst();
                         while (!cursor.isAfterLast()) {
@@ -76,47 +77,55 @@ public class PermissaoDAO implements Crudable<Permissao> {
         return listaResultado;
     }
 
-    private Permissao convertCursorToObject(Cursor cursor) {
+    @Override
+    public boolean update(final Permissao permissao) {
+        retorno  = false;
+        DatabaseManager.getInstance().executeQuery(
+                new QueryExecutor() {
+                    @Override
+                    public void run(SQLiteDatabase database) {
+                        ContentValues values = new ContentValues();
+                        values.put(Permissao.ACESSO, permissao.getAcesso());
+                        values.put(Permissao.NIVEL, permissao.getNivel());
+                        retorno = database.update(Permissao.TABELA, values, Permissao.ID
+                                + " = " + permissao.getId(), null) > 0;
+                    }
+                });
+        return retorno;
+    }
+
+    @Override
+    public boolean delete(final Permissao permissao) {
+        retorno = false;
+        DatabaseManager.getInstance().executeQuery(
+                new QueryExecutor() {
+                    @Override
+                    public void run(SQLiteDatabase database) {
+                        retorno = database.delete(Permissao.TABELA, Permissao.ID + " = " + permissao.getId(), null) > 0;
+                    }
+                });
+        return retorno;
+    }
+
+    @Override
+    public boolean deleteAll() {
+        retorno = false;
+        DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
+            @Override
+            public void run(SQLiteDatabase database) {
+                retorno = database.delete(Permissao.TABELA, null, null) > 0;
+            }
+        });
+        return retorno;
+    }
+
+    @Override
+    public Permissao convertCursorToObject(Cursor cursor) {
         Permissao permissao = new Permissao();
+        permissao.setId(cursor.getInt(cursor.getColumnIndex(Permissao.ID)));
         permissao.setAcesso(cursor.getInt(cursor.getColumnIndex(Permissao.ACESSO)));
         permissao.setNivel(cursor.getInt(cursor.getColumnIndex(Permissao.NIVEL)));
         return permissao;
     }
-
-    @Override
-    public void update(Permissao permissao) {
-
-    }
-
-    @Override
-    public void delete(Permissao permissao) {
-
-    }
-
-    @Override
-    public void deleteAll() {
-        DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
-            @Override
-            public void run(SQLiteDatabase database) {
-                database.delete(Permissao.TABELA, null, null);
-            }
-        });
-    }
-
-
-//    @Override
-//    public void read(Permissao permissao) {
-//
-//    }
-//
-//    @Override
-//    public void update(Permissao permissao) {
-//
-//    }
-//
-//    @Override
-//    public void delete(Permissao permissao) {
-//
-//    }
 
 }

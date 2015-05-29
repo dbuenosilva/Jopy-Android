@@ -1,5 +1,7 @@
 package br.com.gwaya.jopy.interfaces;
 
+import android.database.Cursor;
+
 import java.util.List;
 
 /**
@@ -13,9 +15,11 @@ public interface Crudable<T> {
 
     public List<T> readAll();
 
-    public void update(T t);
+    public boolean update(T t);
 
-    public void delete(T t);
+    public boolean delete(T t);
 
-    public void deleteAll();
+    public boolean deleteAll();
+
+    public T convertCursorToObject(Cursor cursor);
 }

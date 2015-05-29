@@ -1,5 +1,7 @@
 package br.com.gwaya.jopy.controller;
 
+import android.database.Cursor;
+
 import java.util.List;
 
 import br.com.gwaya.jopy.dao.PermissaoDAO;
@@ -19,27 +21,32 @@ public class ControllerPermissao implements Crudable<Permissao> {
     }
 
     @Override
-    public Permissao read(int id) {
-        return null;
-    }
-
-    @Override
     public List<Permissao> readAll() {
         return permissaoDAO.readAll();
     }
 
     @Override
-    public void update(Permissao permissao) {
-        permissaoDAO.update(permissao);
+    public boolean update(Permissao permissao) {
+        return permissaoDAO.update(permissao);
     }
 
     @Override
-    public void delete(Permissao permissao) {
-        permissaoDAO.delete(permissao);
+    public boolean delete(Permissao permissao) {
+        return permissaoDAO.delete(permissao);
     }
 
     @Override
-    public void deleteAll() {
-        permissaoDAO.deleteAll();
+    public Permissao read(int id) {
+        return null;
+    }
+
+    @Override
+    public boolean deleteAll() {
+        return false;
+    }
+
+    @Override
+    public Permissao convertCursorToObject(Cursor cursor) {
+        return null;
     }
 }

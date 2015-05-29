@@ -7,12 +7,13 @@ public class Permissao {
 
     /*
      * ACESSOS
-     * 0 -
-     * 1 -
-     * 2 -
-     * 3 -
+     * 0 - Compras
+     * 1 - Vendas
+     * 2 - Orçamento
+     * 3 - Financeiro
+     * 4 - Ponto Eletrônico
      *
-     * N�VEIS
+     * NÍVEIS
      * 0 - LER
      * 1 - ESCREVER
      * 2 - EDITAR

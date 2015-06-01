@@ -103,7 +103,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.password || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    login();
                     return true;
                 }
                 return false;
@@ -119,7 +119,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
         if (lst.size() > 0) {
             dadosAcesso = lst.get(0);
             Intent intent = new Intent(ActivityLogin.this, ActivityMain.class);
-            intent.putExtra("ACESSO", new Gson().toJson(dadosAcesso));
+            intent.putExtra("acesso", new Gson().toJson(dadosAcesso));
             intent.putExtra("login", false);
             ActivityLogin.this.startActivity(intent);
         }
@@ -149,7 +149,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
                 .show();
     }
 
-    private void hideKeyboard() {
+    private void ocultarTeclado() {
         // Check if no view has focus:
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -177,13 +177,8 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
         getLoaderManager().initLoader(0, null, this);
     }
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    public void attemptLogin() {
-        hideKeyboard();
+    public void login() {
+        ocultarTeclado();
 
         // Reset errors.
         mEmailView.setError(null);
@@ -441,7 +436,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
                 break;
 
             case R.id.textview_entrar:
-                attemptLogin();
+                login();
                 break;
 
         }
@@ -481,6 +476,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
                     break;
                 default:
                     Intent intent = new Intent(this, ActivityMenu.class);
+                    intent.putExtra("login", true);
                     startActivity(intent);
                     mLoginFormView.setVisibility(View.INVISIBLE);
                     break;

@@ -26,6 +26,13 @@ public class ActivityMenu extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        Bundle extras = getIntent().getExtras();
+        login = false;
+
+        if (extras != null) {
+            login = extras.getBoolean("login");
+        }
+
         ControllerPermissao controllerPermissao = new ControllerPermissao();
         listaPermissoes = controllerPermissao.readAll();
 
@@ -39,11 +46,11 @@ public class ActivityMenu extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.viewCompras:
-                if (validarPermissao(Acesso.COMPRAS)) {
+//                if (validarPermissao(Acesso.COMPRAS)) {
                     Intent intent = new Intent(this, ActivityMain.class);
                     intent.putExtra("login", login);
                     startActivity(intent);
-                }
+//                }
                 break;
             case R.id.viewVendas:
                 if (validarPermissao(Acesso.VENDAS)) {

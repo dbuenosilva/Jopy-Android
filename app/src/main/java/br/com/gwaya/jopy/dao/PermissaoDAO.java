@@ -20,10 +20,13 @@ public class PermissaoDAO implements Crudable<Permissao> {
     private boolean retorno = false;
 
     @Override
-    public boolean create(Permissao... t) {
+    public boolean create(Permissao... permissaos) {
+        if (permissaos == null) {
+            return false;
+        }
         listaResultado = new ArrayList<>();
 
-        for (final Permissao permissao : t) {
+        for (final Permissao permissao : permissaos) {
             DatabaseManager.getInstance().executeQuery(new QueryExecutor() {
 
                 @Override
@@ -32,8 +35,6 @@ public class PermissaoDAO implements Crudable<Permissao> {
 
                     values.put(Permissao.ACESSO, permissao.getAcesso());
                     values.put(Permissao.NIVEL, permissao.getNivel());
-
-                    deleteAll();
 
                     listaResultado.add(database.insert(Permissao.TABELA, null, values) != -1);
                 }
@@ -79,7 +80,10 @@ public class PermissaoDAO implements Crudable<Permissao> {
 
     @Override
     public boolean update(final Permissao permissao) {
-        retorno  = false;
+        if (permissao == null) {
+            return false;
+        }
+        retorno = false;
         DatabaseManager.getInstance().executeQuery(
                 new QueryExecutor() {
                     @Override
@@ -96,6 +100,9 @@ public class PermissaoDAO implements Crudable<Permissao> {
 
     @Override
     public boolean delete(final Permissao permissao) {
+        if (permissao == null) {
+            return false;
+        }
         retorno = false;
         DatabaseManager.getInstance().executeQuery(
                 new QueryExecutor() {

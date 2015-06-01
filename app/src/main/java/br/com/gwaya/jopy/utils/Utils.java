@@ -5,8 +5,6 @@ import android.content.pm.ApplicationInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import java.net.InetAddress;
-
 import br.com.gwaya.jopy.App;
 
 /**
@@ -21,15 +19,6 @@ public class Utils {
     public static boolean isConectado() {
         ConnectivityManager cm = (ConnectivityManager) App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
-        return !(ni == null) && hasConectividade();
-    }
-
-    private static boolean hasConectividade() {
-        try {
-            return !("".equals(InetAddress.getByName("www.google.com")));
-        } catch (Exception e) {
-            return false;
-        }
-
+        return !(ni == null);
     }
 }

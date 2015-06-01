@@ -36,8 +36,6 @@ public class PermissaoDAO implements Crudable<Permissao> {
                     values.put(Permissao.ACESSO, permissao.getAcesso());
                     values.put(Permissao.NIVEL, permissao.getNivel());
 
-                    deleteAll();
-
                     listaResultado.add(database.insert(Permissao.TABELA, null, values) != -1);
                 }
             });

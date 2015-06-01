@@ -119,7 +119,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
         if (lst.size() > 0) {
             dadosAcesso = lst.get(0);
             Intent intent = new Intent(ActivityLogin.this, ActivityMain.class);
-            intent.putExtra("ACESSO", new Gson().toJson(dadosAcesso));
+            intent.putExtra("acesso", new Gson().toJson(dadosAcesso));
             intent.putExtra("login", false);
             ActivityLogin.this.startActivity(intent);
         }
@@ -476,6 +476,7 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
                     break;
                 default:
                     Intent intent = new Intent(this, ActivityMenu.class);
+                    intent.putExtra("login", true);
                     startActivity(intent);
                     mLoginFormView.setVisibility(View.INVISIBLE);
                     break;

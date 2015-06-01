@@ -41,7 +41,7 @@ public class DadosAcessoDAO {
 
                 deleteAll();
 
-                controllerPermissao.create(respostaLogin.getPermissoes());
+//                controllerPermissao.create(respostaLogin.getPermissoes());
 
                 long insertId = database.insert(MySQLiteHelper.TABLE_ACESSO, null,
                         values);

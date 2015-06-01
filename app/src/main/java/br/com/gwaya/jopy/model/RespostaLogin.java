@@ -6,7 +6,7 @@ public class RespostaLogin {
     private String refresh_token;
     private int expires_in;
     private String token_type;
-    private Permissao[] permissoes;
+    private transient Permissao[] permissoes;
 
     public String getAccess_token() {
         return access_token;

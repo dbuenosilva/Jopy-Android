@@ -16,8 +16,8 @@ public class ControllerPermissao implements Crudable<Permissao> {
     private PermissaoDAO permissaoDAO = new PermissaoDAO();
 
     @Override
-    public boolean create(Permissao... t) {
-        return permissaoDAO.create(t);
+    public boolean create(Permissao... permissaos) {
+        return permissaoDAO.create(permissaos);
     }
 
     @Override

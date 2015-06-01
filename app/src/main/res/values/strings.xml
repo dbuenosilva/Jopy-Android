@@ -48,5 +48,9 @@
     <string name="acesso_nao_autorizado">Acesso não autorizado</string>
     <string name="sem_conexao_com_a_internet">Sem conexão com a internet</string>
     <string name="solucao_em_desenvolvimento">Solução em desenvolvimento</string>
+    <string name="compras">Compras</string>
+    <string name="orcamentos">Orçamentos</string>
+    <string name="vendas">Vendas</string>
+    <string name="contas_a_pagar">Contas a Pagar</string>
 
 </resources>

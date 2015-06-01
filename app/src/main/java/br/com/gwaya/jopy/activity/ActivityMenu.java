@@ -12,6 +12,7 @@ import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.controller.ControllerPermissao;
 import br.com.gwaya.jopy.enums.Acesso;
 import br.com.gwaya.jopy.model.Permissao;
+import br.com.gwaya.jopy.utils.Utils;
 
 /**
  * Created by pedrofsn on 23/05/15.
@@ -40,6 +41,11 @@ public class ActivityMenu extends Activity implements View.OnClickListener {
         findViewById(R.id.viewVendas).setOnClickListener(this);
         findViewById(R.id.viewOrcamentos).setOnClickListener(this);
         findViewById(R.id.viewContasPagar).setOnClickListener(this);
+
+        Utils.aplicarFonteMyriadPro(this, findViewById(R.id.textViewCompras));
+        Utils.aplicarFonteMyriadPro(this, findViewById(R.id.textViewOrcamentos));
+        Utils.aplicarFonteMyriadPro(this, findViewById(R.id.textViewVendas));
+        Utils.aplicarFonteMyriadPro(this, findViewById(R.id.textViewContasPagar));
     }
 
     @Override
@@ -47,9 +53,9 @@ public class ActivityMenu extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.viewCompras:
 //                if (validarPermissao(Acesso.COMPRAS)) {
-                    Intent intent = new Intent(this, ActivityMain.class);
-                    intent.putExtra("login", login);
-                    startActivity(intent);
+                Intent intent = new Intent(this, ActivityMain.class);
+                intent.putExtra("login", login);
+                startActivity(intent);
 //                }
                 break;
             case R.id.viewVendas:

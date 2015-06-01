@@ -47,6 +47,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/compras" />
+
+                    <TextView
+                        android:id="@+id/textViewCompras"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/compras"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -55,13 +65,22 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/orcamentos" />
+
+                    <TextView
+                        android:id="@+id/textViewOrcamentos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/orcamentos"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -84,6 +103,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/vendas" />
+
+                    <TextView
+                        android:id="@+id/textViewVendas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/vendas"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -99,6 +128,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/contas_pagar" />
+
+                    <TextView
+                        android:id="@+id/textViewContasPagar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/contas_a_pagar"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

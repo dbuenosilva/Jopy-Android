@@ -56,20 +56,26 @@
                 android:text=""
                 android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/password"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:background="@drawable/corners"
-                android:hint="@string/prompt_password"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:text=""
-                android:textSize="20sp" />
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/corners"
+                    android:hint="@string/prompt_password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="20sp" />
+
+            </android.support.design.widget.TextInputLayout>
 
             <TextView
                 android:id="@+id/textview_entrar"

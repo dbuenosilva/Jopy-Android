@@ -1,22 +1,22 @@
 <resources>
-    <!-- the theme applied to the application or activity -->
-    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-        <item name="android:textColor">@android:color/black</item>
-        <!-- Support library compatibility -->
-        <item name="actionBarStyle">@style/MyActionBar</item>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#4886f3</item>
+        <item name="colorPrimaryDark">#4179da</item>
     </style>
 
-    <!-- ActionBar styles -->
-    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/background_azul_escuro</item>
-        <item name="android:titleTextStyle">@style/MyTitleTextStyle</item>
-        <!-- Support library compatibility -->
-        <item name="background">@color/background_azul_escuro</item>
-        <item name="titleTextStyle">@style/MyTitleTextStyle</item>
+    <style name="AppTheme.Detail" parent="AppTheme"></style>
+
+    <style name="ItemSelectedBackground">
+        <item name="android:background">@drawable/selected_background</item>
     </style>
 
-    <style name="MyTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@android:color/white</item>
-    </style>
 </resources>
+
+
+    <!--<resources>--><!--&lt;!&ndash; the theme applied to the application or activity &ndash;&gt;--><!--<style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">--><!--<item name="android:actionBarStyle">@style/MyActionBar</item>--><!--<item name="android:textColor">@android:color/black</item>--><!--&lt;!&ndash; Support library compatibility &ndash;&gt;--><!--<item name="actionBarStyle">@style/MyActionBar</item>--><!--</style>-->
+
+    <!--&lt;!&ndash; ActionBar styles &ndash;&gt;--><!--<style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">--><!--<item name="android:background">@color/background_azul_escuro</item>--><!--<item name="android:titleTextStyle">@style/MyTitleTextStyle</item>--><!--&lt;!&ndash; Support library compatibility &ndash;&gt;--><!--<item name="background">@color/background_azul_escuro</item>--><!--<item name="titleTextStyle">@style/MyTitleTextStyle</item>--><!--</style>-->
+
+    <!--<style name="MyTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">--><!--<item name="android:textColor">@android:color/white</item>--><!--</style>--><!--</resources>-->

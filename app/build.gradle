@@ -41,6 +41,9 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'de.akquinet.android.archetypes:android-gcm-quickstart:1.1.0'
     compile 'com.github.orangegangsters:swipy:1.2.0@aar'
+    compile 'com.android.support:design:22.2.0'
+    compile 'com.github.liuguangqiang.aframework:library:1.0.2'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
         transitive = true;
     }

@@ -29,5 +29,6 @@
     <color name="aprovado_forte">#00A551</color>
     <color name="aprovado_fraco">#CEDDD3</color>
 
+    <color name="item_selected_bg_color">#20000000</color>
 
 </resources>

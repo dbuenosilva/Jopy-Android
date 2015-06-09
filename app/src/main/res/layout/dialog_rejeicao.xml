@@ -13,14 +13,20 @@
         android:text="Motivo da rejeição"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
-        android:id="@+id/txtPutRej"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="top"
-        android:layout_margin="15dp"
-        android:ems="10"
-        android:inputType="textMultiLine" />
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/txtPutRej"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_margin="15dp"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
+    </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>

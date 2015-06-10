@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -35,9 +36,11 @@ public class AdapterHorario extends BaseRecyclerAdapter<Horario, AdapterHorario.
     public static class HorarioViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textViewHorario;
+        private RelativeLayout relativeLayoutPai;
 
         public HorarioViewHolder(View view) {
             super(view);
+            relativeLayoutPai = (RelativeLayout) view.findViewById(R.id.relativeLayoutPai);
             textViewHorario = (TextView) view.findViewById(R.id.textViewHorario);
         }
 

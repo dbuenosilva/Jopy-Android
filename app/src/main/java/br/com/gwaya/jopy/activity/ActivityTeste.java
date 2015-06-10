@@ -50,6 +50,57 @@ public class ActivityTeste extends AppCompatActivity implements View.OnClickList
         listHorario.add(new Horario());
         listHorario.add(new Horario());
         listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
+        listHorario.add(new Horario());
 
         adapterHorario = new AdapterHorario(this, listHorario);
         recyclerView.setAdapter(adapterHorario);
@@ -73,7 +124,7 @@ public class ActivityTeste extends AppCompatActivity implements View.OnClickList
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setTitle("Brincando com os códigos novos da Google");
     }
 

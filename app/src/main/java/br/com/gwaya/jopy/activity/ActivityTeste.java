@@ -40,10 +40,10 @@ public class ActivityTeste extends AppCompatActivity implements View.OnClickList
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         floatingActionButton.setOnClickListener(this);
 
-        listHorario.add(new Horario());
-        listHorario.add(new Horario());
-        listHorario.add(new Horario());
-        listHorario.add(new Horario());
+        listHorario.add(new Horario("a"));
+        listHorario.add(new Horario("b"));
+        listHorario.add(new Horario("c"));
+        listHorario.add(new Horario("d"));
         listHorario.add(new Horario());
         listHorario.add(new Horario());
         listHorario.add(new Horario());

@@ -25,7 +25,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activity.ActivityTeste"
+            android:name=".activity.ActivityConfigurarOrdemTelaPrincipal"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -34,6 +34,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.ActivityTeste"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.ActivityMenu"

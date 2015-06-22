@@ -76,8 +76,8 @@ public class PedidoCompraService extends IntentService {
             List<DadosAcesso> lstDadosAcesso = new DadosAcessoDAO().getAllDadosAcesso();
 
             if (lstDadosAcesso.size() > 0) {
-
                 DadosAcesso dadosAcesso = lstDadosAcesso.get(0);
+
 
                 String url = getResources().getString(R.string.protocolo)
                         + App.API_REST

@@ -47,11 +47,9 @@ public class ActivitySobre extends Aba implements ILogout {
             @Override
             public void onClick(View v) {
                 // Diego - 20/30 - informa para API com intuito de parar as push notifications para o device
-                List<DadosAcesso> lstDadosAcesso = new DadosAcessoDAO().getAllDadosAcesso();
-
-                if (lstDadosAcesso.size() > 0) {
-
-                    DadosAcesso dadosAcesso = lstDadosAcesso.get(0);
+                List<DadosAcesso> lista = new DadosAcessoDAO().getAllDadosAcesso();
+                if (lista.size() > 0) {
+                    DadosAcesso dadosAcesso = lista.get(0);
 
                     asyncTaskLogout = null;
                     asyncTaskLogout = new LogoutAsyncTask(ActivitySobre.this, dadosAcesso);

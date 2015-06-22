@@ -6,10 +6,7 @@
     android:background="@drawable/login_portrait"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/tamanho_borda"
-    android:paddingLeft="@dimen/tamanho_borda"
-    android:paddingRight="@dimen/tamanho_borda"
-    android:paddingTop="@dimen/tamanho_borda"
+    android:padding="@dimen/tamanho_borda"
     tools:context=".LoginActivity">
 
     <!-- Login progress -->
@@ -20,7 +17,7 @@
         android:paddingTop="150dp">
 
         <ProgressBar
-            android:id="@+id/login_progress"
+            android:id="@+id/progressView"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +27,7 @@
             android:visibility="gone" />
 
         <LinearLayout
-            android:id="@+id/email_login_form"
+            android:id="@+id/linearLayoutFormularioLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -39,8 +36,8 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <AutoCompleteTextView
-                android:id="@+id/email"
+            <EditText
+                android:id="@+id/editTextLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -57,7 +54,7 @@
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/editTextSenha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"

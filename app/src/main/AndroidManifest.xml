@@ -22,10 +22,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ico"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/MyAppTheme">
 
         <activity
-            android:name=".activity.ActivityConfigurarOrdemTelaPrincipal"
+            android:name=".activity.ActivityQuadroHorarios"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>

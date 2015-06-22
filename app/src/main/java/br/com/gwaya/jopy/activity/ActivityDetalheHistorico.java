@@ -4,7 +4,6 @@ package br.com.gwaya.jopy.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,11 +21,12 @@ import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
 
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.activity.abstracoes.ActivityGeneric;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompraItens;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
 
-public class ActivityDetalheHistorico extends ActionBarActivity implements OnClickListener {
+public class ActivityDetalheHistorico extends ActivityGeneric implements OnClickListener {
 
     private RelativeLayout relativeLayoutAnterior;
     private RelativeLayout relativeLayoutProximo;

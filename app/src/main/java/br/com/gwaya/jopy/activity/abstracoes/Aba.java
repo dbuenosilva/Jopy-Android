@@ -1,11 +1,9 @@
 package br.com.gwaya.jopy.activity.abstracoes;
 
-import android.support.v7.app.ActionBarActivity;
-
 /**
  * Created by pedro on 18/03/15.
  */
-public abstract class Aba extends ActionBarActivity {
+public abstract class Aba extends ActivityGeneric {
 
     public abstract String getNomeAba();
 

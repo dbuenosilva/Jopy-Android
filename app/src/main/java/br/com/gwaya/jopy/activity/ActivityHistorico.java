@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.activity.abstracoes.ActivityGeneric;
 import br.com.gwaya.jopy.adapter.AdapterHistorico;
 import br.com.gwaya.jopy.dao.MySQLiteHelper;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
@@ -30,7 +30,7 @@ import br.com.gwaya.jopy.model.PedidoCompra;
 /**
  * Created by marcelorosa on 10/01/15.
  */
-public class ActivityHistorico extends ActionBarActivity {
+public class ActivityHistorico extends ActivityGeneric {
 
     private View mProgressView;
 

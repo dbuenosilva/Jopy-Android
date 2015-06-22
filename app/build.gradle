@@ -44,7 +44,7 @@ dependencies {
     compile 'com.android.support:design:22.2.0'
     compile 'com.github.liuguangqiang.aframework:library:1.0.2'
     compile 'com.android.support:recyclerview-v7:22.2.0'
-    compile 'com.makeramen:dragsortadapter:1.2.0'
+    compile 'com.github.citux:datetimepicker:0.1.2'
     compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
         transitive = true;
     }

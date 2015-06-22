@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,12 +30,13 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import br.com.gwaya.jopy.R;
+import br.com.gwaya.jopy.activity.abstracoes.ActivityGeneric;
 import br.com.gwaya.jopy.adapter.AdapterPedidoCompraItens;
 import br.com.gwaya.jopy.dao.FilaPedidoCompraDAO;
 import br.com.gwaya.jopy.dao.PedidoCompraDAO;
 import br.com.gwaya.jopy.model.PedidoCompra;
 
-public class ActivityDetalhe extends ActionBarActivity implements OnClickListener {
+public class ActivityDetalhe extends ActivityGeneric implements OnClickListener {
 
     public static final String STATUS_APROVADO = "aprovado";
 

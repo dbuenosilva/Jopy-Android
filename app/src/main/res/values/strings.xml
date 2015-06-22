@@ -52,11 +52,9 @@
     <string name="orcamentos">Orçamentos</string>
     <string name="vendas">Vendas</string>
     <string name="contas_a_pagar">Contas a Pagar</string>
-
-    <string name="configurar_tela_principal">Configurar tela principal</string>
-    <string name="altere_a_ordem_de_exibicao_das_telas">Altere a ordem de exibição das telas</string>
-    <string name="instrucao_configuracao_ordem_tela">1. Toque e segure na aba desejada. \n\n 2. Arraste para o local desejado, então a solte. \n\n 3. Ao finalizar, pressione o botão \'ok\' no canto superior direito da tela.</string>
-    <string name="suas_preferencias_foram_salvas_com_sucesso">Suas preferências foram salvas com sucesso</string>
-    <string name="zero">0</string>
+    <string name="quadro_de_horarios">Quadro de horários</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="entrada">Entrada</string>
+    <string name="saida">Saída</string>
 
 </resources>

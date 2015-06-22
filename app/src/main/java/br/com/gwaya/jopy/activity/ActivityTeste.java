@@ -102,8 +102,8 @@ public class ActivityTeste extends AppCompatActivity implements View.OnClickList
         listHorario.add(new Horario());
         listHorario.add(new Horario());
 
-        adapterHorario = new AdapterHorario(this, listHorario);
-        recyclerView.setAdapter(adapterHorario);
+//        adapterHorario = new AdapterHorario(this, listHorario);
+//        recyclerView.setAdapter(adapterHorario);
     }
 
     private void initViews() {

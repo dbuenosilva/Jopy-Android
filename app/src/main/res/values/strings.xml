@@ -56,5 +56,6 @@
     <string name="cancelar">Cancelar</string>
     <string name="entrada">Entrada</string>
     <string name="saida">Saída</string>
+    <string name="esqueceu_sua_senha">Esqueceu sua senha?</string>
 
 </resources>

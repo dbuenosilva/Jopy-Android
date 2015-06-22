@@ -73,57 +73,52 @@ public class PedidoCompraService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
-            List<DadosAcesso> lstDadosAcesso = new DadosAcessoDAO().getAllDadosAcesso();
+            DadosAcesso dadosAcesso = new DadosAcessoDAO().getDadosAcesso();
 
-            if (lstDadosAcesso.size() > 0) {
+            String url = getResources().getString(R.string.protocolo)
+                    + App.API_REST
+                    + getResources().getString(R.string.pedidocompra_path),
+                    dtMod = pedidoCompraDatasource.ultimoSync();
 
-                DadosAcesso dadosAcesso = lstDadosAcesso.get(0);
+            if (dtMod != null) {
+                url += "?gte=" + dtMod;
+            }
 
-                String url = getResources().getString(R.string.protocolo)
-                        + App.API_REST
-                        + getResources().getString(R.string.pedidocompra_path),
-                        dtMod = pedidoCompraDatasource.ultimoSync();
+            descarregaFila(dadosAcesso);
 
-                if (dtMod != null) {
-                    url += "?gte=" + dtMod;
-                }
+            String responseBody = loadFromNetwork(url, dadosAcesso, this.getApplicationContext());
 
-                descarregaFila(dadosAcesso);
+            GsonBuilder gsonb = new GsonBuilder();
+            Gson gson = gsonb.create();
 
-                String responseBody = loadFromNetwork(url, dadosAcesso, this.getApplicationContext());
+            JsonObject jsPedidosObj = gson.fromJson(responseBody, JsonObject.class);
+            JsonArray jsPedidosArray = jsPedidosObj.getAsJsonArray("pedidos");
 
-                GsonBuilder gsonb = new GsonBuilder();
-                Gson gson = gsonb.create();
+            PedidoCompra[] pedidos = gson.fromJson(jsPedidosArray, PedidoCompra[].class);
 
-                JsonObject jsPedidosObj = gson.fromJson(responseBody, JsonObject.class);
-                JsonArray jsPedidosArray = jsPedidosObj.getAsJsonArray("pedidos");
+            if (pedidos != null && pedidos.length > 0) {
 
-                PedidoCompra[] pedidos = gson.fromJson(jsPedidosArray, PedidoCompra[].class);
+                // Diego Bueno - 10/02/2015 - verifica se pedido já existe, caso sim, deleta e inclui com nova alteração
+                for (PedidoCompra pedido : pedidos) {
+                    if (pedidoCompraDatasource.ExistePedidoCompra(pedido.get_id())) {
+                        pedidoCompraDatasource.deletePedidoCompra(pedido);
 
-                if (pedidos != null && pedidos.length > 0) {
-
-                    // Diego Bueno - 10/02/2015 - verifica se pedido já existe, caso sim, deleta e inclui com nova alteração
-                    for (PedidoCompra pedido : pedidos) {
-                        if (pedidoCompraDatasource.ExistePedidoCompra(pedido.get_id())) {
-                            pedidoCompraDatasource.deletePedidoCompra(pedido);
-
-                            // Se nao estiver deletado, atualiza
-                            if (!pedido.getStatusPedido().equals("deletado")) {
-                                pedidoCompraDatasource.createUpdatePedidoCompra(pedido);
-                            }
-
-                        } else {
-
-                            // Se nao estiver deletado, inclui
-                            if (!pedido.getStatusPedido().equals("deletado")) {
-                                pedidoCompraDatasource.createUpdatePedidoCompra(pedidos);
-                            }
-
+                        // Se nao estiver deletado, atualiza
+                        if (!pedido.getStatusPedido().equals("deletado")) {
+                            pedidoCompraDatasource.createUpdatePedidoCompra(pedido);
                         }
-                    }
 
-                    publishResults(StatusPedido.getFromText(pedidos[0].getStatusPedido()));
+                    } else {
+
+                        // Se nao estiver deletado, inclui
+                        if (!pedido.getStatusPedido().equals("deletado")) {
+                            pedidoCompraDatasource.createUpdatePedidoCompra(pedidos);
+                        }
+
+                    }
                 }
+
+                publishResults(StatusPedido.getFromText(pedidos[0].getStatusPedido()));
             }
         } catch (Exception e) {
             e.printStackTrace();

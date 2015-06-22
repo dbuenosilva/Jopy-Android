@@ -66,11 +66,7 @@ public abstract class AbaPedidoCompra extends Aba implements ICarregarPedidosDoB
         configurarActionBar();
         setContentView(R.layout.aba_pedidocompra);
 
-        DadosAcessoDAO DadosAcessoDAO = new DadosAcessoDAO();
-        List<DadosAcesso> lst = DadosAcessoDAO.getAllDadosAcesso();
-        if (lst.size() > 0) {
-            dadosAcesso = lst.get(0);
-        }
+        dadosAcesso = new DadosAcessoDAO().getDadosAcesso();
 
         listView = (ListView) findViewById(R.id.listViewPedidoCompraEmitido);
         mSwipyRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.swipyrefreshlayout);

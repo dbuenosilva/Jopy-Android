@@ -3,8 +3,6 @@ package br.com.gwaya.jopy.communication;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -44,17 +42,13 @@ public class GCMIntentService extends IntentService {
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 // This loop represents the service doing some work.
                 for (int i = 0; i < 5; i++) {
-                    Log.i(App.TAG, "Working... " + (i + 1)
-                            + "/5 @ " + SystemClock.elapsedRealtime());
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException ignored) {
                     }
                 }
-                Log.i(App.TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 // Post notification of received message.
                 App.sendNotification(extras.get("message").toString());
-                Log.i(App.TAG, "Received: " + extras.get("message").toString());
                 displayMessage(this.getApplicationContext(), extras.get("message").toString());
 
 

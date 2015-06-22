@@ -8,8 +8,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import br.com.gwaya.jopy.App;
 import br.com.gwaya.jopy.R;
 import br.com.gwaya.jopy.activity.ActivityLogin;
@@ -47,16 +45,11 @@ public class ActivitySobre extends Aba implements ILogout {
             @Override
             public void onClick(View v) {
                 // Diego - 20/30 - informa para API com intuito de parar as push notifications para o device
-                List<DadosAcesso> lstDadosAcesso = new DadosAcessoDAO().getAllDadosAcesso();
-
-                if (lstDadosAcesso.size() > 0) {
-
-                    DadosAcesso dadosAcesso = lstDadosAcesso.get(0);
+                DadosAcesso dadosAcesso = new DadosAcessoDAO().getDadosAcesso();
 
                     asyncTaskLogout = null;
                     asyncTaskLogout = new LogoutAsyncTask(ActivitySobre.this, dadosAcesso);
                     asyncTaskLogout.execute();
-                }
             }
         });
     }

@@ -93,7 +93,7 @@ public class DadosAcessoDAO {
                 });
     }
 
-    public List<DadosAcesso> getAllDadosAcesso() {
+    public DadosAcesso getDadosAcesso() {
 
         final List<DadosAcesso> dadosAcessos = new ArrayList<>();
         DatabaseManager.getInstance().executeQuery(
@@ -113,7 +113,7 @@ public class DadosAcessoDAO {
                         cursor.close();
                     }
                 });
-        return dadosAcessos;
+        return dadosAcessos.get(0);
     }
 
     private DadosAcesso cursorToDadosAcesso(Cursor cursor) {

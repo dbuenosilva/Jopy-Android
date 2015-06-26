@@ -50,17 +50,17 @@ public class ActivityMenu extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.viewCompras:
 //                if (validarPermissao(Acesso.COMPRAS)) {
-                Intent intent = new Intent(this, ActivityMain.class);
+                intent = new Intent(this, ActivityMain.class);
                 intent.putExtra("login", login);
                 startActivity(intent);
 //                }
                 break;
             case R.id.viewVendas:
                 if (validarPermissao(Acesso.VENDAS)) {
-
                 }
                 break;
             case R.id.viewOrcamentos:
@@ -73,6 +73,13 @@ public class ActivityMenu extends Activity implements View.OnClickListener {
 
                 }
                 break;
+            /*case R.id.viewContasPagar:
+                if (validarPermissao(Acesso.PONTO_ELETRONICO)) {
+                    intent = new Intent(this, ActivityQuadroHorarios.class);
+                    intent.putExtra("login", login);
+                    startActivity(intent);
+                }
+                break;*/
         }
     }
 

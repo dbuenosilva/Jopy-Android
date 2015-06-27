@@ -58,4 +58,7 @@
     <string name="saida">Saída</string>
     <string name="esqueceu_sua_senha">Esqueceu sua senha?</string>
 
+    <!-- Override no botão DONE do timepicker -->
+    <string name="done_label">Salvar</string>
+
 </resources>

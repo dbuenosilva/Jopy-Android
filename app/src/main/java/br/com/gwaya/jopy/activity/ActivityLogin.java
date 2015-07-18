@@ -464,16 +464,18 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
                     Toast.makeText(this, "Você esta sem conexão com a internet, por favor tente mais tarde.", Toast.LENGTH_SHORT).show();
                     break;
                 case -2:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Serviço temporariamente indisponível.")
-                            .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    //do things
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
+                    if (!isFinishing()) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setMessage("Serviço temporariamente indisponível.")
+                                .setCancelable(false)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //do things
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
                     break;
                 case 401:
                     Toast.makeText(this, getString(R.string.acesso_nao_autorizado), Toast.LENGTH_SHORT).show();
@@ -484,7 +486,6 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
                     break;
                 default:
                     Intent intent = new Intent(this, ActivityMenu.class);
-                    intent.putExtra("login", true);
                     startActivity(intent);
                     mLoginFormView.setVisibility(View.INVISIBLE);
                     break;

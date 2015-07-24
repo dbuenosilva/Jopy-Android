@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.gwaya.jopy.controller.ControllerPermissao;
 import br.com.gwaya.jopy.interfaces.QueryExecutor;
 import br.com.gwaya.jopy.model.DadosAcesso;
 import br.com.gwaya.jopy.model.RespostaLogin;
@@ -22,7 +21,6 @@ public class DadosAcessoDAO {
             MySQLiteHelper.SENHA,
             MySQLiteHelper.TOKEN_TYPE
     };
-    private ControllerPermissao controllerPermissao = new ControllerPermissao();
 
     public DadosAcesso createDadosAcesso(final RespostaLogin respostaLogin, final String usuario, final String senha) {
         final List<DadosAcesso> newDadosAcesso = new ArrayList<>();

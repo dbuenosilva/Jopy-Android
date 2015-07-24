@@ -6,12 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.List;
-
 import br.com.gwaya.jopy.R;
-import br.com.gwaya.jopy.controller.ControllerPermissao;
 import br.com.gwaya.jopy.enums.Acesso;
-import br.com.gwaya.jopy.model.Permissao;
 import br.com.gwaya.jopy.utils.Utils;
 
 /**
@@ -20,7 +16,7 @@ import br.com.gwaya.jopy.utils.Utils;
 public class ActivityMenu extends Activity implements View.OnClickListener {
 
     private boolean login;
-    private List<Permissao> listaPermissoes;
+    //private List<Permissao> listaPermissoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +30,8 @@ public class ActivityMenu extends Activity implements View.OnClickListener {
             login = extras.getBoolean("login");
         }
 
-        ControllerPermissao controllerPermissao = new ControllerPermissao();
-        listaPermissoes = controllerPermissao.readAll();
+        //ControllerPermissao controllerPermissao = new ControllerPermissao();
+        //listaPermissoes = controllerPermissao.readAll();
 
         findViewById(R.id.viewCompras).setOnClickListener(this);
         findViewById(R.id.viewVendas).setOnClickListener(this);
@@ -84,9 +80,9 @@ public class ActivityMenu extends Activity implements View.OnClickListener {
     }
 
     private boolean validarPermissao(Acesso acesso) {
-        for (Permissao permissao : listaPermissoes) {
+        /*for (Permissao permissao : listaPermissoes) {
             return acesso.getValor() == permissao.getAcesso();
-        }
+        }*/
         Toast.makeText(this, getString(R.string.solucao_em_desenvolvimento), Toast.LENGTH_SHORT).show();
         return false;
     }

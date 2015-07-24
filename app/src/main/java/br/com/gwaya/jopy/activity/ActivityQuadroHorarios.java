@@ -88,7 +88,18 @@ public class ActivityQuadroHorarios extends ActivityGeneric implements TimePicke
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-        lista.set(posicaoSelecionada, new Horario(hourOfDay + ":" + minute));
+        String horaEmTexo = String.valueOf(hourOfDay);
+        String minutoEmTexo = String.valueOf(minute);
+
+        if (minute == 0) {
+            minutoEmTexo = "00";
+        }
+
+        if (hourOfDay == 0) {
+            horaEmTexo = "00";
+        }
+
+        lista.set(posicaoSelecionada, new Horario(horaEmTexo + ":" + minutoEmTexo));
         adapter.notifyDataSetChanged();
     }
 }

@@ -77,7 +77,7 @@ public class AdapterPedidoCompra extends BaseAdapter {
             viewHolder.viewMarcadorRodape.setBackgroundResource(R.color.rejeitado_forte);
         }
 
-        viewHolder.textViewNomeForn.setText(pedido.getNomeForn());
+        viewHolder.textViewNomeForn.setText(pedido.getNomeVerboso());
         viewHolder.textViewDtPedido.setText(getDataEmString(pedido));
         viewHolder.textViewTotalPedido.setText(NumberFormat.getCurrencyInstance().format(pedido.getTotalPedido()));
 

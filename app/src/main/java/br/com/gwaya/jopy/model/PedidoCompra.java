@@ -98,6 +98,10 @@ public class PedidoCompra implements Serializable {
         this.nomeForn = nomeForn;
     }
 
+    public String getNomeVerboso() {
+        return idSistema + " " + nomeForn;
+    }
+
     public String getCpfCnpjForn() {
         return cpfCnpjForn;
     }

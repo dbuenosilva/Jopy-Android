@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.github.orangegangsters:swipy-1.2.0">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/def309be6d9fe72635a131bdac44ee0921bce3f8/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/def309be6d9fe72635a131bdac44ee0921bce3f8/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.orangegangsters/swipy/1.2.0/a0ac20ac194634c9c039c0174c985f212b9078f2/swipy-1.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

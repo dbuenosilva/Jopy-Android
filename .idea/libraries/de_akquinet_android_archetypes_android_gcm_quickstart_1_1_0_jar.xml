@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="android-gcm-quickstart-1.1.0">
+  <library name="de.akquinet.android.archetypes:android-gcm-quickstart:1.1.0@jar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.akquinet.android.archetypes/android-gcm-quickstart/1.1.0/b93cd1a131b53e531c2a7b35c412dc289bea26c9/android-gcm-quickstart-1.1.0.jar!/" />
     </CLASSES>

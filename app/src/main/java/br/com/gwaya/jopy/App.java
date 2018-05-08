@@ -90,7 +90,7 @@ public class App extends Application {
         context = this;
 
         if (Utils.isDebuggable(this)) {
-            API_REST = "homologacao.api.jopy.gwaya.com.br";
+            API_REST = "api.jopy.gwaya.com.br";
         } else {
             Fabric.with(this, new Crashlytics());
             API_REST = "api.jopy.gwaya.com.br";

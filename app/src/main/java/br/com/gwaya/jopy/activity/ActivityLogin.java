@@ -137,8 +137,8 @@ public class ActivityLogin extends Activity implements IRecuperarSenhaAsyncTask,
         if (Utils.isDebuggable(this)) {
             // SE ESTIVER DEBUGANDO, TENTA LOGAR AUTOMATICAMENTE COM O USUÁRIO:
             // diretor@tecnomontagens.com.br | diretor
-            mEmailView.setText("diretor@tecnomontagens.com.br");
-            mPasswordView.setText("diretor");
+            mEmailView.setText("");
+            mPasswordView.setText("");
             login();
         }
     }

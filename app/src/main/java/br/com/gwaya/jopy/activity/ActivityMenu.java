@@ -76,7 +76,7 @@ public class ActivityMenu extends Activity implements View.OnClickListener {
         /*for (Permissao permissao : listaPermissoes) {
             return acesso.getValor() == permissao.getAcesso();
         }*/
-        Toast.makeText(this, getString(R.string.solucao_em_desenvolvimento), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.acesso_nao_autorizado), Toast.LENGTH_SHORT).show();
         return false;
     }
 }

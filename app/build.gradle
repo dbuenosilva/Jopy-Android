@@ -1,31 +1,18 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
-
-
 android {
-    compileSdkVersion 21
-    buildToolsVersion "25.0.0"
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "br.com.gwaya.jopy"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        useLibrary 'org.apache.http.legacy'
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -35,13 +22,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.google.android.gms:play-services:6.5.87'
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'de.akquinet.android.archetypes:android-gcm-quickstart:1.1.0'
-    compile 'com.github.orangegangsters:swipy:1.2.0@aar'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
-        transitive = true;
-    }
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:21.0.3'
+    implementation 'com.google.android.gms:play-services:6.5.87'
+    implementation 'com.google.code.gson:gson:2.2.4'
+    implementation 'de.akquinet.android.archetypes:android-gcm-quickstart:1.1.0'
+    implementation 'com.github.orangegangsters:swipy:1.2.0@aar'
+    implementation ('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') { transitive = true }
 }

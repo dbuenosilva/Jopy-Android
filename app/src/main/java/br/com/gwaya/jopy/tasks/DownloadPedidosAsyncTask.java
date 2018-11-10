@@ -57,6 +57,8 @@ public class DownloadPedidosAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
         if (dtMod != null) {
             url += "?gte=" + dtMod;
+        } else {
+            url += "?gte=primeiroAcesso";
         }
 
         HttpGet httpGet = new HttpGet(url);

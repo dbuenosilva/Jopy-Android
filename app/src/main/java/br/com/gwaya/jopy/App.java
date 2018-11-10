@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
 
 import br.com.gwaya.jopy.activity.ActivityMain;
 import br.com.gwaya.jopy.activity.abas.ActivityPendentes;
@@ -97,5 +98,8 @@ public class App extends Application {
         }
 
         DatabaseManager.initializeInstance(new MySQLiteHelper(getApplicationContext()));
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this);
+        }
     }
 }
